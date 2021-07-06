@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Hassan Habib All rights reserved.
+// Licensed under the MIT License.
+// See License.txt in the project root for license information.
+// ---------------------------------------------------------------
+
+using System.Collections.Generic;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.AspNets;
 using ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks;
