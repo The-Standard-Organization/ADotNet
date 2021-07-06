@@ -4,12 +4,15 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
+using System.IO;
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
 using ADotNet.Models.Pipelines.AspNets;
 using ADotNet.Services;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace AdoNet.Tests.Unit.Services
 {
@@ -37,6 +40,17 @@ namespace AdoNet.Tests.Unit.Services
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
+
+        public static TheoryData FileValidationExceptions()
+        {
+            return new TheoryData<Exception>
+            {
+                new ArgumentException(),
+                new ArgumentNullException(),
+                new PathTooLongException(),
+                new DirectoryNotFoundException()
+            };
+        }
 
         private static Filler<AspNetPipeline> CreateAspNetPipelineFiller() =>
             new Filler<AspNetPipeline>();

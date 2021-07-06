@@ -15,6 +15,45 @@ namespace AdoNet.Tests.Unit.Services
 {
     public partial class AdoServiceTests
     {
+        [Theory]
+        [MemberData(nameof(FileValidationExceptions))]
+        public void ShouldThrowDependencyValidationOnSerializeIfDependencyValidationErrorOccurs(
+            Exception dependencyValidationException)
+        {
+            // given
+            AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
+            string somePath = GetRandomFilePath();
+
+            this.yamlBrokerMock.Setup(broker =>
+                broker.SerializeToYaml(It.IsAny<object>()))
+                    .Throws(dependencyValidationException);
+
+            // when
+            Action serializeAndWriteToFileAction = () =>
+                this.adoService.SerializeAndWriteToFile(
+                    somePath,
+                    somePipeline);
+
+            // then
+            AdoDependencyValidationException actualAdoDependencyValidationException =
+                Assert.Throws<AdoDependencyValidationException>(
+                    serializeAndWriteToFileAction);
+
+            actualAdoDependencyValidationException.InnerException.Message.Should()
+                .BeEquivalentTo(dependencyValidationException.Message);
+
+            this.yamlBrokerMock.Verify(broker =>
+                broker.SerializeToYaml(It.IsAny<object>()),
+                    Times.Once);
+
+            this.filesBrokerMock.Verify(broker =>
+                broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),
+                    Times.Never);
+
+            this.yamlBrokerMock.VerifyNoOtherCalls();
+            this.filesBrokerMock.VerifyNoOtherCalls();
+        }
+
         [Fact]
         public void ShouldThrowServiceExceptionOnSerializeIfSystemErrorOccurs()
         {
