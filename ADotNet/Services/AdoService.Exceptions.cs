@@ -24,6 +24,10 @@ namespace ADotNet.Services
             {
                 throw new AdoValidationException(nullPipelineException);
             }
+            catch (NullPathException nullPathException)
+            {
+                throw new AdoValidationException(nullPathException);
+            }
         }
     }
 }

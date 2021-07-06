@@ -57,7 +57,9 @@ namespace AdoNet.Tests.Unit.Services
         {
             // given
             string invalidPath = null;
-            AspNetPipeline someAspNetPipeline = CreateRandomAspNetPipeline();
+            
+            AspNetPipeline someAspNetPipeline = 
+                CreateRandomAspNetPipeline();
 
             var nullPathException =
                 new NullPathException();

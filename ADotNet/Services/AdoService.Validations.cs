@@ -4,20 +4,21 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using ADotNet.Brokers.IOs;
-using ADotNet.Brokers.Serializers;
 using ADotNet.Models.Pipelines.Exceptions;
 
 namespace ADotNet.Services
 {
     public partial class AdoService
     {
-        public void ValidateInputs(string path, object pipeline)
+        public static void ValidateInputs(string path, object pipeline)
         {
             switch (path, pipeline)
             {
                 case (_, null):
                     throw new NullPipelineException();
+
+                case (null, _):
+                    throw new NullPathException();
             }
         }
     }
