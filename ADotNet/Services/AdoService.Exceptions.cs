@@ -6,6 +6,7 @@
 
 using System;
 using System.IO;
+using System.Security;
 using ADotNet.Models.Pipelines.Exceptions;
 
 namespace ADotNet.Services
@@ -44,6 +45,22 @@ namespace ADotNet.Services
             {
                 throw new AdoDependencyValidationException(
                     directoryNotFoundException);
+            }
+            catch (IOException ioException)
+            {
+                throw new AdoDependencyException(ioException);
+            }
+            catch (SecurityException securityException)
+            {
+                throw new AdoDependencyException(securityException);
+            }
+            catch (UnauthorizedAccessException unauthorizedAccessException)
+            {
+                throw new AdoDependencyException(unauthorizedAccessException);
+            }
+            catch (NotSupportedException notSupportedException)
+            {
+                throw new AdoDependencyException(notSupportedException);
             }
             catch (Exception exception)
             {
