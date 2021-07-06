@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using ADotNet.Brokers.Serializers.TypeConverters;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -18,7 +17,7 @@ namespace ADotNet.Brokers.Serializers
         {
             this.serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build();
+                    .Build();
         }
 
         public string SerializeToYaml(object @object) =>
