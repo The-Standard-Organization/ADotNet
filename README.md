@@ -54,7 +54,7 @@ The library's architecture follows [The Standard](https://github.com/hassanhabib
 The abstraction of the dependencies should allow a future expansion and pluggability for any other C# to YAML components easily.
 
 ## Real-Life Example
-Here's something I'm using in my open source OtripleS project which is built in ASP.NET Core 6.0:
+Here's something I'm using in my open source [OtripleS](https://github.com/hassanhabib/OtripleS) project which is built in ASP.NET Core 6.0:
 
 ```csharp
   var adoClient = new ADotNetClient();
