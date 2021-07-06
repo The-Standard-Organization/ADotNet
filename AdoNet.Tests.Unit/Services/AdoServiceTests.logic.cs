@@ -31,7 +31,7 @@ namespace AdoNet.Tests.Unit.Services
                     .Returns(serialziedPipeline);
 
             // when
-            this.adoService.BuildAzurePipelineYamlFile(
+            this.adoService.SerializeAndWriteToFile(
                 inputPath, 
                 inputAspNetPipeline);
 

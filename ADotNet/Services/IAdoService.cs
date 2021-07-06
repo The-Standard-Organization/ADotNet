@@ -8,6 +8,6 @@ namespace ADotNet.Services
 {
     public interface IAdoService
     {
-        void BuildAzurePipelineYamlFile(string path, object adoPipeline);
+        void SerializeAndWriteToFile(string path, object adoPipeline);
     }
 }

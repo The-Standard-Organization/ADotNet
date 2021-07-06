@@ -22,7 +22,7 @@ namespace ADotNet.Services
             this.filesBroker = filesBroker;
         }
 
-        public void BuildAzurePipelineYamlFile(string path, object adoPipeline)
+        public void SerializeAndWriteToFile(string path, object adoPipeline)
         {
             string serializedPipeline = 
                 this.yamlBroker.SerializeToYaml(adoPipeline);
