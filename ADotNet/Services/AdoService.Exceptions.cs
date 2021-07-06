@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
 using ADotNet.Models.Pipelines.Exceptions;
@@ -27,6 +28,10 @@ namespace ADotNet.Services
             catch (NullPathException nullPathException)
             {
                 throw new AdoValidationException(nullPathException);
+            }
+            catch (Exception exception)
+            {
+                throw new AdoServiceException(exception);
             }
         }
     }
