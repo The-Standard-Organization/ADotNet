@@ -6,7 +6,7 @@
 
 namespace ADotNet.Clients
 {
-    public interface IAdotNetClient
+    public interface IADotNetClient
     {
         void SerializeAndWriteToFile(object adoPipeline, string path);
     }
