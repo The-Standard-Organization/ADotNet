@@ -25,9 +25,6 @@ namespace AdoNet.Tests.Unit.Services
             var nullPiplineException =
                 new NullPipelineException();
 
-            var expectedAdoValidationException = 
-                new AdoValidationException(nullPiplineException);
-
             // when
             Action serializeAndWriteToFileAction = () =>
                 this.adoService.SerializeAndWriteToFile(somePath, invalidPipeline);
@@ -63,9 +60,6 @@ namespace AdoNet.Tests.Unit.Services
 
             var nullPathException =
                 new NullPathException();
-
-            var expectedAdoValidationException =
-                new AdoValidationException(nullPathException);
 
             // when
             Action serializeAndWriteToFileAction = () =>
