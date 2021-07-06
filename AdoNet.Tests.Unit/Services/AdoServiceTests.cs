@@ -6,6 +6,7 @@
 
 using System;
 using System.IO;
+using System.Security;
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
 using ADotNet.Models.Pipelines.AspNets;
@@ -49,6 +50,17 @@ namespace AdoNet.Tests.Unit.Services
                 new ArgumentNullException(),
                 new PathTooLongException(),
                 new DirectoryNotFoundException()
+            };
+        }
+
+        public static TheoryData FileDependencyExceptions()
+        {
+            return new TheoryData<Exception>
+            {
+                new IOException(),
+                new UnauthorizedAccessException(),
+                new NotSupportedException(),
+                new SecurityException()
             };
         }
 
