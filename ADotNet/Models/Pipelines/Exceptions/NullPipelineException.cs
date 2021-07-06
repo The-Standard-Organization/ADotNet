@@ -4,12 +4,13 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using System.IO;
+using System;
 
-namespace ADotNet.Brokers.IOs
+namespace ADotNet.Models.Pipelines.Exceptions
 {
-    public interface IFilesBroker
+    public class NullPipelineException : Exception
     {
-        void WriteToFile(string path, string data);
+        public NullPipelineException()
+            : base("Pipeline is null") { }
     }
 }

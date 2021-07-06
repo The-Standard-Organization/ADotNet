@@ -4,12 +4,16 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using System.IO;
+using System;
 
-namespace ADotNet.Brokers.IOs
+namespace ADotNet.Models.Pipelines.Exceptions
 {
-    public interface IFilesBroker
+    public class AdoValidationException : Exception
     {
-        void WriteToFile(string path, string data);
+        public AdoValidationException(Exception innerException)
+            : base("Ado validation exception occurred, try again", innerException)
+        {
+
+        }
     }
 }
