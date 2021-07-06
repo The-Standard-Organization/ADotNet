@@ -24,7 +24,10 @@ namespace ADotNet.Services
 
         public void BuildAzurePipelineYamlFile(string path, object adoPipeline)
         {
-            throw new System.NotImplementedException();
+            string serializedPipeline = 
+                this.yamlBroker.SerializeToYaml(adoPipeline);
+
+            this.filesBroker.WriteToFile(path, serializedPipeline);
         }
     }
 }
