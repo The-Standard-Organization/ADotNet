@@ -9,7 +9,7 @@ using ADotNet.Brokers.Serializers;
 
 namespace ADotNet.Services
 {
-    public class AdoService : IAdoService
+    public partial class AdoService : IAdoService
     {
         private readonly IYamlBroker yamlBroker;
         private readonly IFilesBroker filesBroker;
@@ -22,12 +22,15 @@ namespace ADotNet.Services
             this.filesBroker = filesBroker;
         }
 
-        public void SerializeAndWriteToFile(string path, object adoPipeline)
+        public void SerializeAndWriteToFile(string path, object adoPipeline) =>
+        TryCatch(() =>
         {
-            string serializedPipeline = 
+            ValidateInputs(path, adoPipeline);
+            
+            string serializedPipeline =
                 this.yamlBroker.SerializeToYaml(adoPipeline);
 
             this.filesBroker.WriteToFile(path, serializedPipeline);
-        }
+        });
     }
 }
