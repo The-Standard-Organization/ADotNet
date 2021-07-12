@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.AspNets;
 using ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks;
+using ADotNet.Models.Pipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AspNets.Tasks.UseDotNetTasks;
 
 namespace AdoNet.Tests.Console
@@ -88,15 +89,27 @@ namespace AdoNet.Tests.Console
                         Inputs = new DotNetExecutionTasksInputs
                         {
                             Command = Command.publish,
-                            PublishWebProjects = true
+                            PublishWebProjects = true,
+                            ZipAfterPublish = true,
+                            Arguments = Arguments.DefaultBuildAndPublishConfigurations
                         }
+                    },
+
+                    new PublishBuildArtifactsTask
+                    {
+                        DisplayName = "Publish Artifacts",
+
+                        Inputs = new PublishBuildArtifactsInputs
+                        {
+                            PathToPublish = PublishPaths.DefaultPathToPublish
+                        },
+
+                        Condition = Conditions.SucceededOrFailed
                     }
                 }
             };
 
             adoClient.SerializeAndWriteToFile(aspNetPipeline, "../../azure-pipelines.yaml");
-
-            System.Console.WriteLine("Hello World!");
         }
     }
 }
