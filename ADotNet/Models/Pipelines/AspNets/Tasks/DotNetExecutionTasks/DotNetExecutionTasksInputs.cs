@@ -22,5 +22,11 @@ namespace ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks
 
         [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitNull)]
         public bool? PublishWebProjects { get; set; }
+
+        [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted, DefaultValuesHandling = DefaultValuesHandling.OmitNull)]
+        public string Arguments { get; set; }
+
+        [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitNull)]
+        public bool? ZipAfterPublish { get; set; }
     }
 }
