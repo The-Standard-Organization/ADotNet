@@ -44,7 +44,7 @@ namespace AdoNet.Tests.Console
 
                         Inputs = new UseDotNetTasksInputs
                         {
-                            Version = "6.0.100-preview.3.21202.5",
+                            Version = "6.0.100-preview.6.21202.5",
                             IncludePreviewVersions = true,
                             PackageType = PackageType.sdk
                         }
