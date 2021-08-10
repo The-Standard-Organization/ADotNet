@@ -12,6 +12,6 @@ namespace ADotNet.Models.Pipelines.AspNets
     public class VirtualMachinesPool
     {
         [YamlMember(Alias = "vmImage", ScalarStyle = ScalarStyle.SingleQuoted)]
-        public string VirutalMachineImage { get; set; }
+        public string VirtualMachineImage { get; set; }
     }
 }

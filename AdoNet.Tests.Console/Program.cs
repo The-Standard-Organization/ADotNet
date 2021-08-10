@@ -28,7 +28,7 @@ namespace AdoNet.Tests.Console
 
                 VirtualMachinesPool = new VirtualMachinesPool
                 {
-                    VirutalMachineImage = VirtualMachineImages.Windows2019
+                    VirtualMachineImage = VirtualMachineImages.Windows2019
                 },
 
                 ConfigurationVariables = new ConfigurationVariables
