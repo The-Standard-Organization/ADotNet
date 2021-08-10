@@ -22,7 +22,7 @@ Here's how this library works. Let's assume you want to write a task in your pip
     feedsToUse: 'select'
 ```
 
-The problem with the YAML code above, is that it's not that easy to remember. Even while I'm starting right at it right now, I just can't seem to remember `DotNetCoreCLI@2` and what does all of this means to someone who is a full-stack engineer trying to get off the ground as soon, easy and as fast as possible? here's how the very same code above would look like in ADotNet:
+The problem with the above YAML code is that it's not that easy to remember. Even while I'm starting at it right now, I just can't seem to remember `DotNetCoreCLI@2` and what does all of this means to someone who is a full-stack engineer trying to get off the ground as soon, easy and as fast as possible? Here's how the very same code above would look like in ADotNet:
 
 ```csharp
   new DotNetExecutionTask
@@ -37,7 +37,7 @@ The problem with the YAML code above, is that it's not that easy to remember. Ev
   }
 ```
 
-The options here are available with the power of stongly typed options and Enums. You don't have to think about what needs to go there. It's already directing you towards the options you need to get going with your pipelines.
+The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. It's already directing you towards the options you need to get going with building your pipeline.
 
 ## Dependencies & Kudos
 This library relies heavily on [YamlDotNet](https://github.com/aaubry/YamlDotNet) which is an amazing .NET library developed by [Antoine Aubry](https://github.com/aaubry) along with so many other amazing contributors who made C# to YAML possible.
@@ -45,7 +45,7 @@ This library relies heavily on [YamlDotNet](https://github.com/aaubry/YamlDotNet
 The library also leverages native .NET `System.IO.File` functionality to write files to a destination of the consumer's choosing.
 
 ## The Architecture
-The library's architecture follows [The Standard](https://github.com/hassanhabib/The-Standard). Breaking it's capabilities into brokers, services and clients. here's a low-level architecture view of how it works:
+The library's architecture follows [The Standard](https://github.com/hassanhabib/The-Standard). Breaking it's capabilities into brokers, services and clients. Here's a low-level architecture view of how it works:
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/1453985/124557013-d8d8b300-dded-11eb-8fa0-4805a7e5259b.png">
@@ -68,7 +68,7 @@ Here's something I'm using in my open source [OtripleS](https://github.com/hassa
 
       VirtualMachinesPool = new VirtualMachinesPool
       {
-          VirutalMachineImage = VirtualMachineImages.Windows2019
+          VirtualMachineImage = VirtualMachineImages.Windows2019
       },
 
       ConfigurationVariables = new ConfigurationVariables
@@ -139,7 +139,7 @@ Here's something I'm using in my open source [OtripleS](https://github.com/hassa
 
 ```
 
-And here's the product of this code:
+And here's the YAML output of this code:
 
 ```yaml
 trigger:
@@ -177,7 +177,7 @@ steps:
 
 ```
 
-And finally, here's the results:
+And finally, here's the result:
 
 ![image](https://user-images.githubusercontent.com/1453985/124557686-a24f6800-ddee-11eb-9bdd-f2d576ddd5c2.png)
 
