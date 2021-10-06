@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using ADotNet.Models.Pipelines.AspNets;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.Exceptions;
 using FluentAssertions;
 using Moq;
@@ -54,8 +54,8 @@ namespace AdoNet.Tests.Unit.Services
         {
             // given
             string invalidPath = null;
-            
-            AspNetPipeline someAspNetPipeline = 
+
+            AspNetPipeline someAspNetPipeline =
                 CreateRandomAspNetPipeline();
 
             var nullPathException =
@@ -64,11 +64,11 @@ namespace AdoNet.Tests.Unit.Services
             // when
             Action serializeAndWriteToFileAction = () =>
                 this.adoService.SerializeAndWriteToFile(
-                    invalidPath, 
+                    invalidPath,
                     someAspNetPipeline);
 
             // then
-            AdoValidationException actualAdoValidationException = 
+            AdoValidationException actualAdoValidationException =
                 Assert.Throws<AdoValidationException>(
                     serializeAndWriteToFileAction);
 

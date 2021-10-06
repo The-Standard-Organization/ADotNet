@@ -4,14 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-
-namespace ADotNet.Models.Pipelines.AspNets
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks
 {
-    public class BuildTask
+    public enum PackageType
     {
-        [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted, Order = 0)]
-        public string DisplayName { get; set; }
+        sdk
     }
 }

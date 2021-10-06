@@ -4,11 +4,13 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks
 {
-    public struct Arguments
+    public enum Command
     {
-        public const string DefaultBuildAndPublishConfigurations =
-            "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)";
+        restore,
+        build,
+        test,
+        publish
     }
 }

@@ -6,10 +6,10 @@
 
 using System.Collections.Generic;
 using ADotNet.Clients;
-using ADotNet.Models.Pipelines.AspNets;
-using ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks;
-using ADotNet.Models.Pipelines.AspNets.Tasks.PublishBuildArtifactTasks;
-using ADotNet.Models.Pipelines.AspNets.Tasks.UseDotNetTasks;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 
 namespace AdoNet.Tests.Console
 {
@@ -53,7 +53,7 @@ namespace AdoNet.Tests.Console
                     new DotNetExecutionTask
                     {
                         DisplayName = "Restore",
-                        
+
                         Inputs = new DotNetExecutionTasksInputs
                         {
                             Command = Command.restore,

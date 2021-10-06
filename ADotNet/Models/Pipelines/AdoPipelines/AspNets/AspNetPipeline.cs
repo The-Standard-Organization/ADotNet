@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.AspNets
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
     public class AspNetPipeline
     {

@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using ADotNet.Models.Pipelines.AspNets;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.Exceptions;
 using FluentAssertions;
 using Moq;
@@ -109,7 +109,7 @@ namespace AdoNet.Tests.Unit.Services
             // when
             Action serializeAndWriteToFileAction = () =>
                 this.adoService.SerializeAndWriteToFile(
-                    somePath, 
+                    somePath,
                     somePipeline);
 
             // then

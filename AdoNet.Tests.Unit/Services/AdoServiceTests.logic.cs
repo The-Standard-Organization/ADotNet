@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using ADotNet.Models.Pipelines.AspNets;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using Moq;
 using Xunit;
 
@@ -16,12 +16,12 @@ namespace AdoNet.Tests.Unit.Services
         public void ShouldSerializeAndWriteAdoPipelineModel()
         {
             // given
-            AspNetPipeline randomAspNetPipeline = 
+            AspNetPipeline randomAspNetPipeline =
                 CreateRandomAspNetPipeline();
-            
-            AspNetPipeline inputAspNetPipeline = 
+
+            AspNetPipeline inputAspNetPipeline =
                 randomAspNetPipeline;
-            
+
             string randomPath = GetRandomFilePath();
             string inputPath = randomPath;
             string serialziedPipeline = GetRandomString();
@@ -32,7 +32,7 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             this.adoService.SerializeAndWriteToFile(
-                inputPath, 
+                inputPath,
                 inputAspNetPipeline);
 
             // then

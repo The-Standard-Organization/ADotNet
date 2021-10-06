@@ -7,16 +7,13 @@
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.PublishBuildArtifactTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks
 {
-    public class PublishBuildArtifactsTask : BuildTask
+    public class UseDotNetTask : BuildTask
     {
-        public string Task { get; set; } = "PublishBuildArtifacts@1";
+        public string Task { get; set; } = "UseDotNet@2";
 
         [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted, Order = 1)]
-        public PublishBuildArtifactsInputs Inputs { get; set; }
-
-        [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitNull, Order = 2)]
-        public string? Condition { get; set; }
+        public UseDotNetTasksInputs Inputs { get; set; }
     }
 }

@@ -4,13 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks
 {
-    public enum Command
+    public enum Feeds
     {
-        restore,
-        build,
-        test,
-        publish
+        select
     }
 }

@@ -4,11 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
+
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks
 {
-    public struct VirtualMachineImages
+    public class PublishBuildArtifactsInputs
     {
-        public const string UbuntuLatest = "ubuntu-latest";
-        public const string Windows2019 = "windows-2019";
+        [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted)]
+        public string PathToPublish { get; set; }
     }
 }

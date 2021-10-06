@@ -7,7 +7,7 @@
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.UseDotNetTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks
 {
     public class UseDotNetTasksInputs
     {

@@ -4,14 +4,11 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-
-namespace ADotNet.Models.Pipelines.AspNets
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
-    public class ConfigurationVariables
+    public enum BuildConfiguration
     {
-        [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted)]
-        public BuildConfiguration BuildConfiguration { get; set; }
+        Release,
+        Debug
     }
 }
