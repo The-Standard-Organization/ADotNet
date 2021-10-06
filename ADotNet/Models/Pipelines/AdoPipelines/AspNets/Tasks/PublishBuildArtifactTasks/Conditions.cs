@@ -4,10 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks
 {
-    public enum Feeds
+    public struct Conditions
     {
-        select
+        public const string SucceededOrFailed = "succeededOrFailed()";
     }
 }

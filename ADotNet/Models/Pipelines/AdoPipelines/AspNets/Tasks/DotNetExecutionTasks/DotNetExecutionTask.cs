@@ -7,7 +7,7 @@
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.DotNetExecutionTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks
 {
     public class DotNetExecutionTask : BuildTask
     {

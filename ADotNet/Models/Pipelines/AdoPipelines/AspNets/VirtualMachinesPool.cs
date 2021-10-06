@@ -4,10 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.PublishBuildArtifactTasks
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
+
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
-    public struct Conditions
+    public class VirtualMachinesPool
     {
-        public const string SucceededOrFailed = "succeededOrFailed()";
+        [YamlMember(Alias = "vmImage", ScalarStyle = ScalarStyle.SingleQuoted)]
+        public string VirtualMachineImage { get; set; }
     }
 }

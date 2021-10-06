@@ -4,10 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.UseDotNetTasks
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks
 {
-    public enum PackageType
+    public struct PublishPaths
     {
-        sdk
+        public const string DefaultPathToPublish = "$(build.artifactstagingdirectory)";
     }
 }

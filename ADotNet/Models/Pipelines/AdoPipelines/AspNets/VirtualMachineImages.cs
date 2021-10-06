@@ -4,14 +4,11 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-
-namespace ADotNet.Models.Pipelines.AspNets
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
-    public class VirtualMachinesPool
+    public struct VirtualMachineImages
     {
-        [YamlMember(Alias = "vmImage", ScalarStyle = ScalarStyle.SingleQuoted)]
-        public string VirtualMachineImage { get; set; }
+        public const string UbuntuLatest = "ubuntu-latest";
+        public const string Windows2019 = "windows-2019";
     }
 }

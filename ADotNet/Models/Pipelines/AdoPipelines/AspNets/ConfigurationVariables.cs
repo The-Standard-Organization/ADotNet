@@ -4,10 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AspNets.Tasks.PublishBuildArtifactTasks
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
+
+namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
-    public struct PublishPaths
+    public class ConfigurationVariables
     {
-        public const string DefaultPathToPublish = "$(build.artifactstagingdirectory)";
+        [YamlMember(ScalarStyle = ScalarStyle.SingleQuoted)]
+        public BuildConfiguration BuildConfiguration { get; set; }
     }
 }

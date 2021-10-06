@@ -26,7 +26,7 @@ namespace ADotNet.Services
         TryCatch(() =>
         {
             ValidateInputs(path, adoPipeline);
-            
+
             string serializedPipeline =
                 this.yamlBroker.SerializeToYaml(adoPipeline);
 
