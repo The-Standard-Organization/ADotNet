@@ -10,6 +10,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 
 namespace AdoNet.Tests.Console
 {
@@ -18,6 +19,24 @@ namespace AdoNet.Tests.Console
         static void Main(string[] args)
         {
             var adoClient = new ADotNetClient();
+
+            var githubPipeline = new GithubPipeline
+            {
+                Name = "Github",
+
+                OnEvents = new Events
+                {
+                    Push = new PushEvent
+                    {
+                        Branches = new string[] { "master" }
+                    },
+
+                    PullRequest = new PullRequestEvent
+                    {
+                        Branches = new string[] { "master" }
+                    }
+                }
+            };
 
             var aspNetPipeline = new AspNetPipeline
             {
@@ -109,7 +128,7 @@ namespace AdoNet.Tests.Console
                 }
             };
 
-            adoClient.SerializeAndWriteToFile(aspNetPipeline, "../../azure-pipelines.yaml");
+            adoClient.SerializeAndWriteToFile(githubPipeline, "gitHubPipelines.yaml");
         }
     }
 }
