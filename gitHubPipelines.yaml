@@ -1,0 +1,11 @@
+name: Github
+on:
+  push:
+    branches:
+    - master
+  pullRequest:
+    branches:
+    - master
+jobs:
+  build:
+    runsOn: windows-2019

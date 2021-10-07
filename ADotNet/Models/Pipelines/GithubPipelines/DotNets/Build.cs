@@ -8,13 +8,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    public class GithubPipeline
+    public class Build
     {
-        public string Name { get; set; }
-
-        [YamlMember(Alias = "on")]
-        public Events OnEvents { get; set; }
-
-        public Jobs Jobs { get; set; }
+        [YamlMember(Alias = "runs-on")]
+        public string RunsOn { get; set; }
     }
 }

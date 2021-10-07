@@ -35,6 +35,14 @@ namespace AdoNet.Tests.Console
                     {
                         Branches = new string[] { "master" }
                     }
+                },
+
+                Jobs = new Jobs
+                {
+                    Build = new Build
+                    {
+                        RunsOn = BuildMachines.Windows2019
+                    }
                 }
             };
 
