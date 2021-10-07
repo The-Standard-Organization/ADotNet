@@ -6,6 +6,7 @@
 
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.Serialization.TypeInspectors;
 
 namespace ADotNet.Brokers.Serializers
 {
@@ -17,7 +18,9 @@ namespace ADotNet.Brokers.Serializers
         {
             this.serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                    .Build();
+                    .WithTypeInspector(inner => inner, s => s.InsteadOf<YamlAttributesTypeInspector>())
+                        .WithTypeInspector(inner => new YamlAttributesTypeInspector(inner), s => s.Before<NamingConventionTypeInspector>())
+                            .Build();
         }
 
         public string SerializeToYaml(object @object) =>

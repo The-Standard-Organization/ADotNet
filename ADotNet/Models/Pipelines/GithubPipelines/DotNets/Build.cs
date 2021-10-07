@@ -4,14 +4,13 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    public class PullRequestEvent
+    public class Build
     {
-        [YamlMember(ScalarStyle = ScalarStyle.Folded)]
-        public string[] Branches { get; set; }
+        [YamlMember(Alias = "runs-on")]
+        public string RunsOn { get; set; }
     }
 }
