@@ -4,6 +4,8 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System.Collections.Generic;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
@@ -12,5 +14,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
     {
         [YamlMember(Alias = "runs-on")]
         public string RunsOn { get; set; }
+
+        public List<GithubTask> Steps { get; set; }
     }
 }
