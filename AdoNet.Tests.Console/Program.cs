@@ -129,7 +129,7 @@ namespace AdoNet.Tests.Console
 
                 Jobs = new Jobs
                 {
-                    Build = new Build
+                    Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
 

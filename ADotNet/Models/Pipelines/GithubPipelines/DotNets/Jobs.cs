@@ -8,6 +8,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class Jobs
     {
-        public Build Build { get; set; }
+        public BuildJob Build { get; set; }
     }
 }

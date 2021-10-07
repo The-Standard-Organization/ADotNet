@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    public class Build
+    public class BuildJob
     {
         [YamlMember(Alias = "runs-on")]
         public string RunsOn { get; set; }
