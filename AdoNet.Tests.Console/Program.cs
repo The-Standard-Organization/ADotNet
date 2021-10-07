@@ -11,6 +11,8 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 
 namespace AdoNet.Tests.Console
 {
@@ -19,32 +21,6 @@ namespace AdoNet.Tests.Console
         static void Main(string[] args)
         {
             var adoClient = new ADotNetClient();
-
-            var githubPipeline = new GithubPipeline
-            {
-                Name = "Github",
-
-                OnEvents = new Events
-                {
-                    Push = new PushEvent
-                    {
-                        Branches = new string[] { "master" }
-                    },
-
-                    PullRequest = new PullRequestEvent
-                    {
-                        Branches = new string[] { "master" }
-                    }
-                },
-
-                Jobs = new Jobs
-                {
-                    Build = new Build
-                    {
-                        RunsOn = BuildMachines.Windows2019
-                    }
-                }
-            };
 
             var aspNetPipeline = new AspNetPipeline
             {
@@ -136,7 +112,49 @@ namespace AdoNet.Tests.Console
                 }
             };
 
-            adoClient.SerializeAndWriteToFile(githubPipeline, "gitHubPipelines.yaml");
+            var githubPipeline = new GithubPipeline
+            {
+                Name = "Github",
+                OnEvents = new Events
+                {
+                    Push = new PushEvent
+                    {
+                        Branches = new string[] { "master" }
+                    },
+                    PullRequest = new PullRequestEvent
+                    {
+                        Branches = new string[] { "master" }
+                    }
+                },
+
+                Jobs = new Jobs
+                {
+                    Build = new Build
+                    {
+                        RunsOn = BuildMachines.Windows2019,
+
+                        Steps = new List<GithubTask>
+                        {
+                            new CheckoutTask
+                            {
+                                Name = "Check Out"
+                            },
+
+                            new SetupDotNetTaskV1
+                            {
+                                Name = "Setup Dot Net Version",
+                                TargetDotNetVersion = new TargetDotNetVersion
+                                {
+                                    DotNetVersion = "6.0.100-rc.1.21463.6",
+                                    IncludePrerelease = true
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
         }
     }
 }
