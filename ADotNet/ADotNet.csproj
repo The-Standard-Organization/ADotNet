@@ -4,16 +4,16 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Copyright>Copyright (c) Hassan Habib</Copyright>
 		<Description>ADotNet is a dot net library to help engineers develop their build and release pipelines in C# without having to use YAML or any other technology.</Description>
-		<Authors>Hassan Habib</Authors>
+		<Authors>Hassan Habib &amp; Shri Humrudha</Authors>
 		<PackageIcon>ADotNet.png</PackageIcon>
 		<RepositoryUrl>https://github.com/hassanhabib/ADotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps</PackageTags>
 		<PackageReleaseNotes>This is the initial release of ADotNet - It includes ASP.NET Core Build Pipeline</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>1.0.0.0</AssemblyVersion>
-		<FileVersion>1.0.0.0</FileVersion>
-		<Version>1.2.0</Version>
+		<AssemblyVersion>2.0.0.0</AssemblyVersion>
+		<FileVersion>2.0.0.0</FileVersion>
+		<Version>2.0.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
