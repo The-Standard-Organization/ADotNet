@@ -135,7 +135,7 @@ namespace AdoNet.Tests.Console
 
                         Steps = new List<GithubTask>
                         {
-                            new CheckoutTask
+                            new CheckoutTaskV2
                             {
                                 Name = "Check Out"
                             },
@@ -148,6 +148,21 @@ namespace AdoNet.Tests.Console
                                     DotNetVersion = "6.0.100-rc.1.21463.6",
                                     IncludePrerelease = true
                                 }
+                            },
+
+                            new RestoreTask
+                            {
+                                Name = "Restore"
+                            },
+
+                            new DotNetBuildTask
+                            {
+                                Name = "Build"
+                            },
+
+                            new TestTask
+                            {
+                                Name = "Test"
                             }
                         }
                     }
