@@ -3,6 +3,7 @@
   <img width="25%" height="25%" src="https://github.com/hassanhabib/ADotNet/blob/master/ADotNet/ADotNet.png">
 </p>
 
+[![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet)
 
 # ADotNet (ADO Dot Net)
