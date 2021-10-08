@@ -3,6 +3,8 @@
   <img width="25%" height="25%" src="https://github.com/hassanhabib/ADotNet/blob/master/ADotNet/ADotNet.png">
 </p>
 
+![Nuget](https://img.shields.io/nuget/v/ADotNet)
+
 # ADotNet (ADO Dot Net)
 ADotNet is a.NET library that enables software engineers on the .NET platform to develop AzureDevOps pipelines in C#.
 
