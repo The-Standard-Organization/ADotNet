@@ -7,6 +7,7 @@
 
 [![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet)
+[![The Standard - COMPLIANT](https://img.shields.io/badge/The_Standard-COMPLIANT-2ea44f)](https://github.com/hassanhabib/The-Standard)
 
 # ADotNet (ADO Dot Net)
 ADotNet is a.NET library that enables software engineers on the .NET platform to develop AzureDevOps pipelines in C#.
