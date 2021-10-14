@@ -82,7 +82,7 @@ The library also leverages native .NET `System.IO.File` functionality to write f
 The library's architecture follows [The Standard](https://github.com/hassanhabib/The-Standard). Breaking it's capabilities into brokers, services and clients. Here's a low-level architecture view of how it works:
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/1453985/124557013-d8d8b300-dded-11eb-8fa0-4805a7e5259b.png">
+  <img src="https://user-images.githubusercontent.com/89320816/137257287-b4b864a0-312e-4f86-b9c0-e436aeddaef6.png">
 </p>
 
 The abstraction of the dependencies should allow a future expansion and pluggability for any other C# to YAML components easily.
