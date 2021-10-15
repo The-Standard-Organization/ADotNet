@@ -20,7 +20,7 @@ namespace ADotNet.Infrastructure.Build
 
             var githubPipeline = new GithubPipeline
             {
-                Name = "Github",
+                Name = ".Net",
 
                 OnEvents = new Events
                 {
@@ -54,7 +54,7 @@ namespace ADotNet.Infrastructure.Build
 
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "6.0.100-rc.1.21463.6",
+                                    DotNetVersion = "6.0.100-rc.2.21505.57",
                                     IncludePrerelease = true
                                 }
                             },
