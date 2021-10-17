@@ -8,7 +8,7 @@ using ADotNet.Models.Pipelines.Exceptions;
 
 namespace ADotNet.Services
 {
-    public partial class AdoService
+    public partial class BuildService
     {
         public static void ValidateInputs(string path, object pipeline)
         {

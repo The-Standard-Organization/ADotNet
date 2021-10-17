@@ -6,7 +6,7 @@
 
 namespace ADotNet.Services
 {
-    public interface IAdoService
+    public interface IBuildService
     {
         void SerializeAndWriteToFile(string path, object adoPipeline);
     }
