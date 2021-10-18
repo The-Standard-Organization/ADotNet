@@ -9,7 +9,9 @@ using System.IO;
 using System.Security;
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
+using ADotNet.Models.Pipelines;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Services;
 using Moq;
 using Tynamix.ObjectFiller;
@@ -33,8 +35,8 @@ namespace AdoNet.Tests.Unit.Services
                 filesBroker: this.filesBrokerMock.Object);
         }
 
-        private static AspNetPipeline CreateRandomAspNetPipeline() =>
-            CreateAspNetPipelineFiller().Create();
+        private static T CreateRandomPipeline<T>() where T : class =>
+            CreatePipelineFiller<T>().Create();
 
         private static string GetRandomFilePath() =>
             new MnemonicString().GetValue();
@@ -64,7 +66,16 @@ namespace AdoNet.Tests.Unit.Services
             };
         }
 
-        private static Filler<AspNetPipeline> CreateAspNetPipelineFiller() =>
-            new Filler<AspNetPipeline>();
+        public static TheoryData Pipelines()
+        {
+            return new TheoryData<IPipeline>
+            {
+                CreateRandomPipeline<AspNetPipeline>(),
+                CreateRandomPipeline<GithubPipeline>()
+            };
+        }
+
+        private static Filler<T> CreatePipelineFiller<T>() where T : class =>
+            new();
     }
 }

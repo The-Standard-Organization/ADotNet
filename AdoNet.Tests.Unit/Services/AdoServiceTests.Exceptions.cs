@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.Exceptions;
 using FluentAssertions;
 using Moq;
@@ -21,7 +20,7 @@ namespace AdoNet.Tests.Unit.Services
             Exception dependencyValidationException)
         {
             // given
-            AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
+            var somePipeline = Mock.Of<object>();
             string somePath = GetRandomFilePath();
 
             this.yamlBrokerMock.Setup(broker =>
@@ -60,7 +59,7 @@ namespace AdoNet.Tests.Unit.Services
             Exception dependencyException)
         {
             // given
-            AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
+            var somePipeline = Mock.Of<object>();
             string somePath = GetRandomFilePath();
 
             this.yamlBrokerMock.Setup(broker =>
@@ -97,7 +96,7 @@ namespace AdoNet.Tests.Unit.Services
         public void ShouldThrowServiceExceptionOnSerializeIfSystemErrorOccurs()
         {
             // given
-            AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
+            var somePipeline = Mock.Of<object>();
             string somePath = GetRandomFilePath();
             string innerExceptionMessage = GetRandomString();
             var serviceException = new Exception(innerExceptionMessage);

@@ -9,7 +9,7 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
 {
-    public class AspNetPipeline
+    public class AspNetPipeline : IPipeline
     {
         [YamlMember(Alias = "trigger")]
         public List<string> TriggeringBranches { get; set; }

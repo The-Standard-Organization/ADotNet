@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
+using ADotNet.Models.Pipelines;
 using Moq;
 using Xunit;
 
@@ -12,32 +12,29 @@ namespace AdoNet.Tests.Unit.Services
 {
     public partial class AdoServiceTests
     {
-        [Fact]
-        public void ShouldSerializeAndWriteAdoPipelineModel()
+        [Theory]
+        [MemberData(nameof(Pipelines))]
+        public void ShouldSerializeAndWritePipelineModel(IPipeline pipeline)
         {
             // given
-            AspNetPipeline randomAspNetPipeline =
-                CreateRandomAspNetPipeline();
-
-            AspNetPipeline inputAspNetPipeline =
-                randomAspNetPipeline;
+            var inputPipeline = pipeline;
 
             string randomPath = GetRandomFilePath();
             string inputPath = randomPath;
             string serialziedPipeline = GetRandomString();
 
             this.yamlBrokerMock.Setup(broker =>
-                broker.SerializeToYaml(inputAspNetPipeline))
+                broker.SerializeToYaml(inputPipeline))
                     .Returns(serialziedPipeline);
 
             // when
             this.adoService.SerializeAndWriteToFile(
                 inputPath,
-                inputAspNetPipeline);
+                inputPipeline);
 
             // then
             this.yamlBrokerMock.Verify(broker =>
-                broker.SerializeToYaml(inputAspNetPipeline),
+                broker.SerializeToYaml(inputPipeline),
                     Times.Once);
 
             this.filesBrokerMock.Verify(broker =>

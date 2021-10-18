@@ -4,17 +4,9 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
-namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
+namespace ADotNet.Models.Pipelines
 {
-    public class GithubPipeline : IPipeline
+    public interface IPipeline
     {
-        public string Name { get; set; }
-
-        [YamlMember(Alias = "on")]
-        public Events OnEvents { get; set; }
-
-        public Jobs Jobs { get; set; }
     }
 }
