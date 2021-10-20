@@ -8,10 +8,10 @@ using System;
 
 namespace ADotNet.Models.Pipelines.Exceptions
 {
-    public class AdoServiceException : Exception
+    public class BuildServiceException : Exception
     {
-        public AdoServiceException(Exception innerException)
-            : base("Ado service exception occured, contact support.", innerException)
+        public BuildServiceException(Exception innerException)
+            : base("Build service exception occured, contact support.", innerException)
         {
 
         }

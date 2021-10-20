@@ -12,19 +12,19 @@ namespace ADotNet.Clients
 {
     public class ADotNetClient
     {
-        private readonly IAdoService adoService;
+        private readonly IBuildService buildService;
 
         public ADotNetClient()
         {
             var yamlBroker = new YamlBroker();
             var filesBroker = new FilesBroker();
 
-            this.adoService = new AdoService(
+            this.buildService = new BuildService(
                 yamlBroker,
                 filesBroker);
         }
 
         public void SerializeAndWriteToFile(object adoPipeline, string path) =>
-            this.adoService.SerializeAndWriteToFile(path, adoPipeline);
+            this.buildService.SerializeAndWriteToFile(path, adoPipeline);
     }
 }

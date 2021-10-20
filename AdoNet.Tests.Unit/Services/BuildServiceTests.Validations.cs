@@ -13,7 +13,7 @@ using Xunit;
 
 namespace AdoNet.Tests.Unit.Services
 {
-    public partial class AdoServiceTests
+    public partial class BuildServiceTests
     {
         [Fact]
         public void ShouldThrowValidationExceptionOnSerializeIfPipelineIsNull()
@@ -27,7 +27,7 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             Action serializeAndWriteToFileAction = () =>
-                this.adoService.SerializeAndWriteToFile(somePath, invalidPipeline);
+                this.buildService.SerializeAndWriteToFile(somePath, invalidPipeline);
 
             // then
             AdoValidationException actualAdoValidationException =
@@ -63,7 +63,7 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             Action serializeAndWriteToFileAction = () =>
-                this.adoService.SerializeAndWriteToFile(
+                this.buildService.SerializeAndWriteToFile(
                     invalidPath,
                     someAspNetPipeline);
 

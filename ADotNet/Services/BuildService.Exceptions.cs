@@ -11,7 +11,7 @@ using ADotNet.Models.Pipelines.Exceptions;
 
 namespace ADotNet.Services
 {
-    public partial class AdoService
+    public partial class BuildService
     {
         private delegate void ReturningNothingFunction();
 
@@ -64,7 +64,7 @@ namespace ADotNet.Services
             }
             catch (Exception exception)
             {
-                throw new AdoServiceException(exception);
+                throw new BuildServiceException(exception);
             }
         }
     }

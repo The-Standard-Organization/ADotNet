@@ -17,18 +17,18 @@ using Xunit;
 
 namespace AdoNet.Tests.Unit.Services
 {
-    public partial class AdoServiceTests
+    public partial class BuildServiceTests
     {
         private readonly Mock<IYamlBroker> yamlBrokerMock;
         private readonly Mock<IFilesBroker> filesBrokerMock;
-        private readonly IAdoService adoService;
+        private readonly IBuildService buildService;
 
-        public AdoServiceTests()
+        public BuildServiceTests()
         {
             this.yamlBrokerMock = new Mock<IYamlBroker>();
             this.filesBrokerMock = new Mock<IFilesBroker>();
 
-            this.adoService = new AdoService(
+            this.buildService = new BuildService(
                 yamlBroker: this.yamlBrokerMock.Object,
                 filesBroker: this.filesBrokerMock.Object);
         }

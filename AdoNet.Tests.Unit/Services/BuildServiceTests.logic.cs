@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AdoNet.Tests.Unit.Services
 {
-    public partial class AdoServiceTests
+    public partial class BuildServiceTests
     {
         [Fact]
         public void ShouldSerializeAndWriteAdoPipelineModel()
@@ -31,7 +31,7 @@ namespace AdoNet.Tests.Unit.Services
                     .Returns(serialziedPipeline);
 
             // when
-            this.adoService.SerializeAndWriteToFile(
+            this.buildService.SerializeAndWriteToFile(
                 inputPath,
                 inputAspNetPipeline);
 

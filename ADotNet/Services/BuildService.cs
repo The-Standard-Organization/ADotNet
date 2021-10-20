@@ -9,12 +9,12 @@ using ADotNet.Brokers.Serializers;
 
 namespace ADotNet.Services
 {
-    public partial class AdoService : IAdoService
+    public partial class BuildService : IBuildService
     {
         private readonly IYamlBroker yamlBroker;
         private readonly IFilesBroker filesBroker;
 
-        public AdoService(
+        public BuildService(
             IYamlBroker yamlBroker,
             IFilesBroker filesBroker)
         {
