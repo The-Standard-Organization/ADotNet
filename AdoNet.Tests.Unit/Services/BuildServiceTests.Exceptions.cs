@@ -12,7 +12,7 @@ using Xunit;
 
 namespace AdoNet.Tests.Unit.Services
 {
-    public partial class AdoServiceTests
+    public partial class BuildServiceTests
     {
         [Theory]
         [MemberData(nameof(FileValidationExceptions))]
@@ -29,7 +29,7 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             Action serializeAndWriteToFileAction = () =>
-                this.adoService.SerializeAndWriteToFile(
+                this.buildService.SerializeAndWriteToFile(
                     somePath,
                     somePipeline);
 
@@ -68,7 +68,7 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             Action serializeAndWriteToFileAction = () =>
-                this.adoService.SerializeAndWriteToFile(
+                this.buildService.SerializeAndWriteToFile(
                     somePath,
                     somePipeline);
 
@@ -107,16 +107,16 @@ namespace AdoNet.Tests.Unit.Services
 
             // when
             Action serializeAndWriteToFileAction = () =>
-                this.adoService.SerializeAndWriteToFile(
+                this.buildService.SerializeAndWriteToFile(
                     somePath,
                     somePipeline);
 
             // then
-            AdoServiceException actualAdoServiceException =
-                Assert.Throws<AdoServiceException>(
+            BuildServiceException actualBuildServiceException =
+                Assert.Throws<BuildServiceException>(
                     serializeAndWriteToFileAction);
 
-            actualAdoServiceException.InnerException.Message.Should()
+            actualBuildServiceException.InnerException.Message.Should()
                 .BeEquivalentTo(serviceException.Message);
 
             this.yamlBrokerMock.Verify(broker =>
