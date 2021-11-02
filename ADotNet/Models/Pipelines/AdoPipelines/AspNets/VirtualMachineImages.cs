@@ -10,6 +10,6 @@ namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
     {
         public const string UbuntuLatest = "ubuntu-latest";
         public const string Windows2019 = "windows-2019";
-        public const string Windows2020 = "windows-2020";
+        public const string Windows2022 = "windows-2022";
     }
 }
