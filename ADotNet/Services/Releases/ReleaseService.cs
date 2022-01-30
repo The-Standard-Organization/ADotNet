@@ -23,7 +23,14 @@ namespace ADotNet.Services.Releases
             this.filesBroker = filesBroker;
         }
 
-        public void SerializeWriteToFile(string path, object releasePipeline) =>
-            throw new NotImplementedException();
+        public void SerializeWriteToFile(string path, object releasePipeline)
+        {
+            string serializedPipeline = 
+                this.yamlBroker.SerializeToYaml(releasePipeline);
+
+            this.filesBroker.WriteToFile(
+                path, 
+                data: serializedPipeline);
+        }
     }
 }
