@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using ADotNet.Models.Pipelines.Releases.GithubPipelines;
 using ADotNet.Models.Pipelines.Releases.GithubPipelines.Exceptions;
 using Moq;
 using Xunit;
@@ -18,7 +19,9 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Releases
         {
             // given
             string invalidPath = null;
-            string someReleasePipeline = CreateRandomString();
+            
+            GithubReleasePipeline someReleasePipeline =
+                CreateRandomReleasePipeline();
 
             var nullReleasePathException =
                 new NullReleasePathException();
@@ -30,6 +33,41 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Releases
             // when
             Action serializeWriteAction = () =>
                 this.releaseService.SerializeWriteToFile(invalidPath, someReleasePipeline);
+
+            // then
+            Assert.Throws<ReleaseValidationException>(serializeWriteAction);
+
+            this.yamlBrokerMock.Verify(broker =>
+                broker.SerializeToYaml(It.IsAny<Object>()),
+                    Times.Never);
+
+            this.filesBrokerMock.Verify(broker =>
+                broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),
+                    Times.Never);
+
+            this.yamlBrokerMock.VerifyNoOtherCalls();
+            this.filesBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowValidationExceptionOnSerializeWriteIfPipelineIsNull()
+        {
+            // given
+            GithubReleasePipeline invalidGithubReleasePipeline = null;
+            string somePath = CreateRandomString();
+
+            var nullReleasePipelineException =
+                new NullReleasePipelineException();
+
+            var expectedReleaseValidationException =
+                new ReleaseValidationException(
+                    nullReleasePipelineException);
+
+            // when
+            Action serializeWriteAction = () =>
+                this.releaseService.SerializeWriteToFile(
+                    somePath,
+                    invalidGithubReleasePipeline);
 
             // then
             Assert.Throws<ReleaseValidationException>(serializeWriteAction);
