@@ -4,17 +4,22 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using ADotNet.Models.Pipelines.Releases.GithubPipelines;
 using ADotNet.Models.Pipelines.Releases.GithubPipelines.Exceptions;
 
 namespace ADotNet.Services.Releases
 {
     public partial class ReleaseService
     {
-        private static void ValidateInputs(string path)
+        private static void ValidateInputs(string path, object pipeline)
         {
-            if (path is null)
+            switch(path, pipeline)
             {
-                throw new NullReleasePathException();
+                case (null, _):
+                    throw new NullReleasePathException();
+
+                case (_, null):
+                    throw new NullReleasePipelineException();
             }
         }
     }

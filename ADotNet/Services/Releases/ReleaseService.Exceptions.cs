@@ -22,6 +22,10 @@ namespace ADotNet.Services.Releases
             {
                 throw new ReleaseValidationException(nullReleasePathException);
             }
+            catch (NullReleasePipelineException nullReleasePipelineException)
+            {
+                throw new ReleaseValidationException(nullReleasePipelineException);
+            }
         }
     }
 }

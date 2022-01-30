@@ -26,7 +26,7 @@ namespace ADotNet.Services.Releases
         public void SerializeWriteToFile(string path, object releasePipeline) =>
         TryCatch(() =>
         {
-            ValidateInputs(path);
+            ValidateInputs(path, releasePipeline);
 
             string serializedPipeline =
                 this.yamlBroker.SerializeToYaml(releasePipeline);
