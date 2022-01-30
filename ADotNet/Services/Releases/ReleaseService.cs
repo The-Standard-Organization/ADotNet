@@ -10,7 +10,7 @@ using ADotNet.Brokers.Serializers;
 
 namespace ADotNet.Services.Releases
 {
-    public class ReleaseService : IReleaseService
+    public partial class ReleaseService : IReleaseService
     {
         private readonly IYamlBroker yamlBroker;
         private readonly IFilesBroker filesBroker;
@@ -23,14 +23,17 @@ namespace ADotNet.Services.Releases
             this.filesBroker = filesBroker;
         }
 
-        public void SerializeWriteToFile(string path, object releasePipeline)
+        public void SerializeWriteToFile(string path, object releasePipeline) =>
+        TryCatch(() =>
         {
-            string serializedPipeline = 
+            ValidateInputs(path);
+
+            string serializedPipeline =
                 this.yamlBroker.SerializeToYaml(releasePipeline);
 
             this.filesBroker.WriteToFile(
-                path, 
+                path,
                 data: serializedPipeline);
-        }
+        });
     }
 }
