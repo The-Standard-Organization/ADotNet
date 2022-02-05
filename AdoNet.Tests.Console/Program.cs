@@ -115,6 +115,7 @@ namespace AdoNet.Tests.Console
             var githubPipeline = new GithubPipeline
             {
                 Name = "Github",
+
                 OnEvents = new Events
                 {
                     Push = new PushEvent
@@ -132,6 +133,7 @@ namespace AdoNet.Tests.Console
                     Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
+                        TimeoutInMinutes = 10,
 
                         Steps = new List<GithubTask>
                         {
@@ -143,9 +145,10 @@ namespace AdoNet.Tests.Console
                             new SetupDotNetTaskV1
                             {
                                 Name = "Setup Dot Net Version",
+
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "6.0.100-rc.1.21463.6",
+                                    DotNetVersion = "6.0.101",
                                     IncludePrerelease = true
                                 }
                             },
