@@ -26,11 +26,7 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Push = new PushEvent
                     {
-                        Branches = new string[]
-                        {
-                            "master",
-                            "users/maythamfahmi/*"
-                        }
+                        Branches = new string[] { "master" }
                     },
 
                     PullRequest = new PullRequestEvent
