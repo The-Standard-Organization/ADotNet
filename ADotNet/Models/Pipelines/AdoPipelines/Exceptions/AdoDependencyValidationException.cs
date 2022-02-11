@@ -11,7 +11,7 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class AdoDependencyValidationException : Exception
     {
         public AdoDependencyValidationException(Exception innerException)
-            : base("Ado dependency validation error occured, try again.", innerException)
+            : base("Ado dependency validation error occurred, try again.", innerException)
         {
 
         }
