@@ -29,7 +29,7 @@ namespace ADotNet.Infrastructure.Build
                         Branches = new string[]
                         {
                             "master",
-                            "users/*"
+                            "users/maythamfahmi/*"
                         }
                     },
 
