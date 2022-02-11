@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
@@ -8,10 +7,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
     {
         private object _os;
 
-        [YamlMember(Alias = "os", ScalarStyle = ScalarStyle.SingleQuoted)]
+        [YamlMember(Alias = "os")]
         public object Os
         {
-            get => $"[{string.Join(", ", (IEnumerable<string>)_os)}]";
+            get => $"BRACKET[{string.Join(", ", (IEnumerable<string>)_os)}]BRACKET";
             set => _os = (IEnumerable<string>)value;
         }
     }

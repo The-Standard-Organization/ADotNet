@@ -28,7 +28,8 @@ namespace ADotNet.Services
             ValidateInputs(path, adoPipeline);
 
             string serializedPipeline =
-                this.yamlBroker.SerializeToYaml(adoPipeline);
+                this.yamlBroker.SerializeToYaml(adoPipeline)
+                    .Replace("BRACKET", "");
 
             this.filesBroker.WriteToFile(path, serializedPipeline);
         });
