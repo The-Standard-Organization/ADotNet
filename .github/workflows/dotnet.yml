@@ -9,15 +9,8 @@ on:
     - master
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-2019
     timeout-minutes: 0
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-        - ubuntu-latest
-        - windows-2022
-        - macos-latest
     steps:
     - name: Check out
       uses: actions/checkout@v2

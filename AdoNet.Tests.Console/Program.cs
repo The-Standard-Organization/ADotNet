@@ -139,7 +139,7 @@ namespace AdoNet.Tests.Console
                             FailFast = false,
                             Matrix = new Matrix()
                             {
-                                Os = new string[]
+                                Os = new List<string>()
                                 {
                                     BuildMachines.UbuntuLatest,
                                     BuildMachines.Windows2022,
