@@ -26,7 +26,11 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Push = new PushEvent
                     {
-                        Branches = new string[] { "master" }
+                        Branches = new string[]
+                        {
+                            "master",
+                            "feature/*"
+                        }
                     },
 
                     PullRequest = new PullRequestEvent
@@ -40,7 +44,19 @@ namespace ADotNet.Infrastructure.Build
                     Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
-
+                        Strategy = new Strategy()
+                        {
+                            FailFast = false,
+                            Matrix = new Matrix()
+                            {
+                                Os = new string[]
+                                {
+                                    BuildMachines.UbuntuLatest,
+                                    BuildMachines.Windows2022,
+                                    BuildMachines.MacOsLatest
+                                }
+                            }
+                        },
                         Steps = new List<GithubTask>
                         {
                             new CheckoutTaskV2

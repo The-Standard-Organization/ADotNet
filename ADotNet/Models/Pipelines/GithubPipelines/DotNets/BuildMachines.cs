@@ -11,5 +11,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public const string UbuntuLatest = "ubuntu-latest";
         public const string Windows2019 = "windows-2019";
         public const string Windows2022 = "windows-2022";
+        public const string MacOsLatest = "macos-latest";
+        public const string Matrix = "${{ matrix.os }}";
     }
 }

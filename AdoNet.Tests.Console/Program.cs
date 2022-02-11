@@ -26,7 +26,8 @@ namespace AdoNet.Tests.Console
             {
                 TriggeringBranches = new List<string>
                 {
-                    "master"
+                    "master",
+                    "feature/*"
                 },
 
                 VirtualMachinesPool = new VirtualMachinesPool
@@ -133,6 +134,19 @@ namespace AdoNet.Tests.Console
                     Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
+                        Strategy = new Strategy()
+                        {
+                            FailFast = false,
+                            Matrix = new Matrix()
+                            {
+                                Os = new string[]
+                                {
+                                    BuildMachines.UbuntuLatest,
+                                    BuildMachines.Windows2022,
+                                    BuildMachines.MacOsLatest
+                                }
+                            }
+                        },
                         TimeoutInMinutes = 10,
 
                         Steps = new List<GithubTask>
