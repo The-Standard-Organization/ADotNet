@@ -13,6 +13,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public string[] Branches { get; set; }
 
         [YamlMember(Alias = "paths-ignore")]
-        public string[] PathIgnore { get; set; }
+        public string[] PathsIgnore { get; set; }
     }
 }
