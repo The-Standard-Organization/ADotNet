@@ -133,7 +133,7 @@ namespace AdoNet.Tests.Console
                 {
                     Build = new BuildJob
                     {
-                        RunsOn = BuildMachines.Windows2019,
+                        RunsOn = BuildMachines.Matrix,
                         Strategy = new Strategy()
                         {
                             FailFast = false,
