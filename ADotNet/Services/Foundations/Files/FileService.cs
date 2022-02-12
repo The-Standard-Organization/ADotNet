@@ -15,9 +15,7 @@ namespace ADotNet.Services.Foundations.Files
         public FileService(IFilesBroker filesBroker) =>
             this.filesBroker = filesBroker;
 
-        public void WriteToFile(string path, string content)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void WriteToFile(string path, string content) =>
+            this.filesBroker.WriteToFile(path, content);
     }
 }

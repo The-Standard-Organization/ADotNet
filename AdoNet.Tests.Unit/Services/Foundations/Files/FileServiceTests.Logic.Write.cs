@@ -22,7 +22,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             // when
             this.fileService.WriteToFile(
-                inputFileContent,
+                inputFilePath,
                 inputFileContent);
 
             // then
