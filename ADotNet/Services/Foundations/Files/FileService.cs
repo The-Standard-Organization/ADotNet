@@ -8,7 +8,7 @@ using ADotNet.Brokers.IOs;
 
 namespace ADotNet.Services.Foundations.Files
 {
-    public class FileService : IFileService
+    public partial class FileService : IFileService
     {
         private readonly IFilesBroker filesBroker;
 
@@ -16,6 +16,11 @@ namespace ADotNet.Services.Foundations.Files
             this.filesBroker = filesBroker;
 
         public void WriteToFile(string path, string content) =>
+        TryCatch(() =>
+        {
+            ValidateFilePath(path);
+
             this.filesBroker.WriteToFile(path, content);
+        });
     }
 }
