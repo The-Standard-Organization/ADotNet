@@ -6,12 +6,13 @@
 
 using Xeptions;
 
-namespace ADotNet.Models.Services.Foundations.Files.Exceptions
+namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class InvalidFilePathException : Xeption
+    public class FileValidationException : Xeption
     {
-        public InvalidFilePathException()
-            : base(message: "Invalid file path, fix the errors and try again.")
+        public FileValidationException(Xeption innerException)
+            : base(message: "File validation error occurred, fix the errors and try again.",
+                  innerException)
         { }
     }
 }

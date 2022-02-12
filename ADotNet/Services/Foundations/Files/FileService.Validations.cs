@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using ADotNet.Models.Services.Foundations.Files.Exceptions;
+using ADotNet.Models.Foundations.Files.Exceptions;
 
 namespace ADotNet.Services.Foundations.Files
 {

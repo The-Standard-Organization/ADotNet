@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using ADotNet.Models.Services.Foundations.Files.Exceptions;
+using ADotNet.Models.Foundations.Files.Exceptions;
 
 namespace ADotNet.Services.Foundations.Files
 {
