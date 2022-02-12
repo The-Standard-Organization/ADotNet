@@ -22,6 +22,10 @@ namespace ADotNet.Services.Foundations.Files
             {
                 throw new FileValidationException(invalidFilePathException);
             }
+            catch(InvalidFileContentException invalidFileContentException)
+            {
+                throw new FileValidationException(invalidFileContentException);
+            }
         }
     }
 }

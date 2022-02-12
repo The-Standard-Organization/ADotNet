@@ -11,11 +11,15 @@ namespace ADotNet.Services.Foundations.Files
 {
     public partial class FileService
     {
-        private static void ValidateFilePath(string path)
+        private static void ValidateInputs(string path, string content)
         {
-            if (IsInvalid(path))
+            switch(path, content)
             {
-                throw new InvalidFilePathException();
+                case { } when IsInvalid(path):
+                    throw new InvalidFilePathException();
+
+                case { } when IsInvalid(content):
+                    throw new InvalidFileContentException();
             }
         }
 

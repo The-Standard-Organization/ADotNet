@@ -18,7 +18,7 @@ namespace ADotNet.Services.Foundations.Files
         public void WriteToFile(string path, string content) =>
         TryCatch(() =>
         {
-            ValidateFilePath(path);
+            ValidateInputs(path, content);
 
             this.filesBroker.WriteToFile(path, content);
         });
