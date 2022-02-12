@@ -121,7 +121,7 @@ namespace AdoNet.Tests.Console
                     Push = new PushEvent
                     {
                         Branches = new string[] { "master" },
-                        PathsIgnore = new string[] { "**/readme.md" }
+                        PathsIgnore = new string[] { "*.md" }
                     },
                     PullRequest = new PullRequestEvent
                     {
