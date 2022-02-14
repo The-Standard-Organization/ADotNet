@@ -1,0 +1,3 @@
+[*.cs]
+
+file_header_template = ---------------------------------------------------------------------------\nCopyright (c) Hassan Habib & Shri Humrudha Jagathisun All rights reserved.\nLicensed under the MIT License.\nSee License.txt in the project root for license information.\n---------------------------------------------------------------------------
