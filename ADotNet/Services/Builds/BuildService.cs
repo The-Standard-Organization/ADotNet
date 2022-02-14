@@ -7,7 +7,7 @@
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
 
-namespace ADotNet.Services
+namespace ADotNet.Services.Builds
 {
     public partial class BuildService : IBuildService
     {

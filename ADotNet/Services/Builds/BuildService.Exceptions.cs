@@ -9,7 +9,7 @@ using System.IO;
 using System.Security;
 using ADotNet.Models.Pipelines.Exceptions;
 
-namespace ADotNet.Services
+namespace ADotNet.Services.Builds
 {
     public partial class BuildService
     {
