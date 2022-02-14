@@ -8,7 +8,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using Moq;
 using Xunit;
 
-namespace AdoNet.Tests.Unit.Services
+namespace ADotNet.Tests.Unit.Services
 {
     public partial class BuildServiceTests
     {
