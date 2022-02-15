@@ -4,10 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks
+namespace ADotNet.Services.Builds
 {
-    public enum PackageType
+    public interface IBuildService
     {
-        sdk
+        void SerializeAndWriteToFile(string path, object adoPipeline);
     }
 }

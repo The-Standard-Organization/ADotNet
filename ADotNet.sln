@@ -5,11 +5,16 @@ VisualStudioVersion = 17.0.31423.177
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADotNet", "ADotNet\ADotNet.csproj", "{9B591D45-CC57-489D-8C57-715A5756984E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoNet.Tests.Unit", "AdoNet.Tests.Unit\AdoNet.Tests.Unit.csproj", "{BCB9A79D-B803-440A-9DBA-A9DDD96F618F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADotNet.Tests.Unit", "AdoNet.Tests.Unit\ADotNet.Tests.Unit.csproj", "{BCB9A79D-B803-440A-9DBA-A9DDD96F618F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoNet.Tests.Console", "AdoNet.Tests.Console\AdoNet.Tests.Console.csproj", "{C416965F-AF57-44A7-A6FA-CA8E9A326979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADotNet.Tests.Console", "AdoNet.Tests.Console\ADotNet.Tests.Console.csproj", "{C416965F-AF57-44A7-A6FA-CA8E9A326979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADotNet.Infrastructure.Build", "ADotNet.Infrastructure.Build\ADotNet.Infrastructure.Build.csproj", "{DBB401B4-A819-45FE-98A5-8CAE6F7B58DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADotNet.Infrastructure.Build", "ADotNet.Infrastructure.Build\ADotNet.Infrastructure.Build.csproj", "{DBB401B4-A819-45FE-98A5-8CAE6F7B58DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16CB1804-3040-41F0-9C1F-99A139B24873}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
