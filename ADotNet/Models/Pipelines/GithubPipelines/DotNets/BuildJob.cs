@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using YamlDotNet.Serialization;
 
@@ -15,7 +16,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Alias = "runs-on")]
         public string RunsOn { get; set; }
 
-        [YamlMember(Alias = "timeout-minutes")]
+        [DefaultValue(0)]
+        [YamlMember(Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public int TimeoutInMinutes { get; set; }
 
         public List<GithubTask> Steps { get; set; }
