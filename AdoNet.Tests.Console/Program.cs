@@ -133,21 +133,7 @@ namespace ADotNet.Tests.Console
                 {
                     Build = new BuildJob
                     {
-                        RunsOn = BuildMachines.Matrix,
-                        Strategy = new Strategy()
-                        {
-                            FailFast = false,
-                            Matrix = new Matrix()
-                            {
-                                Os = new List<string>()
-                                {
-                                    BuildMachines.UbuntuLatest,
-                                    BuildMachines.Windows2022,
-                                    BuildMachines.MacOsLatest
-                                }
-                            }
-                        },
-                        TimeoutInMinutes = 10,
+                        RunsOn = BuildMachines.Windows2019,
 
                         Steps = new List<GithubTask>
                         {
