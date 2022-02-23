@@ -17,7 +17,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public string RunsOn { get; set; }
 
         [DefaultValue(0)]
-        [YamlMember(Alias = "timeout-minutes", DefaultValuesHandling =DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public int TimeoutInMinutes { get; set; }
 
         public List<GithubTask> Steps { get; set; }
