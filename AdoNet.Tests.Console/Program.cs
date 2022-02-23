@@ -133,7 +133,6 @@ namespace ADotNet.Tests.Console
                     Build = new BuildJob
                     {
                         RunsOn = BuildMachines.Windows2019,
-                        TimeoutInMinutes = 10,
 
                         Steps = new List<GithubTask>
                         {
