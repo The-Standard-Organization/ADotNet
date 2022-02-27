@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Runtime.Serialization;
 using ADotNet.Models.Foundations.Files.Exceptions;
 
 namespace ADotNet.Services.Foundations.Files
@@ -40,6 +41,13 @@ namespace ADotNet.Services.Foundations.Files
                     new InvalidFileException(argumentException);
 
                 throw new FileDependencyValidationException(invalidFileException);
+            }
+            catch(SerializationException serializationException)
+            {
+                var failedFileSerializationException =
+                    new FailedFileSerializationException(serializationException);
+
+                throw new FileDependencyException(failedFileSerializationException);
             }
         }
     }

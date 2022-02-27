@@ -51,7 +51,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnWriteIfSerializationExceptionOccurs()
+        public void ShouldThrowDependencyExceptionOnWriteIfSerializationErrorOccurs()
         {
             // given
             string somePath = GetRandomString();
@@ -77,7 +77,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                 this.fileService.WriteToFile(somePath, someContent);
 
             // then
-            Assert.Throws<FileDependencyValidationException>(
+            Assert.Throws<FileDependencyException>(
                 writeToFileAction);
 
             this.filesBrokerMock.Verify(broker =>
