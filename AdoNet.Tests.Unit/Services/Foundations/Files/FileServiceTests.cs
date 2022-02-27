@@ -33,7 +33,6 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
             {
                 new ArgumentNullException(),
                 new ArgumentOutOfRangeException(),
-                new SerializationException(),
                 new ArgumentException()
             };
         }
