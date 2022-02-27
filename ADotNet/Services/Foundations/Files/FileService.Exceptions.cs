@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using ADotNet.Models.Foundations.Files.Exceptions;
 
 namespace ADotNet.Services.Foundations.Files
@@ -25,6 +26,20 @@ namespace ADotNet.Services.Foundations.Files
             catch (InvalidFileContentException invalidFileContentException)
             {
                 throw new FileValidationException(invalidFileContentException);
+            }
+            catch (ArgumentNullException argumentNullException)
+            {
+                var invalidFileException =
+                    new InvalidFileException(argumentNullException);
+
+                throw new FileDependencyValidationException(invalidFileException);
+            }
+            catch (ArgumentException argumentException)
+            {
+                var invalidFileException =
+                    new InvalidFileException(argumentException);
+
+                throw new FileDependencyValidationException(invalidFileException);
             }
         }
     }
