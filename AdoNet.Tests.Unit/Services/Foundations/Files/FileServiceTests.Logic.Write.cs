@@ -26,7 +26,6 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                 inputFileContent);
 
             // then
-
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(inputFilePath, inputFileContent),
                     Times.Once);
