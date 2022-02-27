@@ -86,5 +86,37 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             this.filesBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShoudThrowServiceExceptionOnWriteIfServiceErrorOccurs()
+        {
+            // given
+            string somePath = GetRandomString();
+            string someContent = GetRandomString();
+            var serviceException = new Exception();
+
+            var failedFileServiceException =
+                new FailedFileServiceException(serviceException);
+
+            var fileServiceException =
+                new FileServiceException(failedFileServiceException);
+
+            this.filesBrokerMock.Setup(broker =>
+                broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()))
+                    .Throws(serviceException);
+
+            // when
+            Action writeToFileAction = () =>
+                this.fileService.WriteToFile(somePath, someContent);
+
+            // then
+            Assert.Throws<FileServiceException>(writeToFileAction);
+
+            this.filesBrokerMock.Verify(broker =>
+                broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),
+                    Times.Once);
+
+            this.filesBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

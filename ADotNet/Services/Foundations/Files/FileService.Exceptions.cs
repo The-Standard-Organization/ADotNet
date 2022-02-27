@@ -42,7 +42,7 @@ namespace ADotNet.Services.Foundations.Files
 
                 throw new FileDependencyValidationException(invalidFileException);
             }
-            catch(SerializationException serializationException)
+            catch (SerializationException serializationException)
             {
                 var failedFileSerializationException =
                     new FailedFileSerializationException(serializationException);

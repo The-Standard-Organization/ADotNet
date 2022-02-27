@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Runtime.Serialization;
 using ADotNet.Brokers.IOs;
 using ADotNet.Services.Foundations.Files;
 using Moq;
