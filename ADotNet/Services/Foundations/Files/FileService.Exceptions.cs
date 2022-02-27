@@ -49,6 +49,13 @@ namespace ADotNet.Services.Foundations.Files
 
                 throw new FileDependencyException(failedFileSerializationException);
             }
+            catch (Exception exception)
+            {
+                var failedFileServiceException =
+                    new FailedFileServiceException(exception);
+
+                throw new FileServiceException(failedFileServiceException);
+            }
         }
     }
 }
