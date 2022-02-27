@@ -13,7 +13,7 @@ namespace ADotNet.Services.Foundations.Files
     {
         private static void ValidateInputs(string path, string content)
         {
-            switch(path, content)
+            switch (path, content)
             {
                 case { } when IsInvalid(path):
                     throw new InvalidFilePathException();

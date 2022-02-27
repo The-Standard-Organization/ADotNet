@@ -48,7 +48,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             this.filesBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]

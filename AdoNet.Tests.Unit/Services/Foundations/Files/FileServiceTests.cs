@@ -4,10 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using ADotNet.Brokers.IOs;
 using ADotNet.Services.Foundations.Files;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace AdoNet.Tests.Unit.Services.Foundations.Files
 {
@@ -22,6 +24,15 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             this.fileService = new FileService(
                 filesBroker: this.filesBrokerMock.Object);
+        }
+
+        public static TheoryData FileDependencyValidationExceptions()
+        {
+            return new TheoryData<Exception>()
+            {
+                new ArgumentNullException(),
+                new ArgumentException()
+            };
         }
 
         private static string GetRandomString() =>

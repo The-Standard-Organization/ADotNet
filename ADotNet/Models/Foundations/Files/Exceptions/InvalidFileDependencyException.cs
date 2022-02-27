@@ -4,14 +4,16 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class InvalidFileContentException : Xeption
+    public class InvalidFileException : Xeption
     {
-        public InvalidFileContentException()
-            : base(message: "Invalid file content, fix errors and try again.")
+        public InvalidFileException(Exception innerException)
+            : base(message: "Invalid file error occurred.",
+                  innerException)
         { }
     }
 }

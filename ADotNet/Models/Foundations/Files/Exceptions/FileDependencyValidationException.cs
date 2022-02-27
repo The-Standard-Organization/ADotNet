@@ -8,10 +8,11 @@ using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class InvalidFileContentException : Xeption
+    public class FileDependencyValidationException : Xeption
     {
-        public InvalidFileContentException()
-            : base(message: "Invalid file content, fix errors and try again.")
+        public FileDependencyValidationException(Xeption innerException)
+            : base(message: "File dependency validation error occurred, fix the errors and try again.",
+                  innerException)
         { }
     }
 }
