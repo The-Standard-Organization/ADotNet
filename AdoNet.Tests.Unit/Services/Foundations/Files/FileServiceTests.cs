@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Runtime.Serialization;
 using ADotNet.Brokers.IOs;
 using ADotNet.Services.Foundations.Files;
 using Moq;
@@ -31,6 +32,8 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
             return new TheoryData<Exception>()
             {
                 new ArgumentNullException(),
+                new ArgumentOutOfRangeException(),
+                new SerializationException(),
                 new ArgumentException()
             };
         }
