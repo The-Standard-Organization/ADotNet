@@ -4,10 +4,16 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-namespace ADotNet.Services
+using System;
+using Xeptions;
+
+namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public interface IBuildService
+    public class InvalidFileException : Xeption
     {
-        void SerializeAndWriteToFile(string path, object adoPipeline);
+        public InvalidFileException(Exception innerException)
+            : base(message: "Invalid file error occurred.",
+                  innerException)
+        { }
     }
 }

@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------
-// Copyright (c) Hassan Habib All rights reserved.
+﻿// ---------------------------------------------------------------------------
+// Copyright (c) Hassan Habib & Shri Humrudha Jagathisun All rights reserved.
 // Licensed under the MIT License.
 // See License.txt in the project root for license information.
-// ---------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 using System;
 using System.IO;
@@ -10,12 +10,12 @@ using System.Security;
 using ADotNet.Brokers.IOs;
 using ADotNet.Brokers.Serializers;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
-using ADotNet.Services;
+using ADotNet.Services.Builds;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace AdoNet.Tests.Unit.Services
+namespace ADotNet.Tests.Unit.Services
 {
     public partial class BuildServiceTests
     {
