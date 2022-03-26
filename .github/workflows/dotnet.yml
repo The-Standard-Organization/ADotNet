@@ -9,13 +9,14 @@ on:
 jobs:
   build:
     runs-on: windows-2019
+    timeout-minutes: 0
     steps:
     - name: Check out
       uses: actions/checkout@v2
     - name: Setup .Net
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.101
+        dotnet-version: 7.0.100-preview.1.22110.4
         include-prerelease: true
     - name: Restore
       run: dotnet restore
