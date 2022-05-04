@@ -11,7 +11,7 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class BuildServiceException : Exception
     {
         public BuildServiceException(Exception innerException)
-            : base("Build service exception occured, contact support.", innerException)
+            : base("Build service exception occurred, contact support.", innerException)
         {
 
         }

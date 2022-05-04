@@ -19,6 +19,7 @@ namespace ADotNet.Brokers.Serializers
             this.serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                     .WithTypeInspector(inner => inner, s => s.InsteadOf<YamlAttributesTypeInspector>())
+                        .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
                         .WithTypeInspector(inner => new YamlAttributesTypeInspector(inner), s => s.Before<NamingConventionTypeInspector>())
                             .Build();
         }

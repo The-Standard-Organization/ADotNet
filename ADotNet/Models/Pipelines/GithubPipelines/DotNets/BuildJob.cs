@@ -13,12 +13,21 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class BuildJob
     {
+        private string runsOn;
+
         [YamlMember(Alias = "runs-on")]
-        public string RunsOn { get; set; }
+        public string RunsOn
+        {
+            get => Strategy?.Matrix?.Os != null ? BuildMachines.Matrix : this.runsOn;
+            set => this.runsOn = value;
+        }
 
         [DefaultValue(0)]
         [YamlMember(Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public int TimeoutInMinutes { get; set; }
+
+        [YamlMember(Alias = "strategy")]
+        public Strategy Strategy { get; set; }
 
         public List<GithubTask> Steps { get; set; }
     }

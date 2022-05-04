@@ -26,7 +26,8 @@ namespace ADotNet.Tests.Console
             {
                 TriggeringBranches = new List<string>
                 {
-                    "master"
+                    "master",
+                    "feature/*"
                 },
 
                 VirtualMachinesPool = new VirtualMachinesPool
