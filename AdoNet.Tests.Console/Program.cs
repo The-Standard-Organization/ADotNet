@@ -134,6 +134,15 @@ namespace ADotNet.Tests.Console
                     {
                         RunsOn = BuildMachines.Windows2019,
 
+                        EnvironmentVariables = new Dictionary<string, string>
+                        {
+                            { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
+                            { "AzureTenantId", "${{ secrets.AZURETENANTID }}"},
+                            { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}"},
+                            { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}"},
+                            { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}"}
+                        },
+
                         Steps = new List<GithubTask>
                         {
                             new CheckoutTaskV2
@@ -162,9 +171,10 @@ namespace ADotNet.Tests.Console
                                 Name = "Build"
                             },
 
-                            new TestTask
+                            new RunTask
                             {
-                                Name = "Test"
+                                Name = "Provision",
+                                Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
                             }
                         }
                     }
