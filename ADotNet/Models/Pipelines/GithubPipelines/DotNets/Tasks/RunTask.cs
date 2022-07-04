@@ -4,13 +4,13 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-namespace ADotNet.Models.Pipelines.AdoPipelines.AspNets
+using YamlDotNet.Serialization;
+
+namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public struct VirtualMachineImages
+    public class RunTask : GithubTask
     {
-        public const string UbuntuLatest = "ubuntu-latest";
-        public const string Windows2019 = "windows-2019";
-        public const string Windows2022 = "windows-2022";
-        public const string WindowsLatest = "windows-latest";
+        [YamlMember(Order = 1)]
+        public string Run { get; set; }
     }
 }

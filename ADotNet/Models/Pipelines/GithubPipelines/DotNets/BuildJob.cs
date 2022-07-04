@@ -20,6 +20,9 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public int TimeoutInMinutes { get; set; }
 
+        [YamlMember(Alias = "env")]
+        public Dictionary<string, string> EnvironmentVariables { get; set; }
+
         public List<GithubTask> Steps { get; set; }
     }
 }
