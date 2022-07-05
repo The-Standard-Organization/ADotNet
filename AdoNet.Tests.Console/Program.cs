@@ -120,7 +120,8 @@ namespace ADotNet.Tests.Console
                 {
                     Push = new PushEvent
                     {
-                        Branches = new string[] { "master" }
+                        Branches = new string[] { "master" },
+                        PathsIgnore = new string[] { "*.md" }
                     },
                     PullRequest = new PullRequestEvent
                     {
