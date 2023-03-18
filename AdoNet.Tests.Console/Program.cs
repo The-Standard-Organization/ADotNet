@@ -10,6 +10,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
+using ADotNet.Models.Pipelines.Dependabot;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
@@ -176,6 +177,34 @@ namespace ADotNet.Tests.Console
                                 Name = "Provision",
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
                             }
+                        }
+                    }
+                }
+            };
+
+            var dependabot = new Dependabot()
+            {
+                Version = 2,
+                Updates = new List<Update>()
+                {
+                    new Update
+                    {
+                        PackageEcosystem = "nuget",
+                        Directory = "/",
+                        Schedule = new Schedule
+                        {
+                            Interval = "daily"
+                        },
+                        OpenPullRequestsLimit = 5
+
+                    },
+                    new Update
+                    {
+                        PackageEcosystem = "github-actions",
+                        Directory = "/",
+                        Schedule = new Schedule
+                        {
+                            Interval = "daily"
                         }
                     }
                 }
