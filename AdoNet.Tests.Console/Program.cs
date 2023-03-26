@@ -11,6 +11,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 
@@ -175,7 +176,14 @@ namespace ADotNet.Tests.Console
                             {
                                 Name = "Provision",
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
-                            }
+                            },
+
+                            new NuGetPushTaskBuilder()
+                                .WithName("Publish")
+                                .WithSearchPath(@"**\*.nupkg")
+                                .WithApiKey("${{ secrets.NUGET_API_KEY }}")
+                                .WithDestination("https://api.nuget.org/v3/index.json")
+                                .Build()
                         }
                     }
                 }
