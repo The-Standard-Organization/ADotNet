@@ -10,10 +10,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
     {
         private NuGetPushTask nugetPushTask;
 
-        public NuGetPushTaskBuilder()
-        {
+        public NuGetPushTaskBuilder() =>
             this.nugetPushTask = new NuGetPushTask();
-        }
 
         public NuGetPushTaskBuilder WithName(string name)
         {
