@@ -26,7 +26,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders
             return this;
         }
 
-        public DotNetBuildTaskBuilder WithRestore(bool restore)
+        public DotNetBuildTaskBuilder WithRestore(bool restore = true)
         {
             this.dotnetBuildTask.Restore = restore;
             return this;
