@@ -12,30 +12,32 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
 
         public DotNetBuildTaskBuilder()
         {
-            dotnetBuildTask = new DotNetBuildTask
-            {
-                Run = "dotnet build"
-            };
+            this.dotnetBuildTask = new DotNetBuildTask();
+            this.dotnetBuildTask.Run = "dotnet build";
         }
 
         public DotNetBuildTaskBuilder WithName(string name)
         {
-            dotnetBuildTask.Name = name;
+            this.dotnetBuildTask.Name = name;
+
             return this;
         }
 
         public DotNetBuildTaskBuilder WithRestore(bool restore = true)
         {
-            dotnetBuildTask.Restore = restore;
+            this.dotnetBuildTask.Restore = restore;
+
             return this;
         }
 
         public DotNetBuildTask Build()
         {
-            if (!dotnetBuildTask.Restore)
-                dotnetBuildTask.Run += " --no-restore";
+            if (this.dotnetBuildTask.Restore is false)
+            {
+                this.dotnetBuildTask.Run += " --no-restore";
+            }
 
-            return dotnetBuildTask;
+            return this.dotnetBuildTask;
         }
     }
 }

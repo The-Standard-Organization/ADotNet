@@ -14,9 +14,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         public string Run = "dotnet nuget push";
 
         internal string SearchPath { get; set; }
-
         internal string ApiKey { get; set; }
-
         internal string Destination { get; set; }
     }
 }

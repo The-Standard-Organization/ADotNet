@@ -12,45 +12,55 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
 
         public NuGetPushTaskBuilder()
         {
-            nugetPushTask = new NuGetPushTask();
+            this.nugetPushTask = new NuGetPushTask();
         }
 
         public NuGetPushTaskBuilder WithName(string name)
         {
-            nugetPushTask.Name = name;
+            this.nugetPushTask.Name = name;
+
             return this;
         }
 
         public NuGetPushTaskBuilder WithSearchPath(string searchPath)
         {
-            nugetPushTask.SearchPath = searchPath;
+            this.nugetPushTask.SearchPath = searchPath;
+
             return this;
         }
 
         public NuGetPushTaskBuilder WithApiKey(string apiKey)
         {
-            nugetPushTask.ApiKey = apiKey;
+            this.nugetPushTask.ApiKey = apiKey;
+
             return this;
         }
 
         public NuGetPushTaskBuilder WithDestination(string destination)
         {
-            nugetPushTask.Destination = destination;
+            this.nugetPushTask.Destination = destination;
+
             return this;
         }
 
         public NuGetPushTask Build()
         {
-            if (!string.IsNullOrEmpty(nugetPushTask.SearchPath))
-                nugetPushTask.Run += $" \"{nugetPushTask.SearchPath}\"";
+            if (!string.IsNullOrEmpty(this.nugetPushTask.SearchPath))
+            {
+                this.nugetPushTask.Run += $" \"{this.nugetPushTask.SearchPath}\"";
+            }
 
-            if (!string.IsNullOrEmpty(nugetPushTask.ApiKey))
-                nugetPushTask.Run += $" --api-key {nugetPushTask.ApiKey}";
+            if (!string.IsNullOrEmpty(this.nugetPushTask.ApiKey))
+            {
+                this.nugetPushTask.Run += $" --api-key {this.nugetPushTask.ApiKey}";
+            }
 
-            if (!string.IsNullOrEmpty(nugetPushTask.Destination))
-                nugetPushTask.Run += $" --source \"{nugetPushTask.Destination}\"";
+            if (!string.IsNullOrEmpty(this.nugetPushTask.Destination))
+            {
+                this.nugetPushTask.Run += $" --source \"{this.nugetPushTask.Destination}\"";
+            }
 
-            return nugetPushTask;
+            return this.nugetPushTask;
         }
     }
 }
