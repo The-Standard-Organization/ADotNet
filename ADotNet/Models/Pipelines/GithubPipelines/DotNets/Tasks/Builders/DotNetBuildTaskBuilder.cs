@@ -4,9 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-
-namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders
+namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
 {
     public class DotNetBuildTaskBuilder
     {
@@ -14,7 +12,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders
 
         public DotNetBuildTaskBuilder()
         {
-            this.dotnetBuildTask = new DotNetBuildTask
+            dotnetBuildTask = new DotNetBuildTask
             {
                 Run = "dotnet build"
             };
@@ -22,24 +20,22 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders
 
         public DotNetBuildTaskBuilder WithName(string name)
         {
-            this.dotnetBuildTask.Name = name;
+            dotnetBuildTask.Name = name;
             return this;
         }
 
         public DotNetBuildTaskBuilder WithRestore(bool restore = true)
         {
-            this.dotnetBuildTask.Restore = restore;
+            dotnetBuildTask.Restore = restore;
             return this;
         }
 
         public DotNetBuildTask Build()
         {
-            if (!this.dotnetBuildTask.Restore)
-            {
-                this.dotnetBuildTask.Run += " --no-restore";
-            }
+            if (!dotnetBuildTask.Restore)
+                dotnetBuildTask.Run += " --no-restore";
 
-            return this.dotnetBuildTask;
+            return dotnetBuildTask;
         }
     }
 }

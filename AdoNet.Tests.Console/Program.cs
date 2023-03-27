@@ -11,8 +11,8 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.TaskBuilders;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 
 namespace ADotNet.Tests.Console
