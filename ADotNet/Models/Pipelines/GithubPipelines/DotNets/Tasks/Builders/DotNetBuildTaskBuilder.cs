@@ -16,21 +16,24 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
             this.dotnetBuildTask.Run = "dotnet build";
         }
 
-        public DotNetBuildTaskBuilder WithName(string name)
+        public static implicit operator DotNetBuildTask(DotNetBuildTaskBuilder dotnetBuildTaskBuilder) =>
+            dotnetBuildTaskBuilder.Build();
+
+        public DotNetBuildTaskBuilder Name(string name)
         {
             this.dotnetBuildTask.Name = name;
 
             return this;
         }
 
-        public DotNetBuildTaskBuilder WithRestore(bool restore = true)
+        public DotNetBuildTaskBuilder Restore(bool restore = true)
         {
             this.dotnetBuildTask.Restore = restore;
 
             return this;
         }
 
-        public DotNetBuildTask Build()
+        private DotNetBuildTask Build()
         {
             if (this.dotnetBuildTask.Restore is false)
             {

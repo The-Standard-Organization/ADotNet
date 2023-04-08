@@ -179,11 +179,10 @@ namespace ADotNet.Tests.Console
                             },
 
                             new NuGetPushTaskBuilder()
-                                .WithName("Publish")
-                                .WithSearchPath(@"**\*.nupkg")
-                                .WithApiKey("${{ secrets.NUGET_API_KEY }}")
-                                .WithDestination("https://api.nuget.org/v3/index.json")
-                                .Build()
+                                .Name("Publish")
+                                .SearchPath(@"**\*.nupkg")
+                                .ApiKey("${{ secrets.NUGET_API_KEY }}")
+                                .Destination("https://api.nuget.org/v3/index.json")
                         }
                     }
                 }

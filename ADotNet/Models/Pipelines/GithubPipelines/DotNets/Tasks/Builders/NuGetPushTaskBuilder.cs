@@ -13,35 +13,38 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.Builders
         public NuGetPushTaskBuilder() =>
             this.nugetPushTask = new NuGetPushTask();
 
-        public NuGetPushTaskBuilder WithName(string name)
+        public static implicit operator NuGetPushTask(NuGetPushTaskBuilder nugetPushTaskBuilder) =>
+            nugetPushTaskBuilder.Build();
+
+        public NuGetPushTaskBuilder Name(string name)
         {
             this.nugetPushTask.Name = name;
 
             return this;
         }
 
-        public NuGetPushTaskBuilder WithSearchPath(string searchPath)
+        public NuGetPushTaskBuilder SearchPath(string searchPath)
         {
             this.nugetPushTask.SearchPath = searchPath;
 
             return this;
         }
 
-        public NuGetPushTaskBuilder WithApiKey(string apiKey)
+        public NuGetPushTaskBuilder ApiKey(string apiKey)
         {
             this.nugetPushTask.ApiKey = apiKey;
 
             return this;
         }
 
-        public NuGetPushTaskBuilder WithDestination(string destination)
+        public NuGetPushTaskBuilder Destination(string destination)
         {
             this.nugetPushTask.Destination = destination;
 
             return this;
         }
 
-        public NuGetPushTask Build()
+        private NuGetPushTask Build()
         {
             if (!string.IsNullOrEmpty(this.nugetPushTask.SearchPath))
             {
