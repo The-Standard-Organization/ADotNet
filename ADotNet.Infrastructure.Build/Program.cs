@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using ADotNet.Clients;
+using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
@@ -17,6 +18,7 @@ namespace ADotNet.Infrastructure.Build
         static void Main(string[] args)
         {
             var aDotNetClient = new ADotNetClient();
+            string nugetKey = $"{{secrets.NUGET_API_KEY}}";
 
             var githubPipeline = new GithubPipeline
             {
@@ -72,6 +74,24 @@ namespace ADotNet.Infrastructure.Build
                             new TestTask
                             {
                                 Name = "Test"
+                            },
+
+                            new PackTask
+                            {
+                                Name = "Pack Nuget",
+
+                                PackConfigurations = new PackConfigurations
+                                {
+                                    IsRelease = true,
+                                    Path = "./MyLibrary",
+                                    nugetKey = nugetKey
+                                }
+                            },
+
+                            new PublishBuildArtifactsTask
+                            {
+                                Name = "Release Nuget",
+                                nugetKey = nugetKey
                             }
                         }
                     }
