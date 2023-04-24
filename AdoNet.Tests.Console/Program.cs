@@ -12,6 +12,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTa
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.PublishTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 
 namespace ADotNet.Tests.Console
@@ -137,10 +138,10 @@ namespace ADotNet.Tests.Console
                         EnvironmentVariables = new Dictionary<string, string>
                         {
                             { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
-                            { "AzureTenantId", "${{ secrets.AZURETENANTID }}"},
-                            { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}"},
-                            { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}"},
-                            { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}"}
+                            { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
+                            { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
+                            { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
+                            { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
                         },
 
                         Steps = new List<GithubTask>
@@ -175,6 +176,20 @@ namespace ADotNet.Tests.Console
                             {
                                 Name = "Provision",
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
+                            },
+
+                            new PackTask
+                            {
+                                Name = "Pack Nuget",
+                                EnvironmentVariables = new Dictionary<string, string>
+                                {
+                                    { "NUGET_KEY", "${{ secrets.NUGET_API_KEY }}" }
+                                },
+                            },
+
+                            new PublishNugetTask
+                            {
+                                PublishConfigurations = new PublishConfigurations(projectName: "ADotNet")
                             }
                         }
                     }

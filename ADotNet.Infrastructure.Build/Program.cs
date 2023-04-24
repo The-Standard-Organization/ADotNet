@@ -9,6 +9,7 @@ using ADotNet.Clients;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.PublishTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 
 namespace ADotNet.Infrastructure.Build
@@ -79,19 +80,16 @@ namespace ADotNet.Infrastructure.Build
                             new PackTask
                             {
                                 Name = "Pack Nuget",
-
-                                PackConfigurations = new PackConfigurations
+                                EnvironmentVariables = new Dictionary<string, string>
                                 {
-                                    IsRelease = true,
-                                    Path = "./MyLibrary",
-                                    nugetKey = nugetKey
-                                }
+                                    { "NUGET_KEY", "${{ secrets.NUGET_API_KEY }}" }
+                                },
                             },
 
-                            new PublishBuildArtifactsTask
+                            new PublishNugetTask
                             {
-                                Name = "Release Nuget",
-                                nugetKey = nugetKey
+                                Name = "Release Task",
+                                PublishConfigurations = new PublishConfigurations(projectName: "ADotNet")
                             }
                         }
                     }

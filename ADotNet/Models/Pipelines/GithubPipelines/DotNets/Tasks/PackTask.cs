@@ -14,10 +14,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         [YamlMember(Order = 1)]
         public string Run = "dotnet pack --configuration Release";
 
-        [YamlMember(Alias = "working-directory", Order = 1)]
+        [YamlMember(Alias = "working-directory", Order = 2)]
         public string WorkingDirectory { get; set; }
 
-        [YamlMember(Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Alias = "env", Order = 3, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public Dictionary<string, string> EnvironmentVariables { get; set; }
     }
 }

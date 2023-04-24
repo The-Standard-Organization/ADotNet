@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: windows-2019
-    timeout-minutes: 0
     steps:
     - name: Check out
       uses: actions/checkout@v2
@@ -24,3 +23,12 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Pack Nuget
+      run: dotnet pack --configuration Release
+      working-directory: 
+      env:
+        NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+    - name: Release Task
+      uses: nuget/nuget-client@v2
+      with:
+        args: push /bin/Release/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${ secrets.NUGET_API_KEY }
