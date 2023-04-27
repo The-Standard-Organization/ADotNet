@@ -1,7 +1,6 @@
 # ADotNet
-<p align="center">
-  <img width="25%" height="25%" src="https://github.com/hassanhabib/ADotNet/blob/master/ADotNet/ADotNet.png">
-</p>
+
+![ADotNet](https://raw.githubusercontent.com/hassanhabib/LeVent/master/LeVent/ADotNet_git_logo.png)
 
 [![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet)
@@ -325,10 +324,9 @@ I have intentionally limited some of the capabilities in this library to ensure 
 I'm intentionally making my library less usable to ensure this level of hive mindset is reflected in our changes in here.
 
 If you have any suggestions, comments or questions, please feel free to contact me on:
-<br />
-Twitter: @hassanrezkhabib
-<br />
-LinkedIn: hassanrezkhabib
-<br />
-E-Mail: hassanhabib@live.com
-<br />
+
+[Twitter](https://twitter.com/hassanrezkhabib)
+
+[LinkedIn](https://www.linkedin.com/in/hassanrezkhabib/)
+
+[E-Mail](mailto:hassanhabib@live.com)
