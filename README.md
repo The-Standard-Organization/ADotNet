@@ -1,13 +1,12 @@
 # ADotNet
-<p align="center">
-  <img width="25%" height="25%" src="https://github.com/hassanhabib/ADotNet/blob/master/ADotNet/ADotNet.png">
-</p>
 
-
+![ADotNet](https://raw.githubusercontent.com/hassanhabib/LeVent/master/LeVent/ADotNet_git_logo.png)
 
 [![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet)
+![Nuget](https://img.shields.io/nuget/dt/ADotNet?color=blue&label=Downloads)
 [![The Standard - COMPLIANT](https://img.shields.io/badge/The_Standard-COMPLIANT-2ea44f)](https://github.com/hassanhabib/The-Standard)
+[![The Standard Community](https://img.shields.io/discord/934130100008538142?color=%237289da&label=The%20Standard%20Community&logo=Discord)](https://discord.gg/vdPZ7hS52X)
 
 # ADotNet (ADO Dot Net)
 ADotNet is a.NET library that enables software engineers on the .NET platform to develop AzureDevOps pipelines and Git Actions in C#.
@@ -325,10 +324,9 @@ I have intentionally limited some of the capabilities in this library to ensure 
 I'm intentionally making my library less usable to ensure this level of hive mindset is reflected in our changes in here.
 
 If you have any suggestions, comments or questions, please feel free to contact me on:
-<br />
-Twitter: @hassanrezkhabib
-<br />
-LinkedIn: hassanrezkhabib
-<br />
-E-Mail: hassanhabib@live.com
-<br />
+
+[Twitter](https://twitter.com/hassanrezkhabib)
+
+[LinkedIn](https://www.linkedin.com/in/hassanrezkhabib/)
+
+[E-Mail](mailto:hassanhabib@live.com)
