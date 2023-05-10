@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
@@ -14,6 +15,9 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Alias = "on")]
         public Events OnEvents { get; set; }
+
+        [YamlMember(Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public Dictionary<string, string> EnvironmentVariables { get; set; }
 
         public Jobs Jobs { get; set; }
     }
