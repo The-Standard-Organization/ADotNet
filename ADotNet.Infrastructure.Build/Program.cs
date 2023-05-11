@@ -1,9 +1,10 @@
-﻿// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Copyright (c) Hassan Habib & Shri Humrudha Jagathisun All rights reserved.
 // Licensed under the MIT License.
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
@@ -34,6 +35,11 @@ namespace ADotNet.Infrastructure.Build
                     {
                         Branches = new string[] { "master" }
                     }
+                },
+
+                EnvironmentVariables = new Dictionary<string, string>
+                {
+                    { "IS_RELEASE_CANDIDATE", EnvironmentVariables.IsGitHubReleaseCandidate() }
                 },
 
                 Jobs = new Jobs
