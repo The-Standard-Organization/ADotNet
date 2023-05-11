@@ -8,6 +8,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class PushEvent
     {
+        public string[] Tags { get; set; }
         public string[] Branches { get; set; }
     }
 }
