@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using YamlDotNet.Core.Tokens;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
@@ -25,6 +24,5 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public string RunsOn { get; set; }
 
         public List<GithubTask> Steps { get; set; }
-
     }
 }
