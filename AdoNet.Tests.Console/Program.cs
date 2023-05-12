@@ -171,10 +171,33 @@ namespace ADotNet.Tests.Console
                                 Name = "Build"
                             },
 
+                            new TestTask
+                            {
+                                Name = "Test"
+                            },
+
                             new RunTask
                             {
                                 Name = "Provision",
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
+                            }
+                        }
+                    },
+
+                    AddTag = new TagJob
+                    {
+                        RunsOn = BuildMachines.WindowsLatest,
+
+                        Steps = new List<GithubTask>
+                        {
+                            new CheckoutTaskV2
+                            {
+                                Name = "Checkout code"
+                            },
+
+                            new TagTask
+                            {
+                                Name = "Add Git Tag"
                             }
                         }
                     }

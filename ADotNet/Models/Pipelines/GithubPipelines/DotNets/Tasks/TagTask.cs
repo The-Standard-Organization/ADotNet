@@ -6,13 +6,11 @@
 
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
+namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class Jobs
+    public partial class TagTask : GithubTask
     {
-        public BuildJob Build { get; set; }
-
-        [YamlMember(Alias = "add_tag")]
-        public TagJob AddTag { get; set; }
+        [YamlMember(Order = 1, ScalarStyle = YamlDotNet.Core.ScalarStyle.Literal)]
+        public string Run = "git tag -a \"release-${{ github.run_number }}\" -m \"Release ${{ github.run_number }}\"\r\ngit push origin --tags";
     }
 }
