@@ -11,6 +11,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
     public partial class TagTask : GithubTask
     {
         [YamlMember(Order = 1, ScalarStyle = YamlDotNet.Core.ScalarStyle.Literal)]
-        public string Run = "git tag -a \"release-${{ github.run_number }}\" -m \"Release ${{ github.run_number }}\"\r\ngit push origin --tags";
+        public string Run = "git tag -a \"release-${{ steps.extract_version.outputs.version_number }}\" -m \"Release ${{ steps.extract_version.outputs.version_number }}\"\r\ngit push origin --tags";
     }
 }
