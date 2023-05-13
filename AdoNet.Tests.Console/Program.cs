@@ -186,6 +186,7 @@ namespace ADotNet.Tests.Console
 
                     AddTag = new TagJob
                     {
+                        Needs = new string[] { "build", "test" },
                         RunsOn = BuildMachines.WindowsLatest,
 
                         Steps = new List<GithubTask>
