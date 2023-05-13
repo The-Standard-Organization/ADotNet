@@ -14,7 +14,7 @@ env:
       (
         github.event_name == 'pull_request' &&
         startsWith(github.event.pull_request.title, 'RELEASES:') &&
-        contains(github.event.pull_request.labels.*.name, 'RELEASES')
+        contains(github.event.pull_request.labels.*.name, 'RELEASE')
       )
       ||
       (
