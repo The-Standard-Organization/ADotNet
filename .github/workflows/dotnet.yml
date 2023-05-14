@@ -14,7 +14,7 @@ env:
       (
         github.event_name == 'pull_request' &&
         startsWith(github.event.pull_request.title, 'RELEASES:') &&
-        contains(github.event.pull_request.labels.*.name, 'RELEASE')
+        contains(github.event.pull_request.labels.*.name, 'RELEASES')
       )
       ||
       (
@@ -26,7 +26,6 @@ env:
 jobs:
   build:
     runs-on: windows-2019
-    timeout-minutes: 0
     steps:
     - name: Check out
       uses: actions/checkout@v2
