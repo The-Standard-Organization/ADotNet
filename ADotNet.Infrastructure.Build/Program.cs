@@ -103,7 +103,7 @@ namespace ADotNet.Infrastructure.Build
                             {
                                 Name = "Extract Version Number",
                                 Id = "extract_version",
-                                Run = "echo \"::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' BuildTestApp/BuildTestApp.csproj)\""
+                                Run = "echo \"::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)\""
                             },
 
                             new ShellScriptTask
