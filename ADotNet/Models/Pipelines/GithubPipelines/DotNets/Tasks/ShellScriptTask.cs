@@ -13,7 +13,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         [YamlMember(Order = 1, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string Id { get; set; }
 
-        [YamlMember(Order = 2, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 2, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults, ScalarStyle = YamlDotNet.Core.ScalarStyle.Literal)]
         public string Run { get; set; }
     }
 }
