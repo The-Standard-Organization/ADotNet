@@ -81,6 +81,64 @@ namespace ADotNet.Infrastructure.Build
                                 Name = "Test"
                             }
                         }
+                    },
+                    AddTag = new TagJob
+                    {
+                        If =
+                        "github.event.pull_request.merged &&\r"
+                        + "github.event.pull_request.base.ref == 'main' &&\r"
+                        + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
+                        + "contains(github.event.pull_request.labels.*.name, 'RELEASES')\r",
+
+                        RunsOn = BuildMachines.UbuntuLatest,
+
+                        Steps = new List<GithubTask>
+                        {
+                            new CheckoutTaskV2
+                            {
+                                Name = "Checkout code"
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Extract Version Number",
+                                Id = "extract_version",
+                                Run = "echo \"::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' BuildTestApp/BuildTestApp.csproj)\""
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Print Version Number",
+                                Run = "echo \"Version number is ${{ steps.extract_version.outputs.version_number }}\""
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Configure Git",
+                                Run =
+                                    "git config user.name \"Add Git Release Tag Action\""
+                                    + "\r"
+                                    + "git config user.email \"github.action@noreply.github.com\""
+                            },
+
+                            new CheckoutTaskV2
+                            {
+                                Name = "Authenticate with GitHub",
+                                With = new Dictionary<string, string>
+                                {
+                                    { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
+                                }
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Add Git Tag - Release",
+                                Run =
+                                    "git tag -a \"release-${{ steps.extract_version.outputs.version_number }}\" -m \"Release ${{ steps.extract_version.outputs.version_number }}\""
+                                    + "\r"
+                                    + "git push origin --tags"
+                            },
+                        }
                     }
                 }
             };

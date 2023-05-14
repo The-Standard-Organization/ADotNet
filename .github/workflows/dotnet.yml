@@ -41,3 +41,30 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+  add_tag:
+    if: >
+      github.event.pull_request.merged &&
+      github.event.pull_request.base.ref == 'main' &&
+      startsWith(github.event.pull_request.title, 'RELEASES:') &&
+      contains(github.event.pull_request.labels.*.name, 'RELEASES')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Extract Version Number
+      id: extract_version
+      run: echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' BuildTestApp/BuildTestApp.csproj)"
+    - name: Print Version Number
+      run: echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
+    - name: Configure Git
+      run: >-
+        git config user.name "Add Git Release Tag Action"
+        git config user.email "github.action@noreply.github.com"
+    - name: Authenticate with GitHub
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT_FOR_TAGGING }}
+    - name: Add Git Tag - Release
+      run: >-
+        git tag -a "release-${{ steps.extract_version.outputs.version_number }}" -m "Release ${{ steps.extract_version.outputs.version_number }}"
+        git push origin --tags
