@@ -18,10 +18,13 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Order = 1, Alias = "runs-on")]
         public string RunsOn { get; set; }
 
-        [YamlMember(Order = 2, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 2, Alias = "needs", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public string[] Needs { get; set; }
+
+        [YamlMember(Order = 3, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public Dictionary<string, string> EnvironmentVariables { get; set; }
 
-        [YamlMember(Order = 3)]
+        [YamlMember(Order = 4)]
         public List<GithubTask> Steps { get; set; }
     }
 }
