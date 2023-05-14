@@ -6,6 +6,11 @@ on:
     branches:
     - master
   pull_request:
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - closed
     branches:
     - master
 env:
