@@ -86,7 +86,7 @@ namespace ADotNet.Infrastructure.Build
                     {
                         If =
                         "github.event.pull_request.merged &&\r"
-                        + "github.event.pull_request.base.ref == 'main' &&\r"
+                        + "github.event.pull_request.base.ref == 'master' &&\r"
                         + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
                         + "contains(github.event.pull_request.labels.*.name, 'RELEASES')\r",
 
