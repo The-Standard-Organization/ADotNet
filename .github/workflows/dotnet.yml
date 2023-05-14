@@ -53,7 +53,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Extract Version Number
       id: extract_version
-      run: echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' BuildTestApp/BuildTestApp.csproj)"
+      run: echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)"
     - name: Print Version Number
       run: echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
     - name: Configure Git
