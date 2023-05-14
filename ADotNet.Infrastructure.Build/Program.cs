@@ -93,6 +93,8 @@ namespace ADotNet.Infrastructure.Build
 
                         RunsOn = BuildMachines.UbuntuLatest,
 
+                        Needs = new string[] { "build" },
+
                         Steps = new List<GithubTask>
                         {
                             new CheckoutTaskV2
