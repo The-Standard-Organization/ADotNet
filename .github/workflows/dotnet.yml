@@ -1,8 +1,6 @@
 name: .Net
 on:
   push:
-    tags:
-    - RELEASE
     branches:
     - master
   pull_request:

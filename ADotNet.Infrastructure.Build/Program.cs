@@ -27,7 +27,6 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Push = new PushEvent
                     {
-                        Tags = new string[] { "RELEASE" },
                         Branches = new string[] { "master" }
                     },
 
