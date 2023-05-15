@@ -59,13 +59,13 @@ jobs:
       uses: actions/checkout@v2
     - name: Extract Version Number
       id: extract_version
-      run:
+      run: |-
         echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)"
     - name: Print Version Number
-      run:
+      run: |-
         echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
     - name: Configure Git
-      run: |
+      run: |-
         git config user.name "Add Git Release Tag Action"
         git config user.email "github.action@noreply.github.com"
     - name: Authenticate with GitHub
@@ -73,6 +73,6 @@ jobs:
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Add Git Tag - Release
-      run: |
+      run: |-
         git tag -a "release-${{ steps.extract_version.outputs.version_number }}" -m "Release ${{ steps.extract_version.outputs.version_number }}"
         git push origin --tags
