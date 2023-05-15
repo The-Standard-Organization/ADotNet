@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
@@ -12,5 +13,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
     {
         [YamlMember(Order = 1)]
         public string Uses = "actions/checkout@v2";
+
+        [YamlMember(Order = 2, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public Dictionary<string, string> With { get; set; }
     }
 }
