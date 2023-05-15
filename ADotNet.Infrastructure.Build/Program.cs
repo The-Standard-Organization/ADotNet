@@ -4,12 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
 
 namespace ADotNet.Infrastructure.Build
 {
@@ -50,19 +50,18 @@ namespace ADotNet.Infrastructure.Build
 
                         Steps = new List<GithubTask>
                         {
-                            new CheckoutTaskV2
+                            new CheckoutTaskV3
                             {
                                 Name = "Check out"
                             },
 
-                            new SetupDotNetTaskV1
+                            new SetupDotNetTaskV3
                             {
                                 Name = "Setup .Net",
 
-                                TargetDotNetVersion = new TargetDotNetVersion
+                                TargetDotNetVersion = new TargetDotNetVersionV3
                                 {
-                                    DotNetVersion = "7.0.201",
-                                    IncludePrerelease = false
+                                    DotNetVersion = "7.0.201"
                                 }
                             },
 
@@ -96,7 +95,7 @@ namespace ADotNet.Infrastructure.Build
 
                         Steps = new List<GithubTask>
                         {
-                            new CheckoutTaskV2
+                            new CheckoutTaskV3
                             {
                                 Name = "Checkout code"
                             },
@@ -123,7 +122,7 @@ namespace ADotNet.Infrastructure.Build
                                     + "git config user.email \"github.action@noreply.github.com\""
                             },
 
-                            new CheckoutTaskV2
+                            new CheckoutTaskV3
                             {
                                 Name = "Authenticate with GitHub",
                                 With = new Dictionary<string, string>
