@@ -19,7 +19,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             + "  (\n"
             + "    github.event_name == 'push' &&\n"
             + "    startsWith(github.event.head_commit.message, 'RELEASES:') &&\n"
-            + "    github.ref_name == 'RELEASE'\n"
+            + "    startsWith(github.ref_name, 'RELEASE')\n"
             + "  )\n"
             + "}}";
     }
