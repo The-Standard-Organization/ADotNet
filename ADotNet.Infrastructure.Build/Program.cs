@@ -61,7 +61,7 @@ namespace ADotNet.Infrastructure.Build
 
                                 TargetDotNetVersion = new TargetDotNetVersionV3
                                 {
-                                    DotNetVersion = "7.0.201"
+                                    DotNetVersion = "7.0.205"
                                 }
                             },
 
