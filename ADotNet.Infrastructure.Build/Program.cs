@@ -27,7 +27,6 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Push = new PushEvent
                     {
-                        Tags = new string[] { "RELEASE" },
                         Branches = new string[] { "master" }
                     },
 
@@ -62,8 +61,8 @@ namespace ADotNet.Infrastructure.Build
 
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "7.0.100-preview.1.22110.4",
-                                    IncludePrerelease = true
+                                    DotNetVersion = "7.0.201",
+                                    IncludePrerelease = false
                                 }
                             },
 

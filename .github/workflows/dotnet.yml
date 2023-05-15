@@ -1,8 +1,6 @@
 name: .Net
 on:
   push:
-    tags:
-    - RELEASE
     branches:
     - master
   pull_request:
@@ -25,7 +23,7 @@ env:
       (
         github.event_name == 'push' &&
         startsWith(github.event.head_commit.message, 'RELEASES:') &&
-        github.ref_name == 'RELEASE'
+        startsWith(github.ref_name, 'RELEASE')
       )
     }}
 jobs:
@@ -37,8 +35,8 @@ jobs:
     - name: Setup .Net
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 7.0.100-preview.1.22110.4
-        include-prerelease: true
+        dotnet-version: 7.0.201
+        include-prerelease: false
     - name: Restore
       run: dotnet restore
     - name: Build
@@ -59,13 +57,13 @@ jobs:
       uses: actions/checkout@v2
     - name: Extract Version Number
       id: extract_version
-      run:
+      run: |-
         echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)"
     - name: Print Version Number
-      run:
+      run: |-
         echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
     - name: Configure Git
-      run: |
+      run: |-
         git config user.name "Add Git Release Tag Action"
         git config user.email "github.action@noreply.github.com"
     - name: Authenticate with GitHub
@@ -73,6 +71,6 @@ jobs:
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Add Git Tag - Release
-      run: |
+      run: |-
         git tag -a "release-${{ steps.extract_version.outputs.version_number }}" -m "Release ${{ steps.extract_version.outputs.version_number }}"
         git push origin --tags
