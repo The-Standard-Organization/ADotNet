@@ -11,9 +11,9 @@
 		<PackageTags>ADO YAML AzureDevOps</PackageTags>
 		<PackageReleaseNotes>Add Windows-Latest VM + RunTask + Environment Variables</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>2.1.1.1</AssemblyVersion>
-		<FileVersion>2.1.1.1</FileVersion>
-		<Version>2.1.1.1</Version>
+		<AssemblyVersion>2.1.1.2</AssemblyVersion>
+		<FileVersion>2.1.1.2</FileVersion>
+		<Version>2.1.1.2</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
