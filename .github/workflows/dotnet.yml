@@ -43,14 +43,15 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
   add_tag:
+    runs-on: ubuntu-latest
+    needs:
+    - build
     if: >
+      ${{ success() }} &&
       github.event.pull_request.merged &&
       github.event.pull_request.base.ref == 'master' &&
       startsWith(github.event.pull_request.title, 'RELEASES:') &&
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
-    runs-on: ubuntu-latest
-    needs:
-    - build
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
