@@ -31,12 +31,11 @@ jobs:
     runs-on: windows-2019
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup .Net
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.201
-        include-prerelease: false
     - name: Restore
       run: dotnet restore
     - name: Build
@@ -54,7 +53,7 @@ jobs:
     - build
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Extract Version Number
       id: extract_version
       run: |-
@@ -67,7 +66,7 @@ jobs:
         git config user.name "Add Git Release Tag Action"
         git config user.email "github.action@noreply.github.com"
     - name: Authenticate with GitHub
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Add Git Tag - Release
