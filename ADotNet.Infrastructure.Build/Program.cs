@@ -114,15 +114,6 @@ namespace ADotNet.Infrastructure.Build
                                 Run = "echo \"Version number is ${{ steps.extract_version.outputs.version_number }}\""
                             },
 
-                            new ShellScriptTask
-                            {
-                                Name = "Configure Git",
-                                Run =
-                                    "git config user.name \"Add Git Release Tag Action\""
-                                    + "\r"
-                                    + "git config user.email \"github.action@noreply.github.com\""
-                            },
-
                             new CheckoutTaskV3
                             {
                                 Name = "Authenticate with GitHub",
@@ -130,6 +121,15 @@ namespace ADotNet.Infrastructure.Build
                                 {
                                     { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
                                 }
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Configure Git",
+                                Run =
+                                    "git config user.name \"Add Git Release Tag Action\""
+                                    + "\r"
+                                    + "git config user.email \"github.action@noreply.github.com\""
                             },
 
                             new ShellScriptTask

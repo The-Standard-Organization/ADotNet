@@ -62,14 +62,14 @@ jobs:
     - name: Print Version Number
       run: |-
         echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
-    - name: Configure Git
-      run: |-
-        git config user.name "Add Git Release Tag Action"
-        git config user.email "github.action@noreply.github.com"
     - name: Authenticate with GitHub
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
+    - name: Configure Git
+      run: |-
+        git config user.name "Add Git Release Tag Action"
+        git config user.email "github.action@noreply.github.com"
     - name: Add Git Tag - Release
       run: |-
         git tag -a "release-${{ steps.extract_version.outputs.version_number }}" -m "Release ${{ steps.extract_version.outputs.version_number }}"
