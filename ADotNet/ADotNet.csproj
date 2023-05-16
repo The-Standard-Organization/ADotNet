@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<LangVersion>11.0</LangVersion>
 		<Copyright>Copyright (c) Hassan Habib &amp; Shri Humrudha</Copyright>
 		<Description>ADotNet is a dot net library to help engineers develop their build and release pipelines in C# without having to use YAML or any other technology.</Description>
 		<Authors>Hassan Habib &amp; Shri Humrudha</Authors>
@@ -42,8 +43,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Xeption" Version="1.7.0" />
-		<PackageReference Include="YamlDotNet" Version="11.2.1" />
+		<PackageReference Include="Xeption" Version="2.5.0" />
+		<PackageReference Include="YamlDotNet" Version="13.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
