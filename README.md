@@ -12,9 +12,7 @@
 ADotNet is a.NET library that enables software engineers on the .NET platform to develop AzureDevOps pipelines and Git Actions in C#.
 
 ## Introduction
-There's an issue today with developing Azure DevOps pipelines and Git Actions with YAML. The technology/language can be quite challenging to learn and predict what the available options are when it comes to orchestrating build steps.
-
-ADotNet presents a solution to pipeline tasks as C# models. Predefined, with all the options available to orchestrate a pipeline without having to search for the available options on the documentation websites.
+There's an issue today with developing Azure DevOps pipelines and Git Actions with YAML. The technology/language can be challenging to learn and predict the available options for orchestrating build steps. _ADotNet_ presents a solution to pipeline tasks as C# models, predefined, with all the options available to orchestrate a pipeline without searching for the available options on the documentation websites.
 
 ## How It Works for AzureDevOps
 Here's how this library works. Let's assume you want to write a task in your pipeline that restores packages for your ASP.NET Core project. Today, engineers write the following command in YAML:
@@ -27,7 +25,7 @@ Here's how this library works. Let's assume you want to write a task in your pip
     feedsToUse: 'select'
 ```
 
-The problem with the above YAML code is that it's not that easy to remember. Even while I'm starting at it right now, I just can't seem to remember `DotNetCoreCLI@2` and what does all of this means to someone who is a full-stack engineer trying to get off the ground as soon, easy and as fast as possible? Here's how the very same code above would look like in ADotNet:
+The problem with the above YAML code is that it's not that easy to remember. Even while staring at it, I just can't seem to remember `DotNetCoreCLI@2` and what does this mean to someone who is a full-stack engineer trying to get off the ground as fast as possible? Here's how the very same code above would look like in ADotNet:
 
 ```csharp
   new DotNetExecutionTask
@@ -42,7 +40,7 @@ The problem with the above YAML code is that it's not that easy to remember. Eve
   }
 ```
 
-The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. It's already directing you towards the options you need to get going with building your pipeline.
+The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. The syntax is already directing you towards the options you need to get going with building your pipeline.
 
 ## How It Works for Git Actions
 Here's how this library works. Let's assume you want to write a task in your pipeline that uses a particular version for your ASP.NET Core project. Today, engineers write the following command in YAML:
@@ -55,7 +53,7 @@ Here's how this library works. Let's assume you want to write a task in your pip
       include-prerelease: true
 ```
 
-The problem with the above YAML code is that it's not that easy to remember. Even while I'm starting at it right now, I just can't seem to remember `actions/setup-dotnet@v1` and what does all of this means to someone who is a full-stack engineer trying to get off the ground as soon, easy and as fast as possible? Here's how the very same code above would look like in ADotNet:
+The problem with the above YAML code is that it's not that easy to remember. Even while I'm staring at it, I just can't seem to remember `actions/setup-dotnet@v1` and what does this mean to someone who is a full-stack engineer trying to get off the ground as soon as possible? Here's how the very same code above would look like in ADotNet:
 
 ```csharp
   new SetupDotNetTaskV1
