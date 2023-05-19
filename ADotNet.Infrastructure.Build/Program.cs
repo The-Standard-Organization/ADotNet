@@ -123,8 +123,7 @@ namespace ADotNet.Infrastructure.Build
                             {
                                 Name = "Configure Git",
                                 Run =
-                                    "git config user.name \"GitHub Action\""
-                                    + "\r"
+                                    "git config user.name \"GitHub Action\"\r"
                                     + "git config user.email \"action@github.com\""
                             },
 
