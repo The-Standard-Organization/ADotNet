@@ -12,14 +12,14 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class TagJob
     {
-        [YamlMember(Order = 0, Alias = "if", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public string If { get; set; }
-
-        [YamlMember(Order = 1, Alias = "runs-on")]
+        [YamlMember(Order = 0, Alias = "runs-on")]
         public string RunsOn { get; set; }
 
-        [YamlMember(Order = 2, Alias = "needs", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 1, Alias = "needs", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string[] Needs { get; set; }
+
+        [YamlMember(Order = 2, Alias = "if", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public string If { get; set; }
 
         [YamlMember(Order = 3, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public Dictionary<string, string> EnvironmentVariables { get; set; }
