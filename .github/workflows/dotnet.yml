@@ -47,13 +47,13 @@ jobs:
     needs:
     - build
     if: >-
-      needs.build.result == 'success' && 
+      needs.build.result == 'success' &&
 
-      github.event.pull_request.merged && 
+      github.event.pull_request.merged &&
 
-      github.event.pull_request.base.ref == 'master' && 
+      github.event.pull_request.base.ref == 'master' &&
 
-      startsWith(github.event.pull_request.title, 'RELEASES:') && 
+      startsWith(github.event.pull_request.title, 'RELEASES:') &&
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
@@ -75,7 +75,7 @@ jobs:
     - name: Authenticate with GitHub
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GITHUB_PAT_FOR_TAGGING }}
+        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Add Release Tag
       run: |-
         git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
@@ -83,7 +83,7 @@ jobs:
     - name: Create Release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_PAT_FOR_TAGGING }}
+        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
       with:
         tag_name: v${{ steps.extract_version.outputs.version_number }}
         release_name: Release - v${{ steps.extract_version.outputs.version_number }}
