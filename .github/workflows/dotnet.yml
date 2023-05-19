@@ -46,7 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
     - build
-    if: >
+    if: >-
+      needs.build.result == 'success' &&
+
       github.event.pull_request.merged &&
 
       github.event.pull_request.base.ref == 'master' &&
@@ -92,3 +94,23 @@ jobs:
           #### Release Notes
 
           ${{ steps.extract_version.outputs.package_release_notes }}
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+    - add_tag
+    if: needs.add_tag.result == 'success'
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup .Net
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.201
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Pack NuGet Package
+      run: dotnet pack --configuration Release
+    - name: Push NuGet Package
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
