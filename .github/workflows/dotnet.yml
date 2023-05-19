@@ -47,7 +47,6 @@ jobs:
     needs:
     - build
     if: >
-      ${{ success() }} &&
       github.event.pull_request.merged &&
       github.event.pull_request.base.ref == 'master' &&
       startsWith(github.event.pull_request.title, 'RELEASES:') &&

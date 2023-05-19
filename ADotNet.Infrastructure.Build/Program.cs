@@ -89,8 +89,7 @@ namespace ADotNet.Infrastructure.Build
                         Needs = new string[] { "build" },
 
                         If =
-                        "${{ success() }} &&\r"
-                        + "github.event.pull_request.merged &&\r"
+                        "github.event.pull_request.merged &&\r"
                         + "github.event.pull_request.base.ref == 'master' &&\r"
                         + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
                         + "contains(github.event.pull_request.labels.*.name, 'RELEASES')\r",
