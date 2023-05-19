@@ -58,19 +58,33 @@ jobs:
     - name: Extract Version Number
       id: extract_version
       run: |-
-        echo "::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)"
+        echo "version_number=$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)" >> $GITHUB_OUTPUT
+        echo "package_release_notes=$(grep -oP '(?<=<PackageReleaseNotes>)[^<]+' ADotNet/ADotNet.csproj)" >> $GITHUB_OUTPUT
     - name: Print Version Number
       run: |-
-        echo "Version number is ${{ steps.extract_version.outputs.version_number }}"
+        echo "Version number - v${{ steps.extract_version.outputs.version_number }}"
+        echo "Release Notes - ${{ steps.extract_version.outputs.package_release_notes }}"
+    - name: Configure Git
+      run: |-
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
     - name: Authenticate with GitHub
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
-    - name: Configure Git
+    - name: Add Release Tag
       run: |-
-        git config user.name "Add Git Release Tag Action"
-        git config user.email "github.action@noreply.github.com"
-    - name: Add Git Tag - Release
-      run: |-
-        git tag -a "release-${{ steps.extract_version.outputs.version_number }}" -m "Release ${{ steps.extract_version.outputs.version_number }}"
+        git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
         git push origin --tags
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
+      with:
+        tag_name: v${{ steps.extract_version.outputs.version_number }}
+        release_name: Release - v${{ steps.extract_version.outputs.version_number }}
+        body: >-
+          ### Release - v${{ steps.extract_version.outputs.version_number }}
+
+          #### Release Notes
+          ${{ steps.extract_version.outputs.package_release_notes }}

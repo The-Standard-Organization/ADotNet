@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -105,13 +106,26 @@ namespace ADotNet.Infrastructure.Build
                             {
                                 Name = "Extract Version Number",
                                 Id = "extract_version",
-                                Run = "echo \"::set-output name=version_number::$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)\""
+                                Run =
+                                    "echo \"version_number=$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT\r"
+                                    + "echo \"package_release_notes=$(grep -oP '(?<=<PackageReleaseNotes>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT"
                             },
 
                             new ShellScriptTask
                             {
                                 Name = "Print Version Number",
-                                Run = "echo \"Version number is ${{ steps.extract_version.outputs.version_number }}\""
+                                Run =
+                                    "echo \"Version number - v${{ steps.extract_version.outputs.version_number }}\"\r"
+                                    + "echo \"Release Notes - ${{ steps.extract_version.outputs.package_release_notes }}\""
+                            },
+
+                            new ShellScriptTask
+                            {
+                                Name = "Configure Git",
+                                Run =
+                                    "git config user.name \"GitHub Action\""
+                                    + "\r"
+                                    + "git config user.email \"action@github.com\""
                             },
 
                             new CheckoutTaskV3
@@ -125,27 +139,49 @@ namespace ADotNet.Infrastructure.Build
 
                             new ShellScriptTask
                             {
-                                Name = "Configure Git",
+                                Name = "Add Release Tag",
                                 Run =
-                                    "git config user.name \"Add Git Release Tag Action\""
-                                    + "\r"
-                                    + "git config user.email \"github.action@noreply.github.com\""
-                            },
-
-                            new ShellScriptTask
-                            {
-                                Name = "Add Git Tag - Release",
-                                Run =
-                                    "git tag -a \"release-${{ steps.extract_version.outputs.version_number }}\" -m \"Release ${{ steps.extract_version.outputs.version_number }}\""
-                                    + "\r"
+                                    "git tag -a \"v${{ steps.extract_version.outputs.version_number }}\" -m \"Release - v${{ steps.extract_version.outputs.version_number }}\"\r"
                                     + "git push origin --tags"
                             },
+
+                            new ReleaseTaskV1
+                            {
+                                Name = "Create Release",
+                                Uses = "actions/create-release@v1",
+
+                                EnvironmentVariables = new Dictionary<string, string>
+                                {
+                                    { "GITHUB_TOKEN", "${{ secrets.PAT_FOR_TAGGING }}" }
+                                },
+
+                                With = new Dictionary<string, string>
+                                {
+                                    { "tag_name", "v${{ steps.extract_version.outputs.version_number }}" },
+                                    { "release_name", "Release - v${{ steps.extract_version.outputs.version_number }}" },
+
+                                    { "body",
+                                        "### Release - v${{ steps.extract_version.outputs.version_number }}\r"
+                                        + "\r"
+                                        + "#### Release Notes\r"
+                                        + "${{ steps.extract_version.outputs.package_release_notes }}"
+                                    },
+                                }
+                            }
                         }
                     }
                 }
             };
 
-            aDotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../.github/workflows/dotnet.yml");
+            string buildScriptPath = "../../../../.github/workflows/dotnet.yml";
+            string directoryPath = Path.GetDirectoryName(buildScriptPath);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            aDotNetClient.SerializeAndWriteToFile(githubPipeline, path: buildScriptPath);
         }
     }
 }
