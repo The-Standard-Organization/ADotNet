@@ -46,12 +46,14 @@ jobs:
     runs-on: ubuntu-latest
     needs:
     - build
-    if: >
-      github.event.pull_request.merged &&
+    if: >-
+      needs.build.result == 'success' && 
 
-      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.merged && 
 
-      startsWith(github.event.pull_request.title, 'RELEASES:') &&
+      github.event.pull_request.base.ref == 'master' && 
+
+      startsWith(github.event.pull_request.title, 'RELEASES:') && 
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
@@ -73,7 +75,7 @@ jobs:
     - name: Authenticate with GitHub
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.PAT_FOR_TAGGING }}
+        token: ${{ secrets.GITHUB_PAT_FOR_TAGGING }}
     - name: Add Release Tag
       run: |-
         git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
@@ -81,7 +83,7 @@ jobs:
     - name: Create Release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_PAT_FOR_TAGGING }}
       with:
         tag_name: v${{ steps.extract_version.outputs.version_number }}
         release_name: Release - v${{ steps.extract_version.outputs.version_number }}
@@ -92,3 +94,23 @@ jobs:
           #### Release Notes
 
           ${{ steps.extract_version.outputs.package_release_notes }}
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+    - add_tag
+    if: needs.add_tag.result == 'success'
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup .Net
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.201
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Pack NuGet Package
+      run: dotnet pack --configuration Release
+    - name: Push NuGet Package
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}

@@ -89,10 +89,11 @@ namespace ADotNet.Infrastructure.Build
                         Needs = new string[] { "build" },
 
                         If =
-                        "github.event.pull_request.merged &&\r"
-                        + "github.event.pull_request.base.ref == 'master' &&\r"
-                        + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
-                        + "contains(github.event.pull_request.labels.*.name, 'RELEASES')\r",
+                            "needs.build.result == 'success' &&\r"
+                            + "github.event.pull_request.merged &&\r"
+                            + "github.event.pull_request.base.ref == 'master' &&\r"
+                            + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
+                            + "contains(github.event.pull_request.labels.*.name, 'RELEASES')",
 
                         Steps = new List<GithubTask>
                         {
@@ -122,8 +123,7 @@ namespace ADotNet.Infrastructure.Build
                             {
                                 Name = "Configure Git",
                                 Run =
-                                    "git config user.name \"GitHub Action\""
-                                    + "\r"
+                                    "git config user.name \"GitHub Action\"\r"
                                     + "git config user.email \"action@github.com\""
                             },
 
@@ -168,6 +168,54 @@ namespace ADotNet.Infrastructure.Build
                                 }
                             }
                         }
+                    },
+                    Publish = new PublishJob
+                    {
+                        RunsOn = BuildMachines.UbuntuLatest,
+                        Needs = new string[] { "add_tag" },
+
+                        If =
+                            "needs.add_tag.result == 'success'",
+
+                        Steps = new List<GithubTask> {
+                            new CheckoutTaskV3
+                            {
+                                Name = "Check out"
+                            },
+
+                            new SetupDotNetTaskV3
+                            {
+                                Name = "Setup .Net",
+
+                                TargetDotNetVersion = new TargetDotNetVersionV3
+                                {
+                                    DotNetVersion = "7.0.201"
+                                }
+                            },
+
+                            new RestoreTask
+                            {
+                                Name = "Restore"
+                            },
+
+                            new DotNetBuildTask
+                            {
+                                Name = "Build",
+                                Run = "dotnet build --no-restore --configuration Release"
+                            },
+
+                            new PackTask
+                            {
+                                Name = "Pack NuGet Package",
+
+                            },
+
+                            new NugetPushTask
+                            {
+                                Name = "Push NuGet Package",
+                            }
+
+                        },
                     }
                 }
             };

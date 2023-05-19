@@ -15,5 +15,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 1, Alias = "add_tag", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public TagJob AddTag { get; set; }
+
+        [YamlMember(Order = 2, Alias = "publish", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public PublishJob Publish { get; set; }
     }
 }
