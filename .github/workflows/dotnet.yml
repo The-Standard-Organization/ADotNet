@@ -75,7 +75,7 @@ jobs:
     - name: Authenticate with GitHub
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.NUGET_ACCESS }}
+        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Add Release Tag
       run: |-
         git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
@@ -83,7 +83,7 @@ jobs:
     - name: Create Release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.NUGET_ACCESS }}
+        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
       with:
         tag_name: v${{ steps.extract_version.outputs.version_number }}
         release_name: Release - v${{ steps.extract_version.outputs.version_number }}
@@ -113,4 +113,4 @@ jobs:
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release
     - name: Push NuGet Package
-      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }}

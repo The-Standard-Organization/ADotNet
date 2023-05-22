@@ -132,7 +132,7 @@ namespace ADotNet.Infrastructure.Build
                                 Name = "Authenticate with GitHub",
                                 With = new Dictionary<string, string>
                                 {
-                                    { "token", "${{ secrets.NUGET_ACCESS }}" }
+                                    { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
                                 }
                             },
 
@@ -151,7 +151,7 @@ namespace ADotNet.Infrastructure.Build
 
                                 EnvironmentVariables = new Dictionary<string, string>
                                 {
-                                    { "GITHUB_TOKEN", "${{ secrets.NUGET_ACCESS }}" }
+                                    { "GITHUB_TOKEN", "${{ secrets.PAT_FOR_TAGGING }}" }
                                 },
 
                                 With = new Dictionary<string, string>
