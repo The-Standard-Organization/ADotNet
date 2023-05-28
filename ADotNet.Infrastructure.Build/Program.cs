@@ -47,7 +47,7 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Build = new BuildJob
                     {
-                        RunsOn = BuildMachines.Windows2019,
+                        RunsOn = BuildMachines.UbuntuLatest,
 
                         Steps = new List<GithubTask>
                         {
@@ -207,14 +207,13 @@ namespace ADotNet.Infrastructure.Build
                             new PackTask
                             {
                                 Name = "Pack NuGet Package",
-
+                                Run = "dotnet pack --configuration Release --include-symbols"
                             },
 
                             new NugetPushTask
                             {
                                 Name = "Push NuGet Package",
                             }
-
                         },
                     }
                 }

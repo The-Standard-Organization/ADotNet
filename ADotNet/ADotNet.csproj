@@ -20,9 +20,10 @@
 			Upgrade today to leverage these powerful features and improve your development workflow.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>2.2.0.0</AssemblyVersion>
-		<FileVersion>2.2.0.0</FileVersion>
-		<Version>2.2.0.0</Version>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AssemblyVersion>2.2.0.1</AssemblyVersion>
+		<FileVersion>2.2.0.1</FileVersion>
+		<Version>2.2.0.1</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
@@ -36,6 +37,14 @@
 	  <PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Include="License.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
