@@ -113,4 +113,4 @@ jobs:
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release --include-symbols
     - name: Push NuGet Package
-      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }}
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate

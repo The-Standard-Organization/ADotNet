@@ -21,9 +21,9 @@
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>2.2.0.1</AssemblyVersion>
-		<FileVersion>2.2.0.1</FileVersion>
-		<Version>2.2.0.1</Version>
+		<AssemblyVersion>2.2.0.2</AssemblyVersion>
+		<FileVersion>2.2.0.2</FileVersion>
+		<Version>2.2.0.2</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
