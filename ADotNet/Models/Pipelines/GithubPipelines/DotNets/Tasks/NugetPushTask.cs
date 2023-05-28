@@ -11,6 +11,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
     public class NugetPushTask : GithubTask
     {
         [YamlMember(Order = 1)]
-        public string Run = "dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }}";
+        public string Run = "dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate";
     }
 }
