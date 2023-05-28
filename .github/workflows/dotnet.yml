@@ -28,7 +28,7 @@ env:
     }}
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: ubuntu-latest
     steps:
     - name: Check out
       uses: actions/checkout@v3
@@ -111,6 +111,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
     - name: Pack NuGet Package
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release --include-symbols
     - name: Push NuGet Package
       run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }}
