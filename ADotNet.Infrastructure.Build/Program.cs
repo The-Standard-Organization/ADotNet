@@ -104,19 +104,22 @@ namespace ADotNet.Infrastructure.Build
 
                             new ShellScriptTask
                             {
-                                Name = "Extract Version Number",
+                                Name = "Extract Version Number and Release Notes",
                                 Id = "extract_version",
                                 Run =
                                     "echo \"version_number=$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT\r"
-                                    + "echo \"package_release_notes=$(grep -oP '(?<=<PackageReleaseNotes>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT"
+                                    + "package_release_notes=$(awk -v RS='' -F'</?PackageReleaseNotes>' 'NF>1{print $2}' BuildTestApp/BuildTestApp.csproj | sed -e 's/^[[:space:]]*//')\r"
+                                    + "echo 'package_release_notes<<EOF' >> $GITHUB_ENV\r"
+                                    + "echo -e \"$package_release_notes\" >> $GITHUB_ENV\r"
+                                    + "echo 'EOF' >> $GITHUB_ENV"
                             },
 
                             new ShellScriptTask
                             {
-                                Name = "Print Version Number",
+                                Name = "Print Extract Version Number and Release Notes",
                                 Run =
                                     "echo \"Version number - v${{ steps.extract_version.outputs.version_number }}\"\r"
-                                    + "echo \"Release Notes - ${{ steps.extract_version.outputs.package_release_notes }}\""
+                                    + "echo \"Release Notes - ${{ env.package_release_notes }}\""
                             },
 
                             new ShellScriptTask
@@ -160,10 +163,10 @@ namespace ADotNet.Infrastructure.Build
                                     { "release_name", "Release - v${{ steps.extract_version.outputs.version_number }}" },
 
                                     { "body",
-                                        "### Release - v${{ steps.extract_version.outputs.version_number }}\r"
+                                        "## Release - v${{ steps.extract_version.outputs.version_number }}\r"
                                         + "\r"
-                                        + "#### Release Notes\r"
-                                        + "${{ steps.extract_version.outputs.package_release_notes }}"
+                                        + "### Release Notes\r"
+                                        + "${{ env.package_release_notes }}"
                                     },
                                 }
                             }
