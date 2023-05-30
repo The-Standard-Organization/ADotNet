@@ -316,6 +316,10 @@ And finally, here's the result:
 
 ![image](https://user-images.githubusercontent.com/89320816/137255979-8e15772e-f3f7-48e3-bc57-8b6cf32c7a09.png)
 
+## Additional Code Samples
+- [GitHub Actions](Documentation/GitHub/0.%20Introduction.md#adotnet-ado-dot-net-for-github-actions)
+- Azure DevOps
+
 ## Some Odd Decisions
 I have intentionally limited some of the capabilities in this library to ensure any contributions go to this repository so everyone can benefit from the updates. For instance, I could've easily made selecting a virtual machine as a string input to allow for anyone to pass in whatever vm they need. But the problem with that is for those who will need the same thing and have to do the same research to find the right VM for their build.
 
