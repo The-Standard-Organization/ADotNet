@@ -19,6 +19,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public Dictionary<string, string> EnvironmentVariables { get; set; }
 
-        public Jobs Jobs { get; set; }
+        [YamlMember(Alias = "jobs")]
+        public Dictionary<string, Job> Jobs { get; set; }
     }
 }
