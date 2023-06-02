@@ -89,8 +89,4 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Models\Pipelines\GithubPipelines\DotNets\Steps\" />
-	</ItemGroup>
-
 </Project>

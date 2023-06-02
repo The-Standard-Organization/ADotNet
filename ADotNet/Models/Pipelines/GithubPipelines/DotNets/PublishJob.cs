@@ -13,7 +13,7 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    public class PublishJob
+    public class PublishJob : Job
     {
         public PublishJob(
             string runsOn,
@@ -65,38 +65,38 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         }
 
         [YamlMember(Order = 0, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new string Name { get; private set; }
+        public new string Name { get; set; }
 
-        [YamlMember(Order = 1, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new string Environment { get; private set; }
+        [YamlMember(Order = 1, Alias = "runs-on")]
+        public new string RunsOn { get; set; }
 
-        [YamlMember(Order = 2, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new DefaultValues Defaults { get; private set; }
+        [YamlMember(Order = 2, Alias = "needs", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new string[] Needs { get; set; }
 
-        [YamlMember(Order = 3, Alias = "runs-on")]
-        public new string RunsOn { get; private set; }
+        [YamlMember(Order = 3, Alias = "if", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new string If { get; set; }
 
-        [YamlMember(Order = 4)]
-        public new List<GithubTask> Steps { get; private set; }
+        [YamlMember(Order = 4, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new string Environment { get; set; }
+
+        [YamlMember(Order = 5, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new DefaultValues Defaults { get; set; }
+
+        [YamlMember(Order = 6)]
+        public new List<GithubTask> Steps { get; set; }
 
         [DefaultValue(0)]
-        [YamlMember(Order = 5, Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new int TimeoutInMinutes { get; private set; }
-
-        [YamlMember(Order = 6, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new Strategy Strategy { get; private set; }
-
-        [YamlMember(Order = 7, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new Dictionary<string, string> EnvironmentVariables { get; private set; }
+        [YamlMember(Order = 7, Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new int TimeoutInMinutes { get; set; }
 
         [YamlMember(Order = 8, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new Dictionary<string, string> Outputs { get; private set; }
+        public new Strategy Strategy { get; set; }
 
-        [YamlMember(Order = 9, Alias = "needs", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new string[] Needs { get; private set; }
+        [YamlMember(Order = 9, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new Dictionary<string, string> EnvironmentVariables { get; set; }
 
-        [YamlMember(Order = 10, Alias = "if", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new string If { get; private set; }
+        [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new Dictionary<string, string> Outputs { get; set; }
     }
 }
 

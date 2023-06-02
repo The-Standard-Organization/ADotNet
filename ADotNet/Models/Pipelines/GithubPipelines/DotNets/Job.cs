@@ -46,18 +46,5 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> Outputs { get; set; }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
