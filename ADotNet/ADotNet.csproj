@@ -60,6 +60,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Xeption" Version="2.5.0" />
 		<PackageReference Include="YamlDotNet" Version="13.1.0" />
 	</ItemGroup>
@@ -86,6 +87,10 @@
 		<None Update="Resources\ADotNet.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Pipelines\GithubPipelines\DotNets\Steps\" />
 	</ItemGroup>
 
 </Project>

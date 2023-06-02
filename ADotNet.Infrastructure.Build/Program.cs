@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using ADotNet.Clients;
@@ -43,178 +44,161 @@ namespace ADotNet.Infrastructure.Build
                     { "IS_RELEASE_CANDIDATE", EnvironmentVariables.IsGitHubReleaseCandidate() }
                 },
 
-                Jobs = new Jobs
+                Jobs = new Dictionary<string, Job>
                 {
-                    Build = new BuildJob
                     {
-                        RunsOn = BuildMachines.UbuntuLatest,
-
-                        Steps = new List<GithubTask>
+                        "build",
+                        new Job
                         {
-                            new CheckoutTaskV3
-                            {
-                                Name = "Check out"
-                            },
+                            RunsOn = BuildMachines.UbuntuLatest,
 
-                            new SetupDotNetTaskV3
+                            Steps = new List<GithubTask>
                             {
-                                Name = "Setup .Net",
-
-                                TargetDotNetVersion = new TargetDotNetVersionV3
+                                new CheckoutTaskV3
                                 {
-                                    DotNetVersion = "7.0.201"
-                                }
-                            },
-
-                            new RestoreTask
-                            {
-                                Name = "Restore"
-                            },
-
-                            new DotNetBuildTask
-                            {
-                                Name = "Build"
-                            },
-
-                            new TestTask
-                            {
-                                Name = "Test"
-                            }
-                        }
-                    },
-                    AddTag = new TagJob
-                    {
-                        RunsOn = BuildMachines.UbuntuLatest,
-
-                        Needs = new string[] { "build" },
-
-                        If =
-                            "needs.build.result == 'success' &&\r"
-                            + "github.event.pull_request.merged &&\r"
-                            + "github.event.pull_request.base.ref == 'master' &&\r"
-                            + "startsWith(github.event.pull_request.title, 'RELEASES:') &&\r"
-                            + "contains(github.event.pull_request.labels.*.name, 'RELEASES')",
-
-                        Steps = new List<GithubTask>
-                        {
-                            new CheckoutTaskV3
-                            {
-                                Name = "Checkout code"
-                            },
-
-                            new ShellScriptTask
-                            {
-                                Name = "Extract Version Number",
-                                Id = "extract_version",
-                                Run =
-                                    "echo \"version_number=$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT\r"
-                                    + "echo \"package_release_notes=$(grep -oP '(?<=<PackageReleaseNotes>)[^<]+' ADotNet/ADotNet.csproj)\" >> $GITHUB_OUTPUT"
-                            },
-
-                            new ShellScriptTask
-                            {
-                                Name = "Print Version Number",
-                                Run =
-                                    "echo \"Version number - v${{ steps.extract_version.outputs.version_number }}\"\r"
-                                    + "echo \"Release Notes - ${{ steps.extract_version.outputs.package_release_notes }}\""
-                            },
-
-                            new ShellScriptTask
-                            {
-                                Name = "Configure Git",
-                                Run =
-                                    "git config user.name \"GitHub Action\"\r"
-                                    + "git config user.email \"action@github.com\""
-                            },
-
-                            new CheckoutTaskV3
-                            {
-                                Name = "Authenticate with GitHub",
-                                With = new Dictionary<string, string>
-                                {
-                                    { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
-                                }
-                            },
-
-                            new ShellScriptTask
-                            {
-                                Name = "Add Release Tag",
-                                Run =
-                                    "git tag -a \"v${{ steps.extract_version.outputs.version_number }}\" -m \"Release - v${{ steps.extract_version.outputs.version_number }}\"\r"
-                                    + "git push origin --tags"
-                            },
-
-                            new ReleaseTaskV1
-                            {
-                                Name = "Create Release",
-                                Uses = "actions/create-release@v1",
-
-                                EnvironmentVariables = new Dictionary<string, string>
-                                {
-                                    { "GITHUB_TOKEN", "${{ secrets.PAT_FOR_TAGGING }}" }
+                                    Name = "Check out"
                                 },
 
-                                With = new Dictionary<string, string>
+                                new SetupDotNetTaskV3
                                 {
-                                    { "tag_name", "v${{ steps.extract_version.outputs.version_number }}" },
-                                    { "release_name", "Release - v${{ steps.extract_version.outputs.version_number }}" },
+                                    Name = "Setup .Net",
 
-                                    { "body",
-                                        "### Release - v${{ steps.extract_version.outputs.version_number }}\r"
-                                        + "\r"
-                                        + "#### Release Notes\r"
-                                        + "${{ steps.extract_version.outputs.package_release_notes }}"
-                                    },
+                                    With = new TargetDotNetVersionV3
+                                    {
+                                        DotNetVersion = "7.0.201"
+                                    }
+                                },
+
+                                new RestoreTask
+                                {
+                                    Name = "Restore"
+                                },
+
+                                new DotNetBuildTask
+                                {
+                                    Name = "Build"
+                                },
+
+                                new TestTask
+                                {
+                                    Name = "Test"
                                 }
                             }
                         }
                     },
-                    Publish = new PublishJob
                     {
-                        RunsOn = BuildMachines.UbuntuLatest,
-                        Needs = new string[] { "add_tag" },
+                        "add_tag",
+                        new Job
+                        {
+                            RunsOn = BuildMachines.UbuntuLatest,
 
-                        If =
-                            "needs.add_tag.result == 'success'",
+                            Needs = new string[] { "build" },
 
-                        Steps = new List<GithubTask> {
-                            new CheckoutTaskV3
+                            If =
+                                "needs.build.result == 'success' &&" + Environment.NewLine
+                                + "github.event.pull_request.merged &&" + Environment.NewLine
+                                + "github.event.pull_request.base.ref == 'master' &&" + Environment.NewLine
+                                + "startsWith(github.event.pull_request.title, 'RELEASES:') &&" + Environment.NewLine
+                                + "contains(github.event.pull_request.labels.*.name, 'RELEASES')",
+
+                            Steps = new List<GithubTask>
                             {
-                                Name = "Check out"
-                            },
-
-                            new SetupDotNetTaskV3
-                            {
-                                Name = "Setup .Net",
-
-                                TargetDotNetVersion = new TargetDotNetVersionV3
+                                new ConfigureGitTask()
                                 {
-                                    DotNetVersion = "7.0.201"
+                                    Name = "Configure Git",
+                                },
+
+                                new CheckoutTaskV3
+                                {
+                                    Name = "Checkout code",
+                                    With = new Dictionary<string, string>
+                                    {
+                                        { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
+                                    }
+                                },
+
+                                new ExtractProjectPropertyTask(
+                                    projectRelativePath: "ADotNet/ADotNet.csproj",
+                                    propertyName: "Version",
+                                    environmentVariableName: "version_number")
+                                {
+                                    Name = $"Extract Version"
+                                },
+
+                                new ExtractProjectPropertyTask(
+                                    projectRelativePath: "ADotNet/ADotNet.csproj",
+                                    propertyName: "PackageReleaseNotes",
+                                    environmentVariableName: "package_release_notes")
+                                {
+                                    Name = $"Extract Package Release Notes"
+                                },
+
+                                new CreateGitHubTagTask(
+                                    tagName: "v${{ env.version_number }}",
+                                    tagMessage: "Release = v${{ env.version_number }}")
+                                {
+                                    Name = "Create GitHub Tag",
+                                },
+
+                                new CreateGitHubReleaseTask(
+                                    releaseName: "Release = v${{ env.version_number }}",
+                                    tagName: "v${{ env.version_number }}",
+                                    releaseNotes: "${{ env.package_release_notes }}",
+                                    githubToken: "${{ secrets.PAT_FOR_TAGGING }}")
+                                {
+                                    Name = "Create GitHub Release",
+                                    Uses = "actions/create-release@v1",
+                                },
+                            }
+                        }
+                    },
+                    {
+                        "publish",
+                        new Job
+                        {
+                            RunsOn = BuildMachines.UbuntuLatest,
+                            Needs = new string[] { "add_tag" },
+
+                            If =
+                                "needs.add_tag.result == 'success'",
+
+                            Steps = new List<GithubTask> {
+                                new CheckoutTaskV3
+                                {
+                                    Name = "Check out"
+                                },
+
+                                new SetupDotNetTaskV3
+                                {
+                                    Name = "Setup .Net",
+
+                                    With = new TargetDotNetVersionV3
+                                    {
+                                        DotNetVersion = "7.0.201"
+                                    }
+                                },
+
+                                new RestoreTask
+                                {
+                                    Name = "Restore"
+                                },
+
+                                new DotNetBuildReleaseTask
+                                {
+                                    Name = "Build",
+                                },
+
+                                new PackNugetTaskWithSymbols
+                                {
+                                    Name = "Pack NuGet Package",
+                                },
+
+                                new NugetPushTask(nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
+                                {
+                                    Name = "Push NuGet Package",
                                 }
                             },
-
-                            new RestoreTask
-                            {
-                                Name = "Restore"
-                            },
-
-                            new DotNetBuildTask
-                            {
-                                Name = "Build",
-                                Run = "dotnet build --no-restore --configuration Release"
-                            },
-
-                            new PackTask
-                            {
-                                Name = "Pack NuGet Package",
-                                Run = "dotnet pack --configuration Release --include-symbols"
-                            },
-
-                            new NugetPushTask
-                            {
-                                Name = "Push NuGet Package",
-                            }
-                        },
+                        }
                     }
                 }
             };
