@@ -4,13 +4,17 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class TestTask : GithubTask
+    /// <summary>
+    /// A task to run tests.
+    /// </summary>
+    public sealed class TestTask : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Run = "dotnet test --no-build --verbosity normal";
+        /// <summary>
+        /// Gets or sets the command to execute for the task.
+        /// Default value: "dotnet test --no-build --verbosity normal".
+        /// </summary>
+        public override string Run { get; set; } = "dotnet test --no-build --verbosity normal";
     }
 }
