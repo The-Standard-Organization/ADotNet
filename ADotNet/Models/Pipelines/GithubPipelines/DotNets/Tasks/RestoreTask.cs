@@ -4,13 +4,17 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class RestoreTask : GithubTask
+    /// <summary>
+    /// A task to restore the dependencies of a .NET project.
+    /// </summary>
+    public sealed class RestoreTask : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Run = "dotnet restore";
+        /// <summary>
+        /// Gets or sets the command to execute for the task.
+        /// Default value: "dotnet restore".
+        /// </summary>
+        public override string Run { get; set; } = "dotnet restore";
     }
 }
