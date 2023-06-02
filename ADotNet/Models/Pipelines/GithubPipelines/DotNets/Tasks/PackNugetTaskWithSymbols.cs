@@ -7,14 +7,14 @@
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
     /// <summary>
-    /// A task that packs the project into a nuget package.
+    /// A task that packs the project into a nuget package including the symbols.
     /// </summary>
-    public sealed class PackTask : GithubTask
+    public sealed class PackNugetTaskWithSymbols : GithubTask
     {
         /// <summary>
-        /// Gets or sets the command push a NuGet package. If a value is specified, 
-        /// Default value: "dotnet pack --configuration Release".
+        /// Gets or sets the command to execute for the task.
+        /// Default value: "dotnet pack --configuration Release --include-symbols".
         /// </summary>
-        public override string Run { get; set; } = "dotnet pack --configuration Release";
+        public override string Run { get; set; } = "dotnet pack --configuration Release --include-symbols";
     }
 }
