@@ -7,14 +7,14 @@
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
     /// <summary>
-    /// A task to build .NET project.
+    /// A task to build .NET project with Release configuration.
     /// </summary>
-    public sealed class DotNetBuildTask : GithubTask
+    public sealed class DotNetBuildReleaseTask : GithubTask
     {
         /// <summary>
         /// Gets or sets the command to execute for the task.
-        /// The default value is: "dotnet build --no-restore".
+        /// The default value is: "dotnet build --no-restore --configuration Release".
         /// </summary>
-        public override string Run { get; set; } = "dotnet build --no-restore";
+        public override string Run { get; set; } = "dotnet build --no-restore --configuration Release";
     }
 }
