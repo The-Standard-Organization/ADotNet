@@ -8,11 +8,13 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class DotNetBuildTask : GithubTask
+    public class NuGetPushTask : GithubTask
     {
         [YamlMember(Order = 1)]
-        public string Run = "dotnet build --no-restore";
+        public string Run = "dotnet nuget push";
 
-        internal bool Restore { get; set; }
+        internal string SearchPath { get; set; }
+        internal string ApiKey { get; set; }
+        internal string Destination { get; set; }
     }
 }
