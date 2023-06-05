@@ -19,16 +19,17 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             string projectRelativePath,
             string githubToken,
             string versionEnvironmentVariableName,
-            string packageReleaseNotesEnvironmentVariable)
+            string packageReleaseNotesEnvironmentVariable,
+            string branchName)
         {
             RunsOn = runsOn;
             Needs = new string[] { dependsOn };
 
             If =
-                $"needs.{dependsOn}.result == 'success' &&" + System.Environment.NewLine
-                + "github.event.pull_request.merged &&" + System.Environment.NewLine
-                + "github.event.pull_request.base.ref == 'master' &&" + System.Environment.NewLine
-                + "startsWith(github.event.pull_request.title, 'RELEASES:') &&" + System.Environment.NewLine
+                $"needs.{dependsOn}.result == 'success' && {System.Environment.NewLine}"
+                + $"github.event.pull_request.merged && {System.Environment.NewLine}"
+                + $"github.event.pull_request.base.ref == '{branchName}' && {System.Environment.NewLine}"
+                + $"startsWith(github.event.pull_request.title, 'RELEASES:') && {System.Environment.NewLine}"
                 + "contains(github.event.pull_request.labels.*.name, 'RELEASES')";
 
             Steps = new List<GithubTask>
@@ -43,7 +44,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Name = "Checkout code",
                         With = new Dictionary<string, string>
                         {
-                            { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
+                            { "token", githubToken }
                         }
                     },
 

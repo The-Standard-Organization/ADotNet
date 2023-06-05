@@ -47,13 +47,13 @@ jobs:
     needs:
     - build
     if: >-
-      needs.build.result == 'success' &&
+      needs.build.result == 'success' && 
 
-      github.event.pull_request.merged &&
+      github.event.pull_request.merged && 
 
-      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.base.ref == 'master' && 
 
-      startsWith(github.event.pull_request.title, 'RELEASES:') &&
+      startsWith(github.event.pull_request.title, 'RELEASES:') && 
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
@@ -90,16 +90,16 @@ jobs:
         echo "PackageReleaseNotes - ${{ env.package_release_notes }}"
     - name: Create GitHub Tag
       run: >-
-        git tag -a "v${{ env.version_number }}" -m "Release = v${{ env.version_number }}"
+        git tag -a "v${{ env.version_number }}" -m "Release - v${{ env.version_number }}"
 
         git push origin --tags
     - name: Create GitHub Release
       uses: actions/create-release@v1
       with:
         tag_name: v${{ env.version_number }}
-        release_name: Release = v${{ env.version_number }}
+        release_name: Release - v${{ env.version_number }}
         body: >-
-          ## Release = v${{ env.version_number }}
+          ## Release - v${{ env.version_number }}
 
 
           ### Release Notes
