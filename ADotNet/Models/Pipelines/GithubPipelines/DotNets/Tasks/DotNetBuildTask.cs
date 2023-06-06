@@ -4,13 +4,17 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class DotNetBuildTask : GithubTask
+    /// <summary>
+    /// A task to build .NET project.
+    /// </summary>
+    public sealed class DotNetBuildTask : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Run = "dotnet build --no-restore";
+        /// <summary>
+        /// Gets or sets the command to execute for the task.
+        /// The default value is: "dotnet build --no-restore".
+        /// </summary>
+        public override string Run { get; set; } = "dotnet build --no-restore";
     }
 }

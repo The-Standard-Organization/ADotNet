@@ -128,12 +128,14 @@ namespace ADotNet.Tests.Console
                     }
                 },
 
-                Jobs = new Jobs
+                Jobs = new Dictionary<string, Job>
                 {
-                    Build = new BuildJob
                     {
+                        "build",
+                        new Job
+                    {
+                        Name = "Build",
                         RunsOn = BuildMachines.WindowsLatest,
-
                         EnvironmentVariables = new Dictionary<string, string>
                         {
                             { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
@@ -177,6 +179,7 @@ namespace ADotNet.Tests.Console
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
                             }
                         }
+                    }
                     }
                 }
             };

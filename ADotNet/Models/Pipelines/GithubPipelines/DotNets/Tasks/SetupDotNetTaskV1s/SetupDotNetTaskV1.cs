@@ -10,10 +10,19 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTask
 {
     public class SetupDotNetTaskV1 : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Uses = "actions/setup-dotnet@v1";
+        public SetupDotNetTaskV1()
+        {
+            Uses = "actions/setup-dotnet@v1";
+        }
 
-        [YamlMember(Alias = "with", Order = 2)]
+        /// <summary>
+        /// Represents the usage of an external action or a specific version of an action in a GitHub Actions job step.
+        /// Default value: actions/setup-dotnet@v1
+        /// </summary>
+        [YamlMember(Order = 4, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new string Uses { get; private set; }
+
+        [YamlMember(Order = 5, Alias = "with", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public TargetDotNetVersion TargetDotNetVersion { get; set; }
     }
 }

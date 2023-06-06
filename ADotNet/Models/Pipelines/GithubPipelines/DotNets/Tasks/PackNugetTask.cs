@@ -4,13 +4,17 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class PackTask : GithubTask
+    /// <summary>
+    /// A task that packs the project into a nuget package.
+    /// </summary>
+    public sealed class PackTask : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Run = "dotnet pack --configuration Release";
+        /// <summary>
+        /// Gets or sets the command push a NuGet package. If a value is specified, 
+        /// Default value: "dotnet pack --configuration Release".
+        /// </summary>
+        public override string Run { get; set; } = "dotnet pack --configuration Release";
     }
 }

@@ -6,12 +6,15 @@
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
-    public class CheckoutTaskV2 : GithubTask
+    /// <summary>
+    /// A task to build .NET project with Release configuration.
+    /// </summary>
+    public sealed class DotNetBuildReleaseTask : GithubTask
     {
         /// <summary>
-        /// Represents the usage of an external action or a specific version of an action in a GitHub Actions job step.
-        /// Default value: actions/checkout@v3
+        /// Gets or sets the command to execute for the task.
+        /// The default value is: "dotnet build --no-restore --configuration Release".
         /// </summary>
-        public override string Uses { get; set; } = "actions/checkout@v2";
+        public override string Run { get; set; } = "dotnet build --no-restore --configuration Release";
     }
 }

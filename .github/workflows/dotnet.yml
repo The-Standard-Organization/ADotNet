@@ -47,53 +47,66 @@ jobs:
     needs:
     - build
     if: >-
-      needs.build.result == 'success' &&
+      needs.build.result == 'success' && 
 
-      github.event.pull_request.merged &&
+      github.event.pull_request.merged && 
 
-      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.base.ref == 'master' && 
 
-      startsWith(github.event.pull_request.title, 'RELEASES:') &&
+      startsWith(github.event.pull_request.title, 'RELEASES:') && 
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Extract Version Number
-      id: extract_version
-      run: |-
-        echo "version_number=$(grep -oP '(?<=<Version>)[^<]+' ADotNet/ADotNet.csproj)" >> $GITHUB_OUTPUT
-        echo "package_release_notes=$(grep -oP '(?<=<PackageReleaseNotes>)[^<]+' ADotNet/ADotNet.csproj)" >> $GITHUB_OUTPUT
-    - name: Print Version Number
-      run: |-
-        echo "Version number - v${{ steps.extract_version.outputs.version_number }}"
-        echo "Release Notes - ${{ steps.extract_version.outputs.package_release_notes }}"
     - name: Configure Git
-      run: |-
+      run: >-
         git config user.name "GitHub Action"
+
         git config user.email "action@github.com"
-    - name: Authenticate with GitHub
+    - name: Checkout code
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
-    - name: Add Release Tag
-      run: |-
-        git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
+    - name: Extract Version
+      run: >-
+        version_number=$(awk -v RS='' -F'</?Version>' 'NF>1{print $2}' ADotNet/ADotNet.csproj | sed -e 's/^[[:space:]]*//')
+
+        echo 'version_number<<EOF' >> $GITHUB_ENV
+
+        echo -e "$version_number" >> $GITHUB_ENV
+
+        echo 'EOF' >> $GITHUB_ENV
+
+        echo "Version - ${{ env.version_number }}"
+    - name: Extract Package Release Notes
+      run: >-
+        package_release_notes=$(awk -v RS='' -F'</?PackageReleaseNotes>' 'NF>1{print $2}' ADotNet/ADotNet.csproj | sed -e 's/^[[:space:]]*//')
+
+        echo 'package_release_notes<<EOF' >> $GITHUB_ENV
+
+        echo -e "$package_release_notes" >> $GITHUB_ENV
+
+        echo 'EOF' >> $GITHUB_ENV
+
+        echo "PackageReleaseNotes - ${{ env.package_release_notes }}"
+    - name: Create GitHub Tag
+      run: >-
+        git tag -a "v${{ env.version_number }}" -m "Release - v${{ env.version_number }}"
+
         git push origin --tags
-    - name: Create Release
+    - name: Create GitHub Release
       uses: actions/create-release@v1
+      with:
+        tag_name: v${{ env.version_number }}
+        release_name: Release - v${{ env.version_number }}
+        body: >-
+          ## Release - v${{ env.version_number }}
+
+
+          ### Release Notes
+
+          ${{ env.package_release_notes }}
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
-      with:
-        tag_name: v${{ steps.extract_version.outputs.version_number }}
-        release_name: Release - v${{ steps.extract_version.outputs.version_number }}
-        body: >-
-          ### Release - v${{ steps.extract_version.outputs.version_number }}
-
-
-          #### Release Notes
-
-          ${{ steps.extract_version.outputs.package_release_notes }}
   publish:
     runs-on: ubuntu-latest
     needs:

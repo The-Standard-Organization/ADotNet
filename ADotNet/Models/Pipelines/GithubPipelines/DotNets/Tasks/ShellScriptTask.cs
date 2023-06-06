@@ -4,16 +4,11 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
+using System;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
+    [Obsolete(message: "Use GitHubTask instead")]
     public class ShellScriptTask : GithubTask
-    {
-        [YamlMember(Order = 1, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public string Id { get; set; }
-
-        [YamlMember(Order = 2, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults, ScalarStyle = YamlDotNet.Core.ScalarStyle.Literal)]
-        public string Run { get; set; }
-    }
+    { }
 }

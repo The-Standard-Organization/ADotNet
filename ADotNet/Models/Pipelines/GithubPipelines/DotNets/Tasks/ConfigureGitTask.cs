@@ -9,14 +9,14 @@ using YamlDotNet.Serialization;
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
     /// <summary>
-    /// A task that allows you to push a package file to NuGet.
+    /// A task to build .NET project.
     /// </summary>
-    public sealed class NugetPushTask : GithubTask
+    public sealed class ConfigureGitTask : GithubTask
     {
-        public NugetPushTask(string nugetApiKey)
+        public ConfigureGitTask(string displayName = "GitHub Action", string email = "action@github.com")
         {
-            Run = "dotnet nuget push **/bin/Release/**/*.nupkg --source "
-                + $"https://api.nuget.org/v3/index.json --api-key {nugetApiKey} --skip-duplicate";
+            this.Run = $"git config user.name \"{displayName}\"\r"
+                + $"git config user.email \"{email}\"";
         }
 
         /// <summary>

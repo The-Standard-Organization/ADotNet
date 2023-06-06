@@ -11,10 +11,22 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTask
 {
     public class SetupDotNetTaskV3 : GithubTask
     {
-        [YamlMember(Order = 1)]
-        public string Uses = "actions/setup-dotnet@v3";
+        public SetupDotNetTaskV3()
+        {
+            this.Uses = "actions/setup-dotnet@v3";
+        }
 
-        [YamlMember(Alias = "with", Order = 2)]
-        public TargetDotNetVersionV3 TargetDotNetVersion { get; set; }
+        /// <summary>
+        /// Represents the usage of an external action or a specific version of an action in a GitHub Actions job step.
+        /// Default value: actions/setup-dotnet@v3
+        /// </summary>
+        [YamlMember(Order = 4, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new string Uses { get; private set; }
+
+        /// <summary>
+        /// Used to provide additional configuration or parameters for a specific step in the workflow.
+        /// </summary>
+        [YamlMember(Order = 5, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new TargetDotNetVersionV3 With { get; set; }
     }
 }

@@ -4,10 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
+    [Obsolete("No longer in use.")]
     public class Jobs
     {
         [YamlMember(Order = 0)]
