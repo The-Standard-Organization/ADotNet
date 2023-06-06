@@ -103,11 +103,6 @@ namespace ADotNet.Infrastructure.Build
 
                             Steps = new List<GithubTask>
                             {
-                                new ConfigureGitTask()
-                                {
-                                    Name = "Configure Git",
-                                },
-
                                 new CheckoutTaskV3
                                 {
                                     Name = "Checkout code",
@@ -115,6 +110,11 @@ namespace ADotNet.Infrastructure.Build
                                     {
                                         { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
                                     }
+                                },
+
+                                new ConfigureGitTask()
+                                {
+                                    Name = "Configure Git",
                                 },
 
                                 new ExtractProjectPropertyTask(
