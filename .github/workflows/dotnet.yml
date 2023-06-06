@@ -15,14 +15,14 @@ env:
   IS_RELEASE_CANDIDATE: >-
     ${{
       (
-        github.event_name == 'pull_request' &&
-        startsWith(github.event.pull_request.title, 'RELEASES:') &&
+        github.event_name == 'pull_request' && 
+        startsWith(github.event.pull_request.title, 'RELEASES:') && 
         contains(github.event.pull_request.labels.*.name, 'RELEASES')
       )
       ||
       (
-        github.event_name == 'push' &&
-        startsWith(github.event.head_commit.message, 'RELEASES:') &&
+        github.event_name == 'push' && 
+        startsWith(github.event.head_commit.message, 'RELEASES:') && 
         startsWith(github.ref_name, 'RELEASE')
       )
     }}
@@ -57,15 +57,15 @@ jobs:
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Configure Git
       run: >-
         git config user.name "GitHub Action"
 
         git config user.email "action@github.com"
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Extract Version
       run: >-
         version_number=$(awk -v RS='' -F'</?Version>' 'NF>1{print $2}' ADotNet/ADotNet.csproj | sed -e 's/^[[:space:]]*//')

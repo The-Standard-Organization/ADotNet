@@ -34,11 +34,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
             Steps = new List<GithubTask>
                 {
-                    new ConfigureGitTask()
-                    {
-                        Name = "Configure Git",
-                    },
-
                     new CheckoutTaskV3
                     {
                         Name = "Checkout code",
@@ -46,6 +41,11 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         {
                             { "token", githubToken }
                         }
+                    },
+
+                    new ConfigureGitTask()
+                    {
+                        Name = "Configure Git",
                     },
 
                     new ExtractProjectPropertyTask(

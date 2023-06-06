@@ -95,19 +95,14 @@ namespace ADotNet.Infrastructure.Build
                             Needs = new string[] { "build" },
 
                             If =
-                                "needs.build.result == 'success' &&" + Environment.NewLine
-                                + "github.event.pull_request.merged &&" + Environment.NewLine
-                                + "github.event.pull_request.base.ref == 'master' &&" + Environment.NewLine
-                                + "startsWith(github.event.pull_request.title, 'RELEASES:') &&" + Environment.NewLine
-                                + "contains(github.event.pull_request.labels.*.name, 'RELEASES')",
+                                $"needs.build.result == 'success' && {Environment.NewLine}"
+                                + $"github.event.pull_request.merged && {Environment.NewLine}"
+                                + $"github.event.pull_request.base.ref == 'master' && {Environment.NewLine}"
+                                + $"startsWith(github.event.pull_request.title, 'RELEASES:') && {Environment.NewLine}"
+                                + $"contains(github.event.pull_request.labels.*.name, 'RELEASES')",
 
                             Steps = new List<GithubTask>
                             {
-                                new ConfigureGitTask()
-                                {
-                                    Name = "Configure Git",
-                                },
-
                                 new CheckoutTaskV3
                                 {
                                     Name = "Checkout code",
@@ -115,6 +110,11 @@ namespace ADotNet.Infrastructure.Build
                                     {
                                         { "token", "${{ secrets.PAT_FOR_TAGGING }}" }
                                     }
+                                },
+
+                                new ConfigureGitTask()
+                                {
+                                    Name = "Configure Git",
                                 },
 
                                 new ExtractProjectPropertyTask(
