@@ -235,50 +235,61 @@ Here's something I'm using in my open source [OtripleS](https://github.com/hassa
           }
       },
 
-      Jobs = new Jobs
+      Jobs = new Dictionary<string, Job>
       {
-          Build = new BuildJob
           {
-              RunsOn = BuildMachines.Windows2019,
-
-              Steps = new List<GithubTask>
+              "build",
+              new Job
               {
-                  new CheckoutTaskV2
-                  {
-                      Name = "Check out"
-                  },
+                  RunsOn = BuildMachines.Windows2019,
 
-                  new SetupDotNetTaskV1
+                  Steps = new List<GithubTask>
                   {
-                      Name = "Setup .Net",
-
-                      TargetDotNetVersion = new TargetDotNetVersion
+                      new CheckoutTaskV2
                       {
-                          DotNetVersion = "6.0.100-rc.1.21463.6",
-                          IncludePrerelease = true
+                          Name = "Check out"
+                      },
+
+                      new SetupDotNetTaskV1
+                      {
+                          Name = "Setup .Net",
+
+                          TargetDotNetVersion = new TargetDotNetVersion
+                          {
+                              DotNetVersion = "6.0.100-rc.1.21463.6",
+                              IncludePrerelease = true
+                          }
+                      },
+
+                      new RestoreTask
+                      {
+                          Name = "Restore"
+                      },
+
+                      new DotNetBuildTask
+                      {
+                          Name = "Build"
+                      },
+
+                      new TestTask
+                      {
+                          Name = "Test"
                       }
-                  },
-
-                  new RestoreTask
-                  {
-                      Name = "Restore"
-                  },
-
-                  new DotNetBuildTask
-                  {
-                      Name = "Build"
-                  },
-
-                  new TestTask
-                  {
-                      Name = "Test"
                   }
               }
           }
       }
   };
 
-  aDotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../.github/workflows/dotnet.yml");
+  string buildScriptPath = "../../../../.github/workflows/dotnet.yml";
+  string directoryPath = Path.GetDirectoryName(buildScriptPath);
+
+  if (!Directory.Exists(directoryPath))
+  {
+      Directory.CreateDirectory(directoryPath);
+  }
+
+  aDotNetClient.SerializeAndWriteToFile(githubPipeline, path: buildScriptPath);
 ```
 
 And here's the YAML output of this code:
