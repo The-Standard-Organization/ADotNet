@@ -15,14 +15,14 @@ env:
   IS_RELEASE_CANDIDATE: >-
     ${{
       (
-        github.event_name == 'pull_request' &&
-        startsWith(github.event.pull_request.title, 'RELEASES:') &&
+        github.event_name == 'pull_request' && 
+        startsWith(github.event.pull_request.title, 'RELEASES:') && 
         contains(github.event.pull_request.labels.*.name, 'RELEASES')
       )
       ||
       (
-        github.event_name == 'push' &&
-        startsWith(github.event.head_commit.message, 'RELEASES:') &&
+        github.event_name == 'push' && 
+        startsWith(github.event.head_commit.message, 'RELEASES:') && 
         startsWith(github.ref_name, 'RELEASE')
       )
     }}
@@ -90,16 +90,16 @@ jobs:
         echo "PackageReleaseNotes - ${{ env.package_release_notes }}"
     - name: Create GitHub Tag
       run: >-
-        git tag -a "v${{ env.version_number }}" -m "Release = v${{ env.version_number }}"
+        git tag -a "v${{ env.version_number }}" -m "Release - v${{ env.version_number }}"
 
         git push origin --tags
     - name: Create GitHub Release
       uses: actions/create-release@v1
       with:
         tag_name: v${{ env.version_number }}
-        release_name: Release = v${{ env.version_number }}
+        release_name: Release - v${{ env.version_number }}
         body: >-
-          ## Release = v${{ env.version_number }}
+          ## Release - v${{ env.version_number }}
 
 
           ### Release Notes
