@@ -47,13 +47,13 @@ jobs:
     needs:
     - build
     if: >-
-      needs.build.result == 'success' &&
+      needs.build.result == 'success' && 
 
-      github.event.pull_request.merged &&
+      github.event.pull_request.merged && 
 
-      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.base.ref == 'master' && 
 
-      startsWith(github.event.pull_request.title, 'RELEASES:') &&
+      startsWith(github.event.pull_request.title, 'RELEASES:') && 
 
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
