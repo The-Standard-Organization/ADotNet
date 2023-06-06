@@ -135,13 +135,13 @@ namespace ADotNet.Infrastructure.Build
 
                                 new CreateGitHubTagTask(
                                     tagName: "v${{ env.version_number }}",
-                                    tagMessage: "Release = v${{ env.version_number }}")
+                                    tagMessage: "Release - v${{ env.version_number }}")
                                 {
                                     Name = "Create GitHub Tag",
                                 },
 
                                 new CreateGitHubReleaseTask(
-                                    releaseName: "Release = v${{ env.version_number }}",
+                                    releaseName: "Release - v${{ env.version_number }}",
                                     tagName: "v${{ env.version_number }}",
                                     releaseNotes: "${{ env.package_release_notes }}",
                                     githubToken: "${{ secrets.PAT_FOR_TAGGING }}")

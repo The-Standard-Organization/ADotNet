@@ -32,6 +32,9 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
                 };
         }
 
+        [YamlMember(Order = 5, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new Dictionary<string, string> With { get; private set; }
+
         /// <summary>
         /// The environment variables to set for the step.
         /// </summary>
