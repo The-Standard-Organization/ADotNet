@@ -39,5 +39,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         [DefaultValue(0)]
         [YamlMember(Order = 8, Alias = "timeout-minutes", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual int TimeoutInMinutes { get; set; }
+
+        [YamlMember(Order = 9, Alias = "shell", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual string Shell { get; set; }
     }
 }
