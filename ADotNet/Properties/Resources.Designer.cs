@@ -82,7 +82,7 @@ namespace ADotNet.Properties {
         ///
         ///The MIT License (MIT)
         ///
-        ///Permission is hereby granted, free of charge, to any person obtai [rest of string was truncated]&quot;;.
+        ///Permission is hereby granted, free of charge, to any p [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string License {
             get {

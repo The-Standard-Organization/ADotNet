@@ -6,7 +6,7 @@
 
 using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s
+namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s
 {
     public class TargetDotNetVersionV3
     {
