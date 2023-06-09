@@ -18,12 +18,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
             string propertyName,
             string environmentVariableName)
         {
-            Run = environmentVariableName + "=$(awk -v RS='' -F'</?" + propertyName + ">' 'NF>1{print $2}' "
-                + $"{projectRelativePath} | sed -e 's/^[[:space:]]*//')\n"
-                + "echo '" + environmentVariableName + "<<EOF' >> $GITHUB_ENV\n"
-                + "echo -e \"$" + environmentVariableName + "\" >> $GITHUB_ENV\n"
-                + "echo 'EOF' >> $GITHUB_ENV\n"
-                + "echo \"" + propertyName + " - ${{ env." + environmentVariableName + " }}\"";
+            Run = "$" + environmentVariableName + "=((Select-Xml -Path '" + projectRelativePath + "' -XPath '//" + propertyName + "').Node.InnerXML)\n"
+                + "'" + environmentVariableName + "<<EOF' >> $env:GITHUB_ENV\n"
+                + "'$" + environmentVariableName + "' >> $env:GITHUB_ENV\n"
+                + "'EOF' >> $env:GITHUB_ENV\n";
         }
 
         /// <summary>
@@ -31,5 +29,11 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         /// </summary>
         [YamlMember(Order = 7, Alias = "run")]
         public new string Run { get; private set; }
+
+        /// <summary>
+        /// Gets the shell on which the task is executed.
+        /// </summary>
+        [YamlMember(Order = 9, Alias = "shell")]
+        public new string Shell { get; private set; } = ShellEnvironments.PowerShellCore;
     }
 }
