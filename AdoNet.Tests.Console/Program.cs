@@ -173,7 +173,7 @@ namespace ADotNet.Tests.Console
                                 Name = "Build"
                             },
 
-                            new RunTask
+                            new GithubTask
                             {
                                 Name = "Provision",
                                 Run = "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"
