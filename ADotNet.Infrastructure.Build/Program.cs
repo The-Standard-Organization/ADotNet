@@ -18,6 +18,7 @@ namespace ADotNet.Infrastructure.Build
     {
         static void Main(string[] args)
         {
+            string branchName = "master";
             var aDotNetClient = new ADotNetClient();
 
             var githubPipeline = new GithubPipeline
@@ -28,13 +29,13 @@ namespace ADotNet.Infrastructure.Build
                 {
                     Push = new PushEvent
                     {
-                        Branches = new string[] { "master" }
+                        Branches = new string[] { branchName }
                     },
 
                     PullRequest = new PullRequestEvent
                     {
                         Types = new string[] { "opened", "synchronize", "reopened", "closed" },
-                        Branches = new string[] { "master" }
+                        Branches = new string[] { branchName }
                     }
                 },
 
@@ -94,7 +95,7 @@ namespace ADotNet.Infrastructure.Build
                             githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
                             versionEnvironmentVariableName: "version_number",
                             packageReleaseNotesEnvironmentVariable: "package_release_notes",
-                            branchName: "master")
+                            branchName: branchName)
                     },
                     {
                         "publish",
