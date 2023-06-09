@@ -42,5 +42,9 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 
         [YamlMember(Order = 9, Alias = "shell", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual string Shell { get; set; }
+
+        [DefaultValue(false)]
+        [YamlMember(Order = 10, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual bool ContinueOnError { get; set; }
     }
 }
