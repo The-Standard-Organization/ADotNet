@@ -9,7 +9,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
     public struct ShellEnvironments
     {
         public const string Bash = "bash";
+        public const string Bourne = "sh";
         public const string CommandPrompt = "cmd";
+        public const string PowerShellCore = "pwsh";
         public const string PowerShell = "powershell";
+        public const string Python = "python";
     }
 }
