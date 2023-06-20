@@ -18,8 +18,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             string dependsOn,
             string projectRelativePath,
             string githubToken,
-            string versionEnvironmentVariableName,
-            string packageReleaseNotesEnvironmentVariable,
             string branchName)
         {
             RunsOn = runsOn;
@@ -49,32 +47,44 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     },
 
                     new ExtractProjectPropertyTask(
+                        name: "Extract Version",
+                        id: "extract_version",
                         projectRelativePath,
                         propertyName: "Version",
-                        environmentVariableName: versionEnvironmentVariableName)
+                        stepVariableName: "version_number"),
+
+                    new GithubTask()
                     {
-                        Name = $"Extract Version"
+                        Name = "Display Version",
+                        Run = "echo \"Version number: ${{ steps.extract_version.outputs.version_number }}\""
                     },
 
                     new ExtractProjectPropertyTask(
+                        name: $"Extract Package Release Notes",
+                        id: "extract_package_release_notes",
                         projectRelativePath,
                         propertyName: "PackageReleaseNotes",
-                        environmentVariableName: packageReleaseNotesEnvironmentVariable)
+                        stepVariableName: "package_release_notes"),
+
+                    new GithubTask()
                     {
-                        Name = $"Extract Package Release Notes"
+                        Name = "Display Package Release Notes",
+                        Run =
+                            "echo \"Package Release Notes: "
+                            + "${{ steps.extract_package_release_notes.outputs.package_release_notes }}\""
                     },
 
                     new CreateGitHubTagTask(
-                        tagName: "v${{ env." + versionEnvironmentVariableName + " }}",
-                        tagMessage: "Release - v${{ env." + versionEnvironmentVariableName + " }}")
+                        tagName: "v${{ steps.extract_version.outputs.version_number }}",
+                        tagMessage: "Release - v${{ steps.extract_version.outputs.version_number }}")
                     {
                         Name = "Create GitHub Tag",
                     },
 
                     new CreateGitHubReleaseTask(
-                        releaseName: "Release - v${{ env." + versionEnvironmentVariableName + " }}",
-                        tagName: "v${{ env." + versionEnvironmentVariableName + " }}",
-                        releaseNotes: "${{ env." + packageReleaseNotesEnvironmentVariable + " }}",
+                        releaseName: "Release - v${{ steps.extract_version.outputs.version_number }}",
+                        tagName: "v${{ steps.extract_version.outputs.version_number }}",
+                        releaseNotes: "${{ steps.extract_package_release_notes.outputs.package_release_notes }}",
                         githubToken)
                     {
                         Name = "Create GitHub Release",
