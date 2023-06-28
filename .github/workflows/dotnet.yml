@@ -67,42 +67,60 @@ jobs:
 
         git config user.email "action@github.com"
     - name: Extract Version
+      id: extract_version
       run: >
-        $version_number=((Select-Xml -Path 'ADotNet/ADotNet.csproj' -XPath '//Version').Node.InnerXML)
+        # Running on Linux/Unix 
 
-        'version_number<<EOF' >> $env:GITHUB_ENV
+        sudo apt-get install xmlstarlet
 
-        '$version_number' >> $env:GITHUB_ENV
+        version_number=$(xmlstarlet sel -t -v "//Version" -n ADotNet/ADotNet.csproj)
 
-        'EOF' >> $env:GITHUB_ENV
-      shell: pwsh
+        echo "$version_number"
+
+        echo "version_number<<EOF" >> $GITHUB_OUTPUT 
+
+        echo "$version_number" >> $GITHUB_OUTPUT 
+
+        echo "EOF" >> $GITHUB_OUTPUT 
+      shell: bash
+    - name: Display Version
+      run: 'echo "Version number: ${{ steps.extract_version.outputs.version_number }}"'
     - name: Extract Package Release Notes
+      id: extract_package_release_notes
       run: >
-        $package_release_notes=((Select-Xml -Path 'ADotNet/ADotNet.csproj' -XPath '//PackageReleaseNotes').Node.InnerXML)
+        # Running on Linux/Unix 
 
-        'package_release_notes<<EOF' >> $env:GITHUB_ENV
+        sudo apt-get install xmlstarlet
 
-        '$package_release_notes' >> $env:GITHUB_ENV
+        package_release_notes=$(xmlstarlet sel -t -v "//PackageReleaseNotes" -n ADotNet/ADotNet.csproj)
 
-        'EOF' >> $env:GITHUB_ENV
-      shell: pwsh
+        echo "$package_release_notes"
+
+        echo "package_release_notes<<EOF" >> $GITHUB_OUTPUT 
+
+        echo "$package_release_notes" >> $GITHUB_OUTPUT 
+
+        echo "EOF" >> $GITHUB_OUTPUT 
+      shell: bash
+    - name: Display Package Release Notes
+      run: 'echo "Package Release Notes: ${{ steps.extract_package_release_notes.outputs.package_release_notes }}"'
     - name: Create GitHub Tag
       run: >-
-        git tag -a "v${{ env.version_number }}" -m "Release - v${{ env.version_number }}"
+        git tag -a "v${{ steps.extract_version.outputs.version_number }}" -m "Release - v${{ steps.extract_version.outputs.version_number }}"
 
         git push origin --tags
     - name: Create GitHub Release
       uses: actions/create-release@v1
       with:
-        tag_name: v${{ env.version_number }}
-        release_name: Release - v${{ env.version_number }}
+        tag_name: v${{ steps.extract_version.outputs.version_number }}
+        release_name: Release - v${{ steps.extract_version.outputs.version_number }}
         body: >-
-          ## Release - v${{ env.version_number }}
+          ## Release - v${{ steps.extract_version.outputs.version_number }}
 
 
           ### Release Notes
 
-          ${{ env.package_release_notes }}
+          ${{ steps.extract_package_release_notes.outputs.package_release_notes }}
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
   publish:

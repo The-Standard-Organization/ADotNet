@@ -93,8 +93,6 @@ namespace ADotNet.Infrastructure.Build
                             dependsOn: "build",
                             projectRelativePath: "ADotNet/ADotNet.csproj",
                             githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
-                            versionEnvironmentVariableName: "version_number",
-                            packageReleaseNotesEnvironmentVariable: "package_release_notes",
                             branchName: branchName)
                     },
                     {
