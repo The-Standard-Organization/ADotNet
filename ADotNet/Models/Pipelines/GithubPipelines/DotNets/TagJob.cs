@@ -51,7 +51,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         id: "extract_version",
                         projectRelativePath,
                         propertyName: "Version",
-                        stepVariableName: "version_number"),
+                        stepVariableName: "version_number",
+                        runsOn),
 
                     new GithubTask()
                     {
@@ -64,7 +65,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         id: "extract_package_release_notes",
                         projectRelativePath,
                         propertyName: "PackageReleaseNotes",
-                        stepVariableName: "package_release_notes"),
+                        stepVariableName: "package_release_notes",
+                        runsOn),
 
                     new GithubTask()
                     {
