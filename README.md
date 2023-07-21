@@ -3,9 +3,10 @@
 ![ADotNet](https://raw.githubusercontent.com/hassanhabib/AdotNet/master/ADotNet/ADotNet_git_logo.png)
 
 [![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
-![Nuget](https://img.shields.io/nuget/v/ADotNet)
-![Nuget](https://img.shields.io/nuget/dt/ADotNet?color=blue&label=Downloads)
+![Nuget](https://img.shields.io/nuget/v/ADotNet?logo=nuget&color=blue)
+![Nuget](https://img.shields.io/nuget/dt/ADotNet?logo=nuget&color=blue&label=Downloads)
 [![The Standard - COMPLIANT](https://img.shields.io/badge/The_Standard-COMPLIANT-2ea44f)](https://github.com/hassanhabib/The-Standard)
+[![The Standard](https://img.shields.io/github/v/release/hassanhabib/The-Standard?filter=v2.9.0&style=default&label=Standard%20Version&color=2ea44f)](https://github.com/hassanhabib/The-Standard)
 [![The Standard Community](https://img.shields.io/discord/934130100008538142?color=%237289da&label=The%20Standard%20Community&logo=Discord)](https://discord.gg/vdPZ7hS52X)
 
 # ADotNet (ADO Dot Net)
@@ -13,6 +14,11 @@ ADotNet is a.NET library that enables software engineers on the .NET platform to
 
 ## Introduction
 There's an issue today with developing Azure DevOps pipelines and Git Actions with YAML. The technology/language can be challenging to learn and predict the available options for orchestrating build steps. _ADotNet_ presents a solution to pipeline tasks as C# models, predefined, with all the options available to orchestrate a pipeline without searching for the available options on the documentation websites.
+
+## Standard-Compliance
+This library was built according to The Standard. The library follows engineering principles, patterns and tooling as recommended by The Standard.
+
+This library is also a community effort which involved many nights of pair-programming, test-driven development and in-depth exploration research and design discussions.
 
 ## How It Works for AzureDevOps
 Here's how this library works. Let's assume you want to write a task in your pipeline that restores packages for your ASP.NET Core project. Today, engineers write the following command in YAML:
