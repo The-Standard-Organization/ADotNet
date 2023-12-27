@@ -37,6 +37,9 @@ jobs:
         PR_TITLE="${{ github.event.pull_request.title }}"
 
 
+        echo "PR Title: ${{ github.event.pull_request.title }}"
+
+
         # Define the list of prefixes
 
         PREFIXES=(
@@ -91,6 +94,9 @@ jobs:
         if [ "${PREFIX_MATCH}" == false ]; then
             echo "error: The PR title must start with one of THE STANDARD specified prefixes.  Current PR Title: '${{ github.event.pull_request.title }}'"
             echo "See https://github.com/hassanhabib/The-Standard-Team/blob/main/4%20Practices/4%20Practices.md#4113-category-list for the complete category list"
+            echo ""
+            echo "Please update the PR Title to the correct category, then navigate to the Actions tab and click on the Re-run jobs button"
+            echo "P.S. if the job fails again with the wrong title, give it a few minutes to allow the PR Title Change event to propagate through the system."
             exit 1
         fi
   build:
