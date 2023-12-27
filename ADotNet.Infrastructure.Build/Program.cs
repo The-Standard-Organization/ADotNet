@@ -9,7 +9,6 @@ using System.IO;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
 
 namespace ADotNet.Infrastructure.Build
@@ -47,10 +46,16 @@ namespace ADotNet.Infrastructure.Build
                 Jobs = new Dictionary<string, Job>
                 {
                     {
+                        "check_pr_title",
+                        new CheckPrTitleJob(
+                            runsOn: BuildMachines.UbuntuLatest)
+                    },
+                    {
                         "build",
                         new Job
                         {
                             RunsOn = BuildMachines.UbuntuLatest,
+                            Needs = new string[] { "check_pr_title" },
 
                             Steps = new List<GithubTask>
                             {

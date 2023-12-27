@@ -27,8 +27,76 @@ env:
       )
     }}
 jobs:
+  check_pr_title:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Check PR Title
+      run: >-
+        PR_TITLE="${{ github.event.pull_request.title }}"
+
+
+        # Define the list of prefixes
+
+        PREFIXES=(
+            "ACCEPTANCE"
+            "AGGREGATION"
+            "BASE"
+            "BROKER"
+            "BUSINESS"
+            "CODE RUB"
+            "COMPONENT"
+            "CONFIG"
+            "CONTROLLER"
+            "COORDINATION"
+            "CLIENT"
+            "DATA"
+            "DESIGN"
+            "DOCUMENTATION"
+            "EXPOSER"
+            "FOUNDATION"
+            "INFRA"
+            "INTEGRATION"
+            "MAJORFIX"
+            "MANAGEMENT"
+            "MEDIUMFIX"
+            "MINORFIX"
+            "ORCHESTRATION"
+            "PAGE"
+            "PROCESSING"
+            "PROVISION"
+            "RELEASE"
+            "STANDARD"
+            "VIEW"
+        )
+
+
+        # Check if the PR title starts with any of the prefixes
+
+        PREFIX_MATCH=false
+
+        for PREFIX in "${PREFIXES[@]}"
+
+        do
+            if [[ "${PR_TITLE}" == "${PREFIX}"* ]]; then
+                PREFIX_MATCH=true
+                break
+            fi
+        done
+
+
+        # Fail the workflow if no prefix match is found
+
+        if [ "${PREFIX_MATCH}" == false ]; then
+            echo "error: The PR title must start with one of THE STANDARD specified prefixes.  Current PR Title: '${{ github.event.pull_request.title }}'"
+            echo "See https://github.com/hassanhabib/The-Standard-Team/blob/main/4%20Practices/4%20Practices.md#4113-category-list for the complete category list"
+            exit 1
+        fi
   build:
     runs-on: ubuntu-latest
+    needs:
+    - check_pr_title
     steps:
     - name: Check out
       uses: actions/checkout@v3
