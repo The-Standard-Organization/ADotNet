@@ -11,9 +11,12 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class AdoValidationException : Exception
     {
         public AdoValidationException(Exception innerException)
-            : base("Ado validation exception occurred, try again", innerException)
-        {
-
-        }
+            : base(message: "Ado validation exception occurred, try again",
+                innerException: innerException)
+        { }
+        
+        public AdoValidationException(string message,Exception innerException)
+            : base(message, innerException)
+        { }
     }
 }

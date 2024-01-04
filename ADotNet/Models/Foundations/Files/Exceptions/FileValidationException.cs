@@ -12,7 +12,11 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
     {
         public FileValidationException(Xeption innerException)
             : base(message: "File validation error occurred, fix the errors and try again.",
-                  innerException)
+                innerException: innerException)
+        { }
+        
+        public FileValidationException(string message, Xeption innerException)
+            : base(message, innerException)
         { }
     }
 }

@@ -11,9 +11,12 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class AdoDependencyException : Exception
     {
         public AdoDependencyException(Exception innerException)
-            : base("Ado dependency error occured, contact support.", innerException)
-        {
-
-        }
+            : base(message: "Ado dependency error occured, contact support.",
+                innerException: innerException)
+        { }
+        
+        public AdoDependencyException(string message, Exception innerException)
+            : base(message, innerException)
+        { }
     }
 }
