@@ -17,18 +17,20 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public void ShouldThrowValidationExceptionOnWriteIfPathIsInvalid(
+        private void ShouldThrowValidationExceptionOnWriteIfPathIsInvalid(
             string invalidPath)
         {
             // given
             string someContent = GetRandomString();
 
             var invalidFilePathException =
-                new InvalidFilePathException();
+                new InvalidFilePathException(
+                    message: "Invalid file path, fix the errors and try again.");
 
             var expectedFileValidationException =
                 new FileValidationException(
-                    invalidFilePathException);
+                    message: "File validation error occurred, fix the errors and try again.",
+                    innerException: invalidFilePathException);
 
             // when
             Action writeToFileAction = () =>
@@ -53,18 +55,20 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public void ShouldThrowValidationExceptionOnWriteIfContentIsInvalid(
+        private void ShouldThrowValidationExceptionOnWriteIfContentIsInvalid(
             string invalidContent)
         {
             // given
             string somePath = GetRandomString();
 
             var invalidFileContentException =
-                new InvalidFileContentException();
+                new InvalidFileContentException(
+                    message: "Invalid file content, fix errors and try again.");
 
             var expectedFileValidationException =
                 new FileValidationException(
-                    invalidFileContentException);
+                    message: "File validation error occurred, fix the errors and try again.",
+                    innerException: invalidFileContentException);
 
             // when
             Action writeToFileAction = () =>

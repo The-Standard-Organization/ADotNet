@@ -11,6 +11,11 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class NullPipelineException : Exception
     {
         public NullPipelineException()
-            : base("Pipeline is null") { }
+            : base(message: "Pipeline is null")
+        { }
+        
+        public NullPipelineException(string message)
+            : base(message)
+        { }
     }
 }

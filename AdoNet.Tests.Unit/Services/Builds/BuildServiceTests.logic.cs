@@ -13,7 +13,7 @@ namespace ADotNet.Tests.Unit.Services
     public partial class BuildServiceTests
     {
         [Fact]
-        public void ShouldSerializeAndWriteAdoPipelineModel()
+        private void ShouldSerializeAndWriteAdoPipelineModel()
         {
             // given
             AspNetPipeline randomAspNetPipeline =

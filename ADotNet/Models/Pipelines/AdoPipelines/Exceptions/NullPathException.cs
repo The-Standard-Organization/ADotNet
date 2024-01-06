@@ -11,6 +11,11 @@ namespace ADotNet.Models.Pipelines.Exceptions
     public class NullPathException : Exception
     {
         public NullPathException()
-            : base("Path is null") { }
+            : base(message: "Path is null")
+        { }
+        
+        public NullPathException(string message)
+            : base(message)
+        { }
     }
 }

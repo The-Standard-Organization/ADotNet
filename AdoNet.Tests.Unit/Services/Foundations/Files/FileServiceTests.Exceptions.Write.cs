@@ -16,7 +16,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
     {
         [Theory]
         [MemberData(nameof(FileDependencyValidationExceptions))]
-        public void ShouldThrowDependencyValidationExceptionOnWriteIfDependencyValidationErrorOccurs(
+        private void ShouldThrowDependencyValidationExceptionOnWriteIfDependencyValidationErrorOccurs(
             Exception dependencyValidationException)
         {
             // given
@@ -25,11 +25,13 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             var invalidFileException =
                 new InvalidFileException(
-                    dependencyValidationException);
+                    message: "Invalid file error occurred.",
+                    innerException: dependencyValidationException);
 
             var fileDependencyValidationException =
                 new FileDependencyValidationException(
-                    invalidFileException);
+                    message: "File dependency validation error occurred, fix the errors and try again.",
+                    innerException: invalidFileException);
 
             this.filesBrokerMock.Setup(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()))
@@ -51,7 +53,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
         }
 
         [Fact]
-        public void ShouldThrowDependencyExceptionOnWriteIfSerializationErrorOccurs()
+        private void ShouldThrowDependencyExceptionOnWriteIfSerializationErrorOccurs()
         {
             // given
             string somePath = GetRandomString();
@@ -62,11 +64,13 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
 
             var failedFileSerializationException =
                 new FailedFileSerializationException(
-                    serializationException);
+                    message: "Failed file serialization error occurred, contact support.",
+                    innerException: serializationException);
 
             var fileDependencyException =
                 new FileDependencyException(
-                    failedFileSerializationException);
+                    message: "File dependency error occurred, contact support.",
+                    innerException: failedFileSerializationException);
 
             this.filesBrokerMock.Setup(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()))
@@ -88,7 +92,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
         }
 
         [Fact]
-        public void ShoudThrowServiceExceptionOnWriteIfServiceErrorOccurs()
+        private void ShoudThrowServiceExceptionOnWriteIfServiceErrorOccurs()
         {
             // given
             string somePath = GetRandomString();
@@ -96,10 +100,14 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
             var serviceException = new Exception();
 
             var failedFileServiceException =
-                new FailedFileServiceException(serviceException);
+                new FailedFileServiceException(
+                    message: "Failed file service error occurred, contact support.",
+                    innerException: serviceException);
 
             var fileServiceException =
-                new FileServiceException(failedFileServiceException);
+                new FileServiceException(
+                    message: "File service error occurred, contact support.",
+                    innerException: failedFileServiceException);
 
             this.filesBrokerMock.Setup(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()))

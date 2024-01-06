@@ -12,7 +12,11 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
     {
         public FileDependencyException(Xeption innerException)
             : base(message: "File dependency error occurred, contact support.",
-                  innerException)
+                innerException: innerException)
+        { }
+        
+        public FileDependencyException(string message, Xeption innerException)
+            : base(message, innerException)
         { }
     }
 }

@@ -12,7 +12,11 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
     {
         public FileServiceException(Xeption innerException)
             : base(message: "File service error occurred, contact support.",
-                  innerException)
+                innerException: innerException)
+        { }
+        
+        public FileServiceException(string message, Xeption innerException)
+            : base(message, innerException)
         { }
     }
 }

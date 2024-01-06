@@ -16,14 +16,15 @@ namespace ADotNet.Tests.Unit.Services
     public partial class BuildServiceTests
     {
         [Fact]
-        public void ShouldThrowValidationExceptionOnSerializeIfPipelineIsNull()
+        private void ShouldThrowValidationExceptionOnSerializeIfPipelineIsNull()
         {
             // given
             AspNetPipeline invalidPipeline = null;
             string somePath = GetRandomFilePath();
 
             var nullPiplineException =
-                new NullPipelineException();
+                new NullPipelineException(
+                    message: "Pipeline is null");
 
             // when
             Action serializeAndWriteToFileAction = () =>
@@ -50,7 +51,7 @@ namespace ADotNet.Tests.Unit.Services
         }
 
         [Fact]
-        public void ShouldThrowValidationExceptionOnSerializeIfPathIsNull()
+        private void ShouldThrowValidationExceptionOnSerializeIfPathIsNull()
         {
             // given
             string invalidPath = null;
@@ -59,7 +60,8 @@ namespace ADotNet.Tests.Unit.Services
                 CreateRandomAspNetPipeline();
 
             var nullPathException =
-                new NullPathException();
+                new NullPathException(
+                    message: "Path is null");
 
             // when
             Action serializeAndWriteToFileAction = () =>

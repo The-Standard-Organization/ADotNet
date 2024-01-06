@@ -13,5 +13,9 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
         public InvalidFilePathException()
             : base(message: "Invalid file path, fix the errors and try again.")
         { }
+        
+        public InvalidFilePathException(string message)
+            : base(message)
+        { }
     }
 }

@@ -17,7 +17,7 @@ namespace ADotNet.Tests.Unit.Services
     {
         [Theory]
         [MemberData(nameof(FileValidationExceptions))]
-        public void ShouldThrowDependencyValidationOnSerializeIfDependencyValidationErrorOccurs(
+        private void ShouldThrowDependencyValidationOnSerializeIfDependencyValidationErrorOccurs(
             Exception dependencyValidationException)
         {
             // given
@@ -56,7 +56,7 @@ namespace ADotNet.Tests.Unit.Services
 
         [Theory]
         [MemberData(nameof(FileDependencyExceptions))]
-        public void ShouldThrowDependencyExceptionOnSerializeIfDependencyValidationErrorOccurs(
+        private void ShouldThrowDependencyExceptionOnSerializeIfDependencyValidationErrorOccurs(
             Exception dependencyException)
         {
             // given
@@ -94,7 +94,7 @@ namespace ADotNet.Tests.Unit.Services
         }
 
         [Fact]
-        public void ShouldThrowServiceExceptionOnSerializeIfSystemErrorOccurs()
+        private void ShouldThrowServiceExceptionOnSerializeIfSystemErrorOccurs()
         {
             // given
             AspNetPipeline somePipeline = CreateRandomAspNetPipeline();

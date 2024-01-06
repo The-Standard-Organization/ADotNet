@@ -12,7 +12,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
     public partial class FileServiceTests
     {
         [Fact]
-        public void ShouldWriteToFile()
+        private void ShouldWriteToFile()
         {
             // given
             string randomFilePath = GetRandomString();
