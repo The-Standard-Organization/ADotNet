@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using ADotNet.Models.Pipelines.Exceptions;
+using ADotNet.Models.Pipelines.AdoPipelines.Exceptions;
 
 namespace ADotNet.Services.Builds
 {
@@ -15,10 +15,11 @@ namespace ADotNet.Services.Builds
             switch (path, pipeline)
             {
                 case (_, null):
-                    throw new NullPipelineException();
+                    throw new NullPipelineException(
+                        message: "Pipeline is null");
 
                 case (null, _):
-                    throw new NullPathException();
+                    throw new NullPathException(message: "Path is null");
             }
         }
     }

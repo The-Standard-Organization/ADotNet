@@ -4,18 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
     public class FileDependencyValidationException : Xeption
     {
-        public FileDependencyValidationException(Xeption innerException)
-            : base(message: "File dependency validation error occurred, fix the errors and try again.",
-                innerException: innerException)
-        { }
-        
-        public FileDependencyValidationException(string message, Xeption innerException)
+        public FileDependencyValidationException(string message, Exception innerException)
             : base(message, innerException)
         { }
     }

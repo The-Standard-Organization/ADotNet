@@ -7,6 +7,7 @@
 using System;
 using System.Runtime.Serialization;
 using ADotNet.Models.Foundations.Files.Exceptions;
+using Xeptions;
 
 namespace ADotNet.Services.Foundations.Files
 {
@@ -22,40 +23,80 @@ namespace ADotNet.Services.Foundations.Files
             }
             catch (InvalidFilePathException invalidFilePathException)
             {
-                throw new FileValidationException(invalidFilePathException);
+                throw CreateFileValidationException(invalidFilePathException);
             }
             catch (InvalidFileContentException invalidFileContentException)
             {
-                throw new FileValidationException(invalidFileContentException);
+                throw CreateFileValidationException(invalidFileContentException);
             }
             catch (ArgumentNullException argumentNullException)
             {
                 var invalidFileException =
-                    new InvalidFileException(argumentNullException);
+                    new InvalidFileException(
+                        message: "Invalid file error occurred.",
+                        innerException: argumentNullException);
 
-                throw new FileDependencyValidationException(invalidFileException);
+                throw CreateFileDependencyValidationException(invalidFileException);
             }
             catch (ArgumentException argumentException)
             {
                 var invalidFileException =
-                    new InvalidFileException(argumentException);
+                    new InvalidFileException(
+                        message: "Invalid file error occurred.",
+                        innerException: argumentException);
 
-                throw new FileDependencyValidationException(invalidFileException);
+                throw CreateFileDependencyValidationException(invalidFileException);
             }
             catch (SerializationException serializationException)
             {
                 var failedFileSerializationException =
-                    new FailedFileSerializationException(serializationException);
+                    new FailedFileSerializationException(
+                        message: "Failed file serialization error occurred, contact support.",
+                        innerException: serializationException);
 
-                throw new FileDependencyException(failedFileSerializationException);
+                throw CreateFileDependencyException(failedFileSerializationException);
             }
             catch (Exception exception)
             {
                 var failedFileServiceException =
-                    new FailedFileServiceException(exception);
+                    new FailedFileServiceException(
+                        message: "Failed file service error occurred, contact support.",
+                        innerException: exception);
 
-                throw new FileServiceException(failedFileServiceException);
+                throw CreateFileServiceException(failedFileServiceException);
             }
+        }
+
+        private static FileValidationException CreateFileValidationException(
+            Xeption innerException)
+        {
+            return new FileValidationException(
+                message: "File validation error occurred, fix the errors and try again.",
+                innerException: innerException);
+        }
+        
+        private static FileDependencyValidationException CreateFileDependencyValidationException(
+            Exception innerException)
+        {
+            return new FileDependencyValidationException(
+                message: "File dependency validation error occurred, fix the errors and try again.",
+                innerException: innerException);
+        }
+        
+        private static FileDependencyException CreateFileDependencyException(
+            Xeption innerException)
+        {
+            return new FileDependencyException(
+                message: "File dependency error occurred, contact support.",
+                innerException);
+        }
+        
+        private static FileServiceException CreateFileServiceException(
+            Xeption innerException)
+        {
+            return new FileServiceException(
+                message: "File service error occurred, contact support.",
+                innerException: innerException);
         }
     }
 }

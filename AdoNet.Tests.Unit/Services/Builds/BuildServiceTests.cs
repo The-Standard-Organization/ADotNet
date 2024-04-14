@@ -15,7 +15,7 @@ using Moq;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace ADotNet.Tests.Unit.Services
+namespace ADotNet.Tests.Unit.Services.Builds
 {
     public partial class BuildServiceTests
     {

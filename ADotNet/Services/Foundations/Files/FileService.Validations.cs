@@ -16,10 +16,12 @@ namespace ADotNet.Services.Foundations.Files
             switch (path, content)
             {
                 case { } when IsInvalid(path):
-                    throw new InvalidFilePathException();
+                    throw new InvalidFilePathException(
+                        message: "Invalid file path, fix the errors and try again.");
 
                 case { } when IsInvalid(content):
-                    throw new InvalidFileContentException();
+                    throw new InvalidFileContentException(
+                        message: "Invalid file content, fix errors and try again.");
             }
         }
 

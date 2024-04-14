@@ -6,15 +6,10 @@
 
 using System;
 
-namespace ADotNet.Models.Pipelines.Exceptions
+namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
     public class BuildServiceException : Exception
     {
-        public BuildServiceException(Exception innerException)
-            : base(message: "Build service exception occured, contact support.",
-                innerException: innerException)
-        { }
-        
         public BuildServiceException(string message, Exception innerException)
             : base(message, innerException)
         { }

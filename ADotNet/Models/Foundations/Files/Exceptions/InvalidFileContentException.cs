@@ -10,10 +10,6 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
 {
     public class InvalidFileContentException : Xeption
     {
-        public InvalidFileContentException()
-            : base(message: "Invalid file content, fix errors and try again.")
-        { }
-        
         public InvalidFileContentException(string message)
             : base(message)
         { }

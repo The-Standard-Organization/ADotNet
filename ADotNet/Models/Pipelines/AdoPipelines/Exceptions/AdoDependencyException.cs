@@ -6,15 +6,10 @@
 
 using System;
 
-namespace ADotNet.Models.Pipelines.Exceptions
+namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
     public class AdoDependencyException : Exception
     {
-        public AdoDependencyException(Exception innerException)
-            : base(message: "Ado dependency error occured, contact support.",
-                innerException: innerException)
-        { }
-        
         public AdoDependencyException(string message, Exception innerException)
             : base(message, innerException)
         { }

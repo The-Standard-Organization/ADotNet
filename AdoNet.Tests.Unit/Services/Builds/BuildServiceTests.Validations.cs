@@ -6,12 +6,12 @@
 
 using System;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
-using ADotNet.Models.Pipelines.Exceptions;
+using ADotNet.Models.Pipelines.AdoPipelines.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace ADotNet.Tests.Unit.Services
+namespace ADotNet.Tests.Unit.Services.Builds
 {
     public partial class BuildServiceTests
     {
@@ -26,6 +26,10 @@ namespace ADotNet.Tests.Unit.Services
                 new NullPipelineException(
                     message: "Pipeline is null");
 
+            var expectedAdoValidationException = new AdoValidationException(
+                message: "Ado validation exception occurred, try again",
+                innerException: nullPiplineException);
+
             // when
             Action serializeAndWriteToFileAction = () =>
                 this.buildService.SerializeAndWriteToFile(somePath, invalidPipeline);
@@ -35,9 +39,9 @@ namespace ADotNet.Tests.Unit.Services
                 Assert.Throws<AdoValidationException>(
                     serializeAndWriteToFileAction);
 
-            actualAdoValidationException.InnerException.Message.Should()
-                .BeEquivalentTo(nullPiplineException.Message);
-
+            actualAdoValidationException.Should().BeEquivalentTo(
+                expectedAdoValidationException);
+            
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),
                     Times.Never);
@@ -63,6 +67,10 @@ namespace ADotNet.Tests.Unit.Services
                 new NullPathException(
                     message: "Path is null");
 
+            var expectedAdoValidation = new AdoValidationException(
+                message: "Ado validation exception occurred, try again",
+                innerException: nullPathException);
+
             // when
             Action serializeAndWriteToFileAction = () =>
                 this.buildService.SerializeAndWriteToFile(
@@ -74,8 +82,8 @@ namespace ADotNet.Tests.Unit.Services
                 Assert.Throws<AdoValidationException>(
                     serializeAndWriteToFileAction);
 
-            actualAdoValidationException.InnerException.Message.Should()
-                .BeEquivalentTo(nullPathException.Message);
+            actualAdoValidationException.Should().BeEquivalentTo(
+                expectedAdoValidation);
 
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),

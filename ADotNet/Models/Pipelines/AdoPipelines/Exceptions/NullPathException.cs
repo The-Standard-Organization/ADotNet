@@ -4,16 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
+using Xeptions;
 
-namespace ADotNet.Models.Pipelines.Exceptions
+namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
-    public class NullPathException : Exception
+    public class NullPathException : Xeption
     {
-        public NullPathException()
-            : base(message: "Path is null")
-        { }
-        
         public NullPathException(string message)
             : base(message)
         { }

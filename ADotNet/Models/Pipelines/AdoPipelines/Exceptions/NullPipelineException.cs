@@ -5,15 +5,12 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using Xeptions;
 
-namespace ADotNet.Models.Pipelines.Exceptions
+namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
-    public class NullPipelineException : Exception
+    public class NullPipelineException : Xeption
     {
-        public NullPipelineException()
-            : base(message: "Pipeline is null")
-        { }
-        
         public NullPipelineException(string message)
             : base(message)
         { }

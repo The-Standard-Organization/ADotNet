@@ -7,10 +7,11 @@
 using System;
 using System.Runtime.Serialization;
 using ADotNet.Models.Foundations.Files.Exceptions;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace AdoNet.Tests.Unit.Services.Foundations.Files
+namespace ADotNet.Tests.Unit.Services.Foundations.Files
 {
     public partial class FileServiceTests
     {
@@ -28,7 +29,7 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                     message: "Invalid file error occurred.",
                     innerException: dependencyValidationException);
 
-            var fileDependencyValidationException =
+            var expectedFileDependencyValidationException =
                 new FileDependencyValidationException(
                     message: "File dependency validation error occurred, fix the errors and try again.",
                     innerException: invalidFileException);
@@ -42,8 +43,11 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                 this.fileService.WriteToFile(somePath, someContent);
 
             // then
-            Assert.Throws<FileDependencyValidationException>(
-                writeToFileAction);
+            FileDependencyValidationException actualFileDependencyValidationException =
+                Assert.Throws<FileDependencyValidationException>(writeToFileAction);
+
+            actualFileDependencyValidationException.Should().BeEquivalentTo(
+                expectedFileDependencyValidationException);
 
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),
@@ -81,8 +85,11 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                 this.fileService.WriteToFile(somePath, someContent);
 
             // then
-            Assert.Throws<FileDependencyException>(
-                writeToFileAction);
+            FileDependencyException actualFileDependencyException =
+                Assert.Throws<FileDependencyException>(writeToFileAction);
+
+            actualFileDependencyException.Should().BeEquivalentTo(
+                fileDependencyException);
 
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),
@@ -118,7 +125,11 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                 this.fileService.WriteToFile(somePath, someContent);
 
             // then
-            Assert.Throws<FileServiceException>(writeToFileAction);
+            FileServiceException actualFileServiceException =
+                Assert.Throws<FileServiceException>(writeToFileAction);
+
+            actualFileServiceException.Should().BeEquivalentTo(
+                fileServiceException);
 
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(It.IsAny<string>(), It.IsAny<string>()),

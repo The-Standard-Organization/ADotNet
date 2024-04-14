@@ -6,12 +6,12 @@
 
 using System;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
-using ADotNet.Models.Pipelines.Exceptions;
+using ADotNet.Models.Pipelines.AdoPipelines.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace ADotNet.Tests.Unit.Services
+namespace ADotNet.Tests.Unit.Services.Builds
 {
     public partial class BuildServiceTests
     {
@@ -23,6 +23,10 @@ namespace ADotNet.Tests.Unit.Services
             // given
             AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
             string somePath = GetRandomFilePath();
+
+            var expectedAdoDependencyValidationException = new AdoDependencyValidationException(
+                message: "Ado dependency validation error occurs, try again.",
+                innerException: dependencyValidationException);
 
             this.yamlBrokerMock.Setup(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()))
@@ -39,8 +43,8 @@ namespace ADotNet.Tests.Unit.Services
                 Assert.Throws<AdoDependencyValidationException>(
                     serializeAndWriteToFileAction);
 
-            actualAdoDependencyValidationException.InnerException.Message.Should()
-                .BeEquivalentTo(dependencyValidationException.Message);
+            actualAdoDependencyValidationException.Should()
+                .BeEquivalentTo(expectedAdoDependencyValidationException);
 
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),
@@ -63,6 +67,10 @@ namespace ADotNet.Tests.Unit.Services
             AspNetPipeline somePipeline = CreateRandomAspNetPipeline();
             string somePath = GetRandomFilePath();
 
+            var expectedAdoDependencyException = new AdoDependencyException(
+                message: "Ado dependency error occured, contact support.",
+                innerException: dependencyException);
+
             this.yamlBrokerMock.Setup(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()))
                     .Throws(dependencyException);
@@ -78,8 +86,8 @@ namespace ADotNet.Tests.Unit.Services
                 Assert.Throws<AdoDependencyException>(
                     serializeAndWriteToFileAction);
 
-            actualAdoDependencyException.InnerException.Message.Should()
-                .BeEquivalentTo(dependencyException.Message);
+            actualAdoDependencyException.Should()
+                .BeEquivalentTo(expectedAdoDependencyException);
 
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),
@@ -102,6 +110,10 @@ namespace ADotNet.Tests.Unit.Services
             string innerExceptionMessage = GetRandomString();
             var serviceException = new Exception(innerExceptionMessage);
 
+            var expectedBuildServiceException = new BuildServiceException(
+                message: "Build service exception occured, contact support.",
+                innerException: serviceException);
+
             this.yamlBrokerMock.Setup(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()))
                     .Throws(serviceException);
@@ -117,8 +129,8 @@ namespace ADotNet.Tests.Unit.Services
                 Assert.Throws<BuildServiceException>(
                     serializeAndWriteToFileAction);
 
-            actualBuildServiceException.InnerException.Message.Should()
-                .BeEquivalentTo(serviceException.Message);
+            actualBuildServiceException.Should()
+                .BeEquivalentTo(expectedBuildServiceException);
 
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),
