@@ -11,11 +11,6 @@ namespace ADotNet.Models.Foundations.Files.Exceptions
 {
     public class InvalidFileException : Xeption
     {
-        public InvalidFileException(Exception innerException)
-            : base(message: "Invalid file error occurred.",
-                innerException: innerException)
-        { }
-        
         public InvalidFileException(string message, Exception innerException)
             : base(message, innerException)
         { }

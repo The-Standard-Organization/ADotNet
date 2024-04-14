@@ -6,15 +6,10 @@
 
 using System;
 
-namespace ADotNet.Models.Pipelines.Exceptions
+namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
     public class AdoDependencyValidationException : Exception
     {
-        public AdoDependencyValidationException(Exception innerException)
-            : base(message: "Ado dependency validation error occured, try again.",
-                innerException: innerException)
-        { }
-        
         public AdoDependencyValidationException(string message, Exception innerException)
             : base(message, innerException)
         { }

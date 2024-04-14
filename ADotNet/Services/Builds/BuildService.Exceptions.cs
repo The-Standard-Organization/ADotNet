@@ -7,7 +7,8 @@
 using System;
 using System.IO;
 using System.Security;
-using ADotNet.Models.Pipelines.Exceptions;
+using ADotNet.Models.Pipelines.AdoPipelines.Exceptions;
+using Xeptions;
 
 namespace ADotNet.Services.Builds
 {
@@ -23,49 +24,75 @@ namespace ADotNet.Services.Builds
             }
             catch (NullPipelineException nullPipelineException)
             {
-                throw new AdoValidationException(nullPipelineException);
+                throw CreateAdoValidationException(nullPipelineException);
             }
             catch (NullPathException nullPathException)
             {
-                throw new AdoValidationException(nullPathException);
+                throw CreateAdoValidationException(nullPathException);
             }
             catch (ArgumentNullException argumentNullException)
             {
-                throw new AdoDependencyValidationException(argumentNullException);
+                throw CreateAdoDependencyValidationException(argumentNullException);
             }
             catch (ArgumentException argumentException)
             {
-                throw new AdoDependencyValidationException(argumentException);
+                throw CreateAdoDependencyValidationException(argumentException);
             }
             catch (PathTooLongException pathTooLongException)
             {
-                throw new AdoDependencyValidationException(pathTooLongException);
+                throw CreateAdoDependencyValidationException(pathTooLongException);
             }
             catch (DirectoryNotFoundException directoryNotFoundException)
             {
-                throw new AdoDependencyValidationException(
-                    directoryNotFoundException);
+                throw CreateAdoDependencyValidationException(directoryNotFoundException);
             }
             catch (IOException ioException)
             {
-                throw new AdoDependencyException(ioException);
+                throw CreateAdoDependencyException(ioException);
             }
             catch (SecurityException securityException)
             {
-                throw new AdoDependencyException(securityException);
+                throw CreateAdoDependencyException(securityException);
             }
             catch (UnauthorizedAccessException unauthorizedAccessException)
             {
-                throw new AdoDependencyException(unauthorizedAccessException);
+                throw CreateAdoDependencyException(unauthorizedAccessException);
             }
             catch (NotSupportedException notSupportedException)
             {
-                throw new AdoDependencyException(notSupportedException);
+                throw CreateAdoDependencyException(notSupportedException);
             }
             catch (Exception exception)
             {
-                throw new BuildServiceException(exception);
+                throw CreateBuildServiceException(exception);
             }
+        }
+
+        private static AdoValidationException CreateAdoValidationException(Xeption innerException)
+        {
+            return new AdoValidationException(
+                "Ado validation exception occurred, try again", innerException);
+        }
+
+        private static AdoDependencyValidationException CreateAdoDependencyValidationException(
+            Exception innerException)
+        {
+            return new AdoDependencyValidationException(
+              "Ado dependency validation error occurs, try again.",
+              innerException);
+        }
+        
+        private static AdoDependencyException CreateAdoDependencyException(
+            Exception innerException) =>
+            new AdoDependencyException(
+                "Ado dependency error occured, contact support.",
+                innerException);
+
+        private static Exception CreateBuildServiceException(Exception innerException)
+        {
+            return new BuildServiceException(
+                "Build service exception occured, contact support.",
+                innerException);
         }
     }
 }

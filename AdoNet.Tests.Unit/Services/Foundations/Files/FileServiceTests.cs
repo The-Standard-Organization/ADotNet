@@ -11,7 +11,7 @@ using Moq;
 using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace AdoNet.Tests.Unit.Services.Foundations.Files
+namespace ADotNet.Tests.Unit.Services.Foundations.Files
 {
     public partial class FileServiceTests
     {

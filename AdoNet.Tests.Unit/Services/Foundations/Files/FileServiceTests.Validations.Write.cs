@@ -6,10 +6,11 @@
 
 using System;
 using ADotNet.Models.Foundations.Files.Exceptions;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace AdoNet.Tests.Unit.Services.Foundations.Files
+namespace ADotNet.Tests.Unit.Services.Foundations.Files
 {
     public partial class FileServiceTests
     {
@@ -39,8 +40,11 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                     someContent);
 
             // then
-            Assert.Throws<FileValidationException>(
-                writeToFileAction);
+            FileValidationException actualFileValidationException =
+                Assert.Throws<FileValidationException>(writeToFileAction);
+
+            actualFileValidationException.Should().BeEquivalentTo(
+                expectedFileValidationException);
 
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(
@@ -77,8 +81,11 @@ namespace AdoNet.Tests.Unit.Services.Foundations.Files
                     invalidContent);
 
             // then
-            Assert.Throws<FileValidationException>(
-                writeToFileAction);
+            FileValidationException actualFileValidationException =
+                Assert.Throws<FileValidationException>(writeToFileAction);
+
+            actualFileValidationException.Should().BeEquivalentTo(
+                expectedFileValidationException);
 
             this.filesBrokerMock.Verify(broker =>
                 broker.WriteToFile(
