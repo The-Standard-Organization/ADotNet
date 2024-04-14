@@ -67,32 +67,35 @@ namespace ADotNet.Services.Builds
                 throw CreateBuildServiceException(exception);
             }
         }
-
+        
         private static AdoValidationException CreateAdoValidationException(Xeption innerException)
         {
             return new AdoValidationException(
-                "Ado validation exception occurred, try again", innerException);
+                message: "Ado validation exception occurred, try again",
+                innerException: innerException);
         }
-
+        
         private static AdoDependencyValidationException CreateAdoDependencyValidationException(
             Exception innerException)
         {
             return new AdoDependencyValidationException(
-              "Ado dependency validation error occurs, try again.",
-              innerException);
+                message: "Ado dependency validation error occurs, try again.",
+                innerException: innerException);
         }
         
         private static AdoDependencyException CreateAdoDependencyException(
-            Exception innerException) =>
-            new AdoDependencyException(
-                "Ado dependency error occured, contact support.",
-                innerException);
-
+            Exception innerException)
+        {
+            return new AdoDependencyException(
+                message: "Ado dependency error occured, contact support.",
+                innerException: innerException);
+        }
+        
         private static Exception CreateBuildServiceException(Exception innerException)
         {
             return new BuildServiceException(
-                "Build service exception occured, contact support.",
-                innerException);
+                message: "Build service exception occured, contact support.",
+                innerException: innerException);
         }
     }
 }

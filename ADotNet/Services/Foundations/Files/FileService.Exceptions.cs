@@ -31,19 +31,39 @@ namespace ADotNet.Services.Foundations.Files
             }
             catch (ArgumentNullException argumentNullException)
             {
-                throw CreateFileDependencyValidationException(argumentNullException);
+                var invalidFileException =
+                    new InvalidFileException(
+                        message: "Invalid file error occurred.",
+                        innerException: argumentNullException);
+
+                throw CreateFileDependencyValidationException(invalidFileException);
             }
             catch (ArgumentException argumentException)
             {
-                throw CreateFileDependencyValidationException(argumentException);
+                var invalidFileException =
+                    new InvalidFileException(
+                        message: "Invalid file error occurred.",
+                        innerException: argumentException);
+
+                throw CreateFileDependencyValidationException(invalidFileException);
             }
             catch (SerializationException serializationException)
             {
-                throw CreateFileDependencyException(serializationException);
+                var failedFileSerializationException =
+                    new FailedFileSerializationException(
+                        message: "Failed file serialization error occurred, contact support.",
+                        innerException: serializationException);
+
+                throw CreateFileDependencyException(failedFileSerializationException);
             }
             catch (Exception exception)
             {
-                throw CreateFileServiceException(exception);
+                var failedFileServiceException =
+                    new FailedFileServiceException(
+                        message: "Failed file service error occurred, contact support.",
+                        innerException: exception);
+
+                throw CreateFileServiceException(failedFileServiceException);
             }
         }
 
@@ -51,46 +71,32 @@ namespace ADotNet.Services.Foundations.Files
             Xeption innerException)
         {
             return new FileValidationException(
-                "File validation error occurred, fix the errors and try again.",
-                innerException);
+                message: "File validation error occurred, fix the errors and try again.",
+                innerException: innerException);
         }
-
+        
         private static FileDependencyValidationException CreateFileDependencyValidationException(
             Exception innerException)
         {
-            var invalidFileException =
-                new InvalidFileException(
-                    "Invalid file error occurred.", innerException);
-
-            throw new FileDependencyValidationException(
-                "File dependency validation error occurred, fix the errors and try again.",
-                invalidFileException);
+            return new FileDependencyValidationException(
+                message: "File dependency validation error occurred, fix the errors and try again.",
+                innerException: innerException);
         }
         
         private static FileDependencyException CreateFileDependencyException(
-            Exception innerException)
+            Xeption innerException)
         {
-            var failedFileSerializationException =
-                new FailedFileSerializationException(
-                    "Failed file serialization error occurred, contact support.",
-                    innerException);
-
-            throw new FileDependencyException(
-                "File dependency error occurred, contact support.",
-                failedFileSerializationException);
+            return new FileDependencyException(
+                message: "File dependency error occurred, contact support.",
+                innerException);
         }
         
         private static FileServiceException CreateFileServiceException(
-            Exception innerException)
+            Xeption innerException)
         {
-            var failedFileServiceException =
-                new FailedFileServiceException(
-                    "Failed file service error occurred, contact support.",
-                    innerException);
-
-            throw new FileServiceException(
-                "File service error occurred, contact support.",
-                failedFileServiceException);
+            return new FileServiceException(
+                message: "File service error occurred, contact support.",
+                innerException: innerException);
         }
     }
 }
