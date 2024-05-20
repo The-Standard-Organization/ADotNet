@@ -33,7 +33,7 @@ jobs:
     - name: Apply Label
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.PAT_FOR_TAGGING }}
+        token: ${{ secrets.PAT_FOR_TAGGING }}
         script: >2+
 
           const prefixes = [
