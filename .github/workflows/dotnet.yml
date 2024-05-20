@@ -35,7 +35,6 @@ jobs:
       with:
         github-token: ${{ secrets.PAT_FOR_TAGGING }}
         script: >2+
-
           const prefixes = [
             'INFRA:',
             'PROVISIONS:',
@@ -68,13 +67,8 @@ jobs:
             'DESIGN:',
             'BUSINESS:'
           ];
-
-
           const title = context.payload.pull_request.title;
-
           const existingLabels = context.payload.pull_request.labels.map(label => label.name);
-
-
           for (const prefix of prefixes) {
             if (title.startsWith(prefix)) {
               const label = prefix.slice(0, -1);
