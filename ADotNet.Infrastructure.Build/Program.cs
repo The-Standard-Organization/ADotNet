@@ -17,7 +17,7 @@ namespace ADotNet.Infrastructure.Build
     {
         static void Main(string[] args)
         {
-            string branchName = "master";
+            string branchName = "main";
             var aDotNetClient = new ADotNetClient();
 
             var githubPipeline = new GithubPipeline

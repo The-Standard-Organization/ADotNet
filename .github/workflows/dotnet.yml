@@ -2,7 +2,7 @@ name: .Net
 on:
   push:
     branches:
-    - master
+    - main
   pull_request:
     types:
     - opened
@@ -10,7 +10,7 @@ on:
     - reopened
     - closed
     branches:
-    - master
+    - main
 env:
   IS_RELEASE_CANDIDATE: >-
     ${{
@@ -114,7 +114,7 @@ jobs:
 
       github.event.pull_request.merged && 
 
-      github.event.pull_request.base.ref == 'master' && 
+      github.event.pull_request.base.ref == 'main' && 
 
       startsWith(github.event.pull_request.title, 'RELEASES:') && 
 
