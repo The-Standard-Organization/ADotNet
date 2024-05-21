@@ -22,7 +22,7 @@ namespace ADotNet.Infrastructure.Build
 
             var githubPipeline = new GithubPipeline
             {
-                Name = ".Net",
+                Name = "Build",
 
                 OnEvents = new Events
                 {
@@ -110,7 +110,7 @@ namespace ADotNet.Infrastructure.Build
                 }
             };
 
-            string buildScriptPath = "../../../../.github/workflows/dotnet.yml";
+            string buildScriptPath = "../../../../.github/workflows/build.yml";
             string directoryPath = Path.GetDirectoryName(buildScriptPath);
 
             if (!Directory.Exists(directoryPath))
