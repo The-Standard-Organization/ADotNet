@@ -2,7 +2,7 @@
 
 ![ADotNet](https://raw.githubusercontent.com/The-Standard-Organization/ADotNet/main/ADotNet/ADotNet_git_logo.png)
 
-[![Build](https://github.com/The-Standard-Organization/STX.REST.RESTFulSense.Clients/actions/workflows/build.yml/badge.svg)](https://github.com/The-Standard-Organization/STX.REST.RESTFulSense.Clients/actions/workflows/build.yml)
+[![Build](https://github.com/The-Standard-Organization/ADotNet/actions/workflows/build.yml/badge.svg)](https://github.com/The-Standard-Organization/ADotNet/actions/workflows/build.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet?logo=nuget&color=blue)
 ![Nuget](https://img.shields.io/nuget/dt/ADotNet?logo=nuget&color=blue&label=Downloads)
 [![The Standard](https://img.shields.io/github/v/release/hassanhabib/The-Standard?filter=v2.10.1&style=default&label=Standard%20Version&color=2ea44f)](https://github.com/hassanhabib/The-Standard)
