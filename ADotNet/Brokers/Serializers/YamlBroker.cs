@@ -14,14 +14,12 @@ namespace ADotNet.Brokers.Serializers
     {
         private readonly ISerializer serializer;
 
-        public YamlBroker()
-        {
+        public YamlBroker() => 
             this.serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                     .WithTypeInspector(inner => inner, s => s.InsteadOf<YamlAttributesTypeInspector>())
                         .WithTypeInspector(inner => new YamlAttributesTypeInspector(inner), s => s.Before<NamingConventionTypeInspector>())
                             .Build();
-        }
 
         public string SerializeToYaml(object @object) =>
             this.serializer.Serialize(@object);

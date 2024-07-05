@@ -9,18 +9,12 @@ using ADotNet.Brokers.Serializers;
 
 namespace ADotNet.Services.Builds
 {
-    public partial class BuildService : IBuildService
+    public partial class BuildService(
+        IYamlBroker yamlBroker,
+        IFilesBroker filesBroker) : IBuildService
     {
-        private readonly IYamlBroker yamlBroker;
-        private readonly IFilesBroker filesBroker;
-
-        public BuildService(
-            IYamlBroker yamlBroker,
-            IFilesBroker filesBroker)
-        {
-            this.yamlBroker = yamlBroker;
-            this.filesBroker = filesBroker;
-        }
+        private readonly IYamlBroker yamlBroker = yamlBroker;
+        private readonly IFilesBroker filesBroker = filesBroker;
 
         public void SerializeAndWriteToFile(string path, object adoPipeline) =>
         TryCatch(() =>

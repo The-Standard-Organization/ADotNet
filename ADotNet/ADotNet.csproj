@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>12.0</LangVersion>
 		<Copyright>Copyright (c) Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Copyright>
 		<Description>
 			ADotNet is a dot net library to help engineers develop their build and release pipelines 

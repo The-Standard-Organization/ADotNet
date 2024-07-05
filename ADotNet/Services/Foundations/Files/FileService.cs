@@ -8,12 +8,9 @@ using ADotNet.Brokers.IOs;
 
 namespace ADotNet.Services.Foundations.Files
 {
-    public partial class FileService : IFileService
+    public partial class FileService(IFilesBroker filesBroker) : IFileService
     {
-        private readonly IFilesBroker filesBroker;
-
-        public FileService(IFilesBroker filesBroker) =>
-            this.filesBroker = filesBroker;
+        private readonly IFilesBroker filesBroker = filesBroker;
 
         public void WriteToFile(string path, string content) =>
         TryCatch(() =>

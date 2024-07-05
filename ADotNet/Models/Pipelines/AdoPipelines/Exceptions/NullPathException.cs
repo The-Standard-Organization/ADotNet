@@ -8,10 +8,7 @@ using Xeptions;
 
 namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
-    public class NullPathException : Xeption
+    public class NullPathException(string message) : Xeption(message)
     {
-        public NullPathException(string message)
-            : base(message)
-        { }
     }
 }

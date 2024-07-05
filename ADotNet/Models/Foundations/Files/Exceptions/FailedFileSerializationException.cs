@@ -9,10 +9,8 @@ using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class FailedFileSerializationException : Xeption
+    public class FailedFileSerializationException(string message, Exception innerException) 
+        : Xeption(message, innerException)
     {
-        public FailedFileSerializationException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
     }
 }

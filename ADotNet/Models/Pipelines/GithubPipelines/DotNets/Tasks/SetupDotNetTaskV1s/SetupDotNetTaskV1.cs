@@ -10,10 +10,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTask
 {
     public class SetupDotNetTaskV1 : GithubTask
     {
-        public SetupDotNetTaskV1()
-        {
-            Uses = "actions/setup-dotnet@v1";
-        }
+        public SetupDotNetTaskV1() => Uses = "actions/setup-dotnet@v1";
 
         /// <summary>
         /// Represents the usage of an external action or a specific version of an action in a GitHub Actions job step.

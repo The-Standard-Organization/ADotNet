@@ -9,10 +9,8 @@ using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class InvalidFileException : Xeption
+    public class InvalidFileException(string message, Exception innerException) 
+        : Xeption(message, innerException)
     {
-        public InvalidFileException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
     }
 }

@@ -24,7 +24,7 @@ namespace ADotNet.Services.Foundations.Files
                         message: "Invalid file content, fix errors and try again.");
             }
         }
-
+       
         private static bool IsInvalid(string @string) =>
             String.IsNullOrWhiteSpace(@string);
     }

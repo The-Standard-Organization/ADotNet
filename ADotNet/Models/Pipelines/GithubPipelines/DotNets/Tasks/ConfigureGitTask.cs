@@ -11,18 +11,15 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
     /// <summary>
     /// A task to build .NET project.
     /// </summary>
-    public sealed class ConfigureGitTask : GithubTask
+    public sealed class ConfigureGitTask(string displayName = "GitHub Action", string email = "action@github.com") 
+        : GithubTask
     {
-        public ConfigureGitTask(string displayName = "GitHub Action", string email = "action@github.com")
-        {
-            this.Run = $"git config user.name \"{displayName}\"\r"
-                + $"git config user.email \"{email}\"";
-        }
 
         /// <summary>
         /// Gets the command to execute for the task.
         /// </summary>
         [YamlMember(Order = 7, Alias = "run")]
-        public new string Run { get; private set; }
+        public new string Run { get; private set; } = $"git config user.name \"{displayName}\"\r"
+                + $"git config user.email \"{email}\"";
     }
 }

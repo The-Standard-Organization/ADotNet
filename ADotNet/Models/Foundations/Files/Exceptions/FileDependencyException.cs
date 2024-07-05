@@ -8,10 +8,8 @@ using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class FileDependencyException : Xeption
+    public class FileDependencyException(string message, Xeption innerException) 
+        : Xeption(message, innerException)
     {
-        public FileDependencyException(string message, Xeption innerException)
-            : base(message, innerException)
-        { }
     }
 }

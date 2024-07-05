@@ -8,10 +8,8 @@ using System;
 
 namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
-    public class AdoDependencyException : Exception
+    public class AdoDependencyException(string message, Exception innerException)
+        : Exception(message, innerException)
     {
-        public AdoDependencyException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
     }
 }

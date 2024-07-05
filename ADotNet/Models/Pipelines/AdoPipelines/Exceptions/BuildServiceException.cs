@@ -8,10 +8,8 @@ using System;
 
 namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
-    public class BuildServiceException : Exception
+    public class BuildServiceException(string message, Exception innerException)
+        : Exception(message, innerException)
     {
-        public BuildServiceException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
     }
 }

@@ -8,10 +8,7 @@ using Xeptions;
 
 namespace ADotNet.Models.Foundations.Files.Exceptions
 {
-    public class InvalidFilePathException : Xeption
+    public class InvalidFilePathException(string message) : Xeption(message)
     {
-        public InvalidFilePathException(string message)
-            : base(message)
-        { }
     }
 }
