@@ -14,7 +14,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps</PackageTags>
 		<PackageReleaseNotes>
-			This release has a new label job component that can be used to automatically label pull requests based on the pull request title.
+			This release has a minor fix for the label job component. The label job component now only applies to pull requests.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>

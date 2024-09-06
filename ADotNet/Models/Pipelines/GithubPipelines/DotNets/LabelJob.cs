@@ -62,6 +62,13 @@ const prefixes = [
   'BUSINESS:'
 ];
 
+const pullRequest = context.payload.pull_request;
+
+if (!pullRequest) {
+  console.log('No pull request context available.');
+  return;
+}
+
 const title = context.payload.pull_request.title;
 const existingLabels = context.payload.pull_request.labels.map(label => label.name);
 
