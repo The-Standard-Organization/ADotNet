@@ -1,8 +1,8 @@
 # ADotNet
 
-![ADotNet](https://raw.githubusercontent.com/hassanhabib/AdotNet/master/ADotNet/ADotNet_git_logo.png)
+![ADotNet](https://raw.githubusercontent.com/The-Standard-Organization/ADotNet/main/ADotNet/ADotNet_git_logo.png)
 
-[![.NET](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hassanhabib/ADotNet/actions/workflows/dotnet.yml)
+[![Build](https://github.com/The-Standard-Organization/ADotNet/actions/workflows/build.yml/badge.svg)](https://github.com/The-Standard-Organization/ADotNet/actions/workflows/build.yml)
 ![Nuget](https://img.shields.io/nuget/v/ADotNet?logo=nuget&color=blue)
 ![Nuget](https://img.shields.io/nuget/dt/ADotNet?logo=nuget&color=blue&label=Downloads)
 [![The Standard](https://img.shields.io/github/v/release/hassanhabib/The-Standard?filter=v2.10.1&style=default&label=Standard%20Version&color=2ea44f)](https://github.com/hassanhabib/The-Standard)
@@ -13,26 +13,26 @@
 ADotNet is a.NET library that enables software engineers on the .NET platform to develop AzureDevOps pipelines and Git Actions in C#.
 
 ## Introduction
-There's an issue today with developing Azure DevOps pipelines and Git Actions with YAML. The technology/language can be challenging to learn and predict the available options for orchestrating build steps. _ADotNet_ presents a solution to pipeline tasks as C# models, predefined, with all the options available to orchestrate a pipeline without searching for the available options on the documentation websites.
+Today, there's an issue with developing Azure DevOps pipelines and Git Actions with YAML. The technology/language can be challenging to learn and predict the available options for orchestrating build steps. _ADotNet_ presents a solution to pipeline tasks as predefined C # models, with all the options available to orchestrate a pipeline without searching for the available options on the documentation websites.
 
 ## Standard-Compliance
-This library was built according to The Standard. The library follows engineering principles, patterns and tooling as recommended by The Standard.
+This library was built according to The Standard, which recommends that it follow engineering principles, patterns, and tooling.
 
-This library is also a community effort which involved many nights of pair-programming, test-driven development and in-depth exploration research and design discussions.
+This library is also a community effort, which involved many nights of pair programming, test-driven development, and in-depth exploration research and design discussions.
 
 ## Standard-Promise
-The most important fulfillment aspect in a Standard complaint system is aimed towards contributing to people, its evolution, and principles.
+A Standard complaint system's most crucial fulfillment aspect is contributing to people, its evolution, and its principles.
 An organization that systematically honors an environment of learning, training, and sharing knowledge is an organization that learns from the past, makes calculated risks for the future, 
 and brings everyone within it up to speed on the current state of things as honestly, rapidly, and efficiently as possible. 
  
-We believe that everyone has the right to privacy, and will never do anything that could violate that right.
-We are committed to writing ethical and responsible software, and will always strive to use our skills, coding, and systems for the good.
-We believe that these beliefs will help to ensure that our software(s) are safe and secure and that it will never be used to harm or collect personal data for malicious purposes.
+We believe that everyone has the right to privacy and will never do anything that could violate that right.
+We are committed to writing ethical and responsible software and will always strive to use our skills, coding, and systems for the good.
+These beliefs will help ensure that our software(s) are safe and secure and that it will never be used to harm or collect personal data for malicious purposes.
  
-The Standard Community as a promise to you is in upholding these values.
+As a promise to you, the Standard Community upholds these values.
 
 ## How It Works for AzureDevOps
-Here's how this library works. Let's assume you want to write a task in your pipeline that restores packages for your ASP.NET Core project. Today, engineers write the following command in YAML:
+Here's how this library works. Let's assume you want to write a task in your pipeline that restores packages for your ASP.NET Core project. Today, engineers write the following Command in YAML:
 
 ```yaml
 - task: DotNetCoreCLI@2
@@ -42,7 +42,7 @@ Here's how this library works. Let's assume you want to write a task in your pip
     feedsToUse: 'select'
 ```
 
-The problem with the above YAML code is that it's not that easy to remember. Even while staring at it, I just can't seem to remember `DotNetCoreCLI@2` and what does this mean to someone who is a full-stack engineer trying to get off the ground as fast as possible? Here's how the very same code above would look like in ADotNet:
+The problem with the above YAML code is that it takes more work to remember. Even while staring at it, I can't seem to remember `DotNetCoreCLI@2` and what this means to someone who is a full-stack engineer trying to get off the ground as fast as possible. Here's how the very same code above would look like in ADotNet:
 
 ```csharp
   new DotNetExecutionTask
@@ -57,7 +57,7 @@ The problem with the above YAML code is that it's not that easy to remember. Eve
   }
 ```
 
-The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. The syntax is already directing you towards the options you need to get going with building your pipeline.
+The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. The syntax already directs you to the options you need to start building your pipeline.
 
 ## How It Works for Git Actions
 Here's how this library works. Let's assume you want to write a task in your pipeline that uses a particular version for your ASP.NET Core project. Today, engineers write the following command in YAML:
@@ -70,7 +70,7 @@ Here's how this library works. Let's assume you want to write a task in your pip
       include-prerelease: true
 ```
 
-The problem with the above YAML code is that it's not that easy to remember. Even while I'm staring at it, I just can't seem to remember `actions/setup-dotnet@v1` and what does this mean to someone who is a full-stack engineer trying to get off the ground as soon as possible? Here's how the very same code above would look like in ADotNet:
+The problem with the above YAML code is that it takes more work to remember. Even while I'm staring at it, I can't seem to remember `actions/setup-dotnet@v1` and what does this mean to someone who is a full-stack engineer trying to get off the ground as soon as possible? Here's how the very same code above would look like in ADotNet:
 
 ```csharp
   new SetupDotNetTaskV1
@@ -88,21 +88,21 @@ The problem with the above YAML code is that it's not that easy to remember. Eve
 The options here are available with the power of strongly typed options and Enums. You don't have to think about what needs to go there. It's already directing you towards the options you need to get going with building your pipeline.
 
 ## Dependencies & Kudos
-This library relies heavily on [YamlDotNet](https://github.com/aaubry/YamlDotNet) which is an amazing .NET library developed by [Antoine Aubry](https://github.com/aaubry) along with so many other amazing contributors who made C# to YAML possible.
+This library relies heavily on [YamlDotNet](https://github.com/aaubry/YamlDotNet), an amazing .NET library developed by [Antoine Aubry](https://github.com/aaubry) and many other amazing contributors who made C# to YAML possible.
 
 The library also leverages native .NET `System.IO.File` functionality to write files to a destination of the consumer's choosing.
 
 ## The Architecture
-The library's architecture follows [The Standard](https://github.com/hassanhabib/The-Standard). Breaking it's capabilities into brokers, services and clients. Here's a low-level architecture view of how it works:
+The library's architecture follows [The Standard](https://github.com/hassanhabib/The-Standard). Breaking its capabilities into brokers, services, and clients. Here's a low-level architecture view of how it works:
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/89320816/137257287-b4b864a0-312e-4f86-b9c0-e436aeddaef6.png">
 </p>
 
-The abstraction of the dependencies should allow a future expansion and pluggability for any other C# to YAML components easily.
+The abstraction of the dependencies should allow for easy future expansion and pluggability for any other C# to YAML components.
 
 ## Real-Life Example for AzureDevOps
-Here's something I'm using in my open source [OtripleS](https://github.com/hassanhabib/OtripleS) project which is built in ASP.NET Core 6.0:
+Here's something I'm using in my open source [OtripleS](https://github.com/hassanhabib/OtripleS) project, which is built in ASP.NET Core 6.0:
 
 ```csharp
   var adoClient = new ADotNetClient();
@@ -230,7 +230,7 @@ And finally, here's the result:
 ![image](https://user-images.githubusercontent.com/1453985/124557686-a24f6800-ddee-11eb-9bdd-f2d576ddd5c2.png)
 
 ## Real-Life Example for Git Actions
-Here's something I'm using in my open source [OtripleS](https://github.com/hassanhabib/OtripleS) project which is built in ASP.NET Core 6.0:
+Here's something I'm using in my open source [OtripleS](https://github.com/hassanhabib/OtripleS) project, which is built in ASP.NET Core 6.0:
 
 ```csharp
   var aDotNetClient = new ADotNetClient();
@@ -345,11 +345,11 @@ And finally, here's the result:
 ![image](https://user-images.githubusercontent.com/89320816/137255979-8e15772e-f3f7-48e3-bc57-8b6cf32c7a09.png)
 
 ## Some Odd Decisions
-I have intentionally limited some of the capabilities in this library to ensure any contributions go to this repository so everyone can benefit from the updates. For instance, I could've easily made selecting a virtual machine as a string input to allow for anyone to pass in whatever vm they need. But the problem with that is for those who will need the same thing and have to do the same research to find the right VM for their build.
+I have intentionally limited some of the capabilities in this library to ensure any contributions go to this repository so everyone can benefit from the updates. For instance, I could have easily made selecting a virtual machine(VM) as a string input to allow anyone to pass in whatever VM they need. But the problem with that is for those needing the same thing and having to do the same research to find the right VM for their build.
 
-I'm intentionally making my library less usable to ensure this level of hive mindset is reflected in our changes in here.
+I'm intentionally making my library less usable to ensure this level of hive mindset is reflected in our changes here.
 
-If you have any suggestions, comments or questions, please feel free to contact me on:
+If you have any suggestions, comments, or questions, please feel free to contact me at:
 
 [Twitter](https://twitter.com/hassanrezkhabib)
 
@@ -358,4 +358,4 @@ If you have any suggestions, comments or questions, please feel free to contact 
 [E-Mail](mailto:hassanhabib@live.com)
 
 ### Important Notice
-Special thanks to all the contributors that make this project a success. A special thanks to Mr. Hassan Habib and Mr. Christo du Toit for their dedicated contribution.
+I want to give special thanks to all the contributors who made this project a success, especially Mr. Hassan Habib and Mr. Christo du Toit for their dedicated contributions.
