@@ -14,13 +14,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps</PackageTags>
 		<PackageReleaseNotes>
-			This release has a minor fix for the label job component. The label job component now only applies to pull requests.
+			This release has minor fixes for the label and publish job components. Please upgrade to LabelJobV2 and PublishJobV2.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>3.0.4</AssemblyVersion>
-		<FileVersion>3.0.4</FileVersion>
-		<Version>3.0.4</Version>
+		<AssemblyVersion>3.1.0</AssemblyVersion>
+		<FileVersion>3.1.0</FileVersion>
+		<Version>3.1.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
