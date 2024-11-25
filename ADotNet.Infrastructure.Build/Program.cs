@@ -47,9 +47,7 @@ namespace ADotNet.Infrastructure.Build
                 {
                     {
                         "label",
-                        new LabelJob(
-                            runsOn: BuildMachines.UbuntuLatest,
-                            githubToken: "${{ secrets.PAT_FOR_TAGGING }}")
+                        new LabelJobV2(runsOn: BuildMachines.UbuntuLatest)
                     },
                     {
                         "build",

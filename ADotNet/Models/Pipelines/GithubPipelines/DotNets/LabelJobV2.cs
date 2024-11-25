@@ -32,69 +32,70 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         With = new Dictionary<string, string>
                         {
                             { "github-token", "${{ secrets.GITHUB_TOKEN }}" },
-                            { "script", @"
-const prefixes = [
-  'INFRA:',
-  'PROVISIONS:',
-  'RELEASES:',
-  'DATA:',
-  'BROKERS:',
-  'FOUNDATIONS:',
-  'PROCESSINGS:',
-  'ORCHESTRATIONS:',
-  'COORDINATIONS:',
-  'MANAGEMENTS:',
-  'AGGREGATIONS:',
-  'CONTROLLERS:',
-  'CLIENTS:',
-  'EXPOSERS:',
-  'PROVIDERS:',
-  'BASE:',
-  'COMPONENTS:',
-  'VIEWS:',
-  'PAGES:',
-  'ACCEPTANCE:',
-  'INTEGRATIONS:',
-  'CODE RUB:',
-  'MINOR FIX:',
-  'MEDIUM FIX:',
-  'MAJOR FIX:',
-  'DOCUMENTATION:',
-  'CONFIG:',
-  'STANDARD:',
-  'DESIGN:',
-  'BUSINESS:'
-];
+                            { "script", """
+                                const prefixes = [
+                                  'INFRA:',
+                                  'PROVISIONS:',
+                                  'RELEASES:',
+                                  'DATA:',
+                                  'BROKERS:',
+                                  'FOUNDATIONS:',
+                                  'PROCESSINGS:',
+                                  'ORCHESTRATIONS:',
+                                  'COORDINATIONS:',
+                                  'MANAGEMENTS:',
+                                  'AGGREGATIONS:',
+                                  'CONTROLLERS:',
+                                  'CLIENTS:',
+                                  'EXPOSERS:',
+                                  'PROVIDERS:',
+                                  'BASE:',
+                                  'COMPONENTS:',
+                                  'VIEWS:',
+                                  'PAGES:',
+                                  'ACCEPTANCE:',
+                                  'INTEGRATIONS:',
+                                  'CODE RUB:',
+                                  'MINOR FIX:',
+                                  'MEDIUM FIX:',
+                                  'MAJOR FIX:',
+                                  'DOCUMENTATION:',
+                                  'CONFIG:',
+                                  'STANDARD:',
+                                  'DESIGN:',
+                                  'BUSINESS:'
+                                ];
 
-const pullRequest = context.payload.pull_request;
+                                const pullRequest = context.payload.pull_request;
 
-if (!pullRequest) {
-  console.log('No pull request context available.');
-  return;
-}
+                                if (!pullRequest) {
+                                  console.log('No pull request context available.');
+                                  return;
+                                }
 
-const title = context.payload.pull_request.title;
-const existingLabels = context.payload.pull_request.labels.map(label => label.name);
+                                const title = context.payload.pull_request.title;
+                                const existingLabels = context.payload.pull_request.labels.map(label => label.name);
 
-for (const prefix of prefixes) {
-  if (title.startsWith(prefix)) {
-    const label = prefix.slice(0, -1);
-    if (!existingLabels.includes(label)) {
-      console.log(`Applying label: ${label}`);
-      await github.rest.issues.addLabels({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: context.payload.pull_request.number,
-        labels: [label]
-      });
-    }
-    break;
-  }
-}
-" }
+                                for (const prefix of prefixes) {
+                                  if (title.startsWith(prefix)) {
+                                    const label = prefix.slice(0, -1);
+                                    if (!existingLabels.includes(label)) {
+                                      console.log(`Applying label: ${label}`);
+                                      await github.rest.issues.addLabels({
+                                        owner: context.repo.owner,
+                                        repo: context.repo.repo,
+                                        issue_number: context.payload.pull_request.number,
+                                        labels: [label]
+                                      });
+                                    }
+                                    break;
+                                  }
+                                }
+                                """
+                            }
                         }
                     },
-                };
+            };
         }
 
         [YamlMember(Order = 0, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
