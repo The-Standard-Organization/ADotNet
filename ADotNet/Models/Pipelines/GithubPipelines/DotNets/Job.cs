@@ -48,7 +48,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public virtual Dictionary<string, string> Outputs { get; set; }
 
         [DefaultValue(false)]
-        [YamlMember(Order = 10, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 11, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual bool ContinueOnError { get; set; }
+
+        [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual Dictionary<string, string> Permissions { get; set; }
     }
 }
