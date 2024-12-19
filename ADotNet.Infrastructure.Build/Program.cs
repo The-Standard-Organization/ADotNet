@@ -48,6 +48,16 @@ namespace ADotNet.Infrastructure.Build
                     {
                         "label",
                         new LabelJobV2(runsOn: BuildMachines.UbuntuLatest)
+                        {
+                            Name = "Label",
+                        }
+                    },
+                    { 
+                        "requireIssueOrTask",
+                        new RequireIssueOrTaskJob()
+                        {
+                            Name = "Require Issue Or Task Association",
+                        }
                     },
                     {
                         "build",
@@ -68,7 +78,7 @@ namespace ADotNet.Infrastructure.Build
 
                                     With = new TargetDotNetVersionV3
                                     {
-                                        DotNetVersion = "7.0.201"
+                                        DotNetVersion = "9.0.100"
                                     }
                                 },
 
