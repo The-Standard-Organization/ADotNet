@@ -4,12 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.IO;
-using ADotNet.Clients;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
+using ISL.ReIdentification.Infrastructure.Services;
 
 namespace ADotNet.Infrastructure.Build
 {
@@ -17,125 +12,14 @@ namespace ADotNet.Infrastructure.Build
     {
         static void Main(string[] args)
         {
-            string branchName = "main";
-            string dotNetVersion = "9.0.100";
-            var aDotNetClient = new ADotNetClient();
+            var scriptGenerationService = new ScriptGenerationService();
 
-            var githubPipeline = new GithubPipeline
-            {
-                Name = "Build",
+            scriptGenerationService.GenerateBuildScript(
+                branchName: "main",
+                projectName: "ADotNet",
+                dotNetVersion: "9.0.100");
 
-                OnEvents = new Events
-                {
-                    Push = new PushEvent
-                    {
-                        Branches = new string[] { branchName }
-                    },
-
-                    PullRequest = new PullRequestEvent
-                    {
-                        Types = new string[] { "opened", "edited", "synchronize", "reopened", "closed" },
-                        Branches = new string[] { branchName }
-                    }
-                },
-
-                EnvironmentVariables = new Dictionary<string, string>
-                {
-                    { "IS_RELEASE_CANDIDATE", EnvironmentVariables.IsGitHubReleaseCandidate() }
-                },
-
-                Jobs = new Dictionary<string, Job>
-                {
-                    {
-                        "label",
-                        new LabelJobV2(runsOn: BuildMachines.UbuntuLatest)
-                        {
-                            Name = "Label",
-                        }
-                    },
-                    {
-                        "requireIssueOrTask",
-                        new RequireIssueOrTaskJob()
-                        {
-                            Name = "Require Issue Or Task Association",
-                        }
-                    },
-                    {
-                        "build",
-                        new Job
-                        {
-                            Name = "Build",
-                            RunsOn = BuildMachines.UbuntuLatest,
-
-                            Steps = new List<GithubTask>
-                            {
-                                new CheckoutTaskV3
-                                {
-                                    Name = "Check out"
-                                },
-
-                                new SetupDotNetTaskV3
-                                {
-                                    Name = "Setup .Net",
-
-                                    With = new TargetDotNetVersionV3
-                                    {
-                                        DotNetVersion = dotNetVersion
-                                    }
-                                },
-
-                                new RestoreTask
-                                {
-                                    Name = "Restore"
-                                },
-
-                                new DotNetBuildTask
-                                {
-                                    Name = "Build"
-                                },
-
-                                new TestTask
-                                {
-                                    Name = "Test"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "add_tag",
-                        new TagJob(
-                            runsOn: BuildMachines.UbuntuLatest,
-                            dependsOn: "build",
-                            projectRelativePath: "ADotNet/ADotNet.csproj",
-                            githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
-                            branchName: branchName)
-                        {
-                            Name = "Tag And Release"
-                        }
-                    },
-                    {
-                        "publish",
-                        new PublishJobV2(
-                            runsOn: BuildMachines.UbuntuLatest,
-                            dependsOn: "add_tag",
-                            dotNetVersion: dotNetVersion,
-                            nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
-                        {
-                            Name = "Publish NuGet Package"
-                        }
-                    }
-                }
-            };
-
-            string buildScriptPath = "../../../../.github/workflows/build.yml";
-            string directoryPath = Path.GetDirectoryName(buildScriptPath);
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            aDotNetClient.SerializeAndWriteToFile(githubPipeline, path: buildScriptPath);
+            scriptGenerationService.GeneratePrLintScript(branchName: "main");
         }
     }
 }

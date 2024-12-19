@@ -6,153 +6,13 @@ on:
   pull_request:
     types:
     - opened
-    - edited
     - synchronize
     - reopened
     - closed
     branches:
     - main
-env:
-  IS_RELEASE_CANDIDATE: >-
-    ${{
-      (
-        github.event_name == 'pull_request' && 
-        startsWith(github.event.pull_request.title, 'RELEASES:') && 
-        contains(github.event.pull_request.labels.*.name, 'RELEASES')
-      )
-      ||
-      (
-        github.event_name == 'push' && 
-        startsWith(github.event.head_commit.message, 'RELEASES:') && 
-        startsWith(github.ref_name, 'RELEASE')
-      )
-    }}
 jobs:
-  label:
-    name: Label
-    runs-on: ubuntu-latest
-    steps:
-    - name: Apply Label
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: >-
-          const prefixes = [
-            'INFRA:',
-            'PROVISIONS:',
-            'RELEASES:',
-            'DATA:',
-            'BROKERS:',
-            'FOUNDATIONS:',
-            'PROCESSINGS:',
-            'ORCHESTRATIONS:',
-            'COORDINATIONS:',
-            'MANAGEMENTS:',
-            'AGGREGATIONS:',
-            'CONTROLLERS:',
-            'CLIENTS:',
-            'EXPOSERS:',
-            'PROVIDERS:',
-            'BASE:',
-            'COMPONENTS:',
-            'VIEWS:',
-            'PAGES:',
-            'ACCEPTANCE:',
-            'INTEGRATIONS:',
-            'CODE RUB:',
-            'MINOR FIX:',
-            'MEDIUM FIX:',
-            'MAJOR FIX:',
-            'DOCUMENTATION:',
-            'CONFIG:',
-            'STANDARD:',
-            'DESIGN:',
-            'BUSINESS:'
-          ];
-
-
-          const pullRequest = context.payload.pull_request;
-
-
-          if (!pullRequest) {
-            console.log('No pull request context available.');
-            return;
-          }
-
-
-          const title = context.payload.pull_request.title;
-
-          const existingLabels = context.payload.pull_request.labels.map(label => label.name);
-
-
-          for (const prefix of prefixes) {
-            if (title.startsWith(prefix)) {
-              const label = prefix.slice(0, -1);
-              if (!existingLabels.includes(label)) {
-                console.log(`Applying label: ${label}`);
-                await github.rest.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [label]
-                });
-              }
-              break;
-            }
-          }
-    permissions:
-      contents: read
-      pull-requests: write
-  requireIssueOrTask:
-    name: Require Issue Or Task Association
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out
-      uses: actions/checkout@v3
-    - name: Get PR Information
-      id: get_pr_info
-      uses: actions/github-script@v6
-      with:
-        script: >2-
-              const pr = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number
-              });
-
-              const prOwner = pr.data.user.login || "";
-              const prBody = pr.data.body || "";
-              core.setOutput("prOwner", prOwner);
-              core.setOutput("description", prBody);
-              console.log(`PR Owner: ${prOwner}`);
-              console.log(`PR Body: ${prBody}`);
-    - name: Check For Associated Issues Or Tasks
-      id: check_for_issues_or_tasks
-      if: ${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}
-      run: >2-
-            PR_BODY="${{ steps.get_pr_info.outputs.description }}"
-            echo "::notice::Raw PR Body: $PR_BODY"
-
-            if [[ -z "$PR_BODY" ]]; then
-              echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
-              exit 1
-            fi
-
-            PR_BODY=$(echo "$PR_BODY" | tr -s '\r\n' ' ' | tr '\n' ' ' | xargs)
-            echo "::notice::Normalized PR Body: $PR_BODY"
-
-            if echo "$PR_BODY" | grep -Piq "((close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[#\d+\]|\#\d+)|(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[AB#\d+\]|AB#\d+))"; then
-              echo "Valid PR description."
-            else
-              echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
-              exit 1
-            fi
-      shell: bash
-    permissions:
-      contents: read
-      pull-requests: read
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
     - name: Check out
@@ -168,7 +28,6 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
   add_tag:
-    name: Tag And Release
     runs-on: ubuntu-latest
     needs:
     - build
@@ -250,7 +109,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
   publish:
-    name: Publish NuGet Package
     runs-on: ubuntu-latest
     needs:
     - add_tag
