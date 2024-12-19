@@ -33,7 +33,7 @@ namespace ADotNet.Infrastructure.Build
 
                     PullRequest = new PullRequestEvent
                     {
-                        Types = new string[] { "opened", "synchronize", "reopened", "closed" },
+                        Types = new string[] { "opened", "edited", "synchronize", "reopened", "closed" },
                         Branches = new string[] { branchName }
                     }
                 },
@@ -52,7 +52,7 @@ namespace ADotNet.Infrastructure.Build
                             Name = "Label",
                         }
                     },
-                    { 
+                    {
                         "requireIssueOrTask",
                         new RequireIssueOrTaskJob()
                         {
