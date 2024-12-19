@@ -18,6 +18,7 @@ namespace ADotNet.Infrastructure.Build
         static void Main(string[] args)
         {
             string branchName = "main";
+            string dotNetVersion = "9.0.100";
             var aDotNetClient = new ADotNetClient();
 
             var githubPipeline = new GithubPipeline
@@ -63,6 +64,7 @@ namespace ADotNet.Infrastructure.Build
                         "build",
                         new Job
                         {
+                            Name = "Build",
                             RunsOn = BuildMachines.UbuntuLatest,
 
                             Steps = new List<GithubTask>
@@ -78,7 +80,7 @@ namespace ADotNet.Infrastructure.Build
 
                                     With = new TargetDotNetVersionV3
                                     {
-                                        DotNetVersion = "9.0.100"
+                                        DotNetVersion = dotNetVersion
                                     }
                                 },
 
@@ -107,13 +109,20 @@ namespace ADotNet.Infrastructure.Build
                             projectRelativePath: "ADotNet/ADotNet.csproj",
                             githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
                             branchName: branchName)
+                        {
+                            Name = "Tag And Release"
+                        }
                     },
                     {
                         "publish",
-                        new PublishJob(
+                        new PublishJobV2(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "add_tag",
+                            dotNetVersion: dotNetVersion,
                             nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
+                        {
+                            Name = "Publish NuGet Package"
+                        }
                     }
                 }
             };
