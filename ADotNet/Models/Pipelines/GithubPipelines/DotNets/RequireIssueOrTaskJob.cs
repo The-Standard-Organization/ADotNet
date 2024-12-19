@@ -37,8 +37,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Uses = "actions/github-script@v6",
                         With = new Dictionary<string, string>
                         {
-                            { 
-                                "script", 
+                            {
+                                "script",
                                 """
                                     const pr = await github.rest.pulls.get({
                                       owner: context.repo.owner,
@@ -60,12 +60,12 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     new GithubTask()
                     {
                         Name = "Check For Associated Issues Or Tasks",
-                        If = "${{ steps.get-pr.outputs.prOwner != 'dependabot[bot]' }}",
+                        If = "${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}",
                         Id = "check_for_issues_or_tasks",
                         Shell = "bash",
                         Run =
                             """
-                                PR_BODY="${{ steps.get-pr.outputs.description }}"
+                                PR_BODY="${{ steps.get_pr_info.outputs.description }}"
                                 echo "::notice::Raw PR Body: $PR_BODY"
 
                                 if [[ -z "$PR_BODY" ]]; then

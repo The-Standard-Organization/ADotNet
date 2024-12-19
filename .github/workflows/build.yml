@@ -128,9 +128,9 @@ jobs:
               console.log(`PR Body: ${prBody}`);
     - name: Check For Associated Issues Or Tasks
       id: check_for_issues_or_tasks
-      if: ${{ steps.get-pr.outputs.prOwner != 'dependabot[bot]' }}
+      if: ${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}
       run: >2-
-            PR_BODY="${{ steps.get-pr.outputs.description }}"
+            PR_BODY="${{ steps.get_pr_info.outputs.description }}"
             echo "::notice::Raw PR Body: $PR_BODY"
 
             if [[ -z "$PR_BODY" ]]; then
