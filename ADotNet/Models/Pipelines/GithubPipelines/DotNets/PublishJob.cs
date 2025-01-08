@@ -4,10 +4,10 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
 using YamlDotNet.Serialization;
 
@@ -15,6 +15,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class PublishJob : Job
     {
+        [Obsolete("This job is now obsolete. Please migrate to PublishJobV2.")]
         public PublishJob(
             string runsOn,
             string dependsOn,
