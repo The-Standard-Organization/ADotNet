@@ -43,6 +43,7 @@ namespace ISL.ReIdentification.Infrastructure.Services
                         "build",
                         new Job
                         {
+                            Name = "Build",
                             RunsOn = BuildMachines.UbuntuLatest,
 
                             Steps = new List<GithubTask>
@@ -87,6 +88,9 @@ namespace ISL.ReIdentification.Infrastructure.Services
                             projectRelativePath: "ADotNet/ADotNet.csproj",
                             githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
                             branchName: branchName)
+                        {
+                            Name = "Add Tag and Create Release"
+                        }
                     },
                     {
                         "publish",
@@ -95,6 +99,9 @@ namespace ISL.ReIdentification.Infrastructure.Services
                             dependsOn: "add_tag",
                             dotNetVersion: dotNetVersion,
                             nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
+                        {
+                            Name = "Publish to NuGet"
+                        }
                     }
                 }
             };
@@ -120,8 +127,6 @@ namespace ISL.ReIdentification.Infrastructure.Services
 
                 OnEvents = new Events
                 {
-                    Push = new PushEvent { Branches = [branchName] },
-
                     PullRequest = new PullRequestEvent
                     {
                         Types = ["opened", "edited", "synchronize", "reopened", "closed"],
