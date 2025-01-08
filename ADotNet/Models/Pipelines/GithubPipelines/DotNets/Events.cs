@@ -10,9 +10,10 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class Events
     {
+        [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public PushEvent Push { get; set; }
 
-        [YamlMember(Alias = "pull_request")]
+        [YamlMember(Alias = "pull_request", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public PullRequestEvent PullRequest { get; set; }
     }
 }
