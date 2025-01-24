@@ -13,9 +13,9 @@ namespace ADotNet.Clients.Builders
     public class GitHubPipelineBuilder
     {
         private readonly GithubPipeline githubPipeline;
-        private readonly ADotNetClient aDotNetClient;
+        private readonly IADotNetClient aDotNetClient;
 
-        internal GitHubPipelineBuilder(ADotNetClient aDotNetClient)
+        internal GitHubPipelineBuilder(IADotNetClient aDotNetClient)
         {
             this.githubPipeline = new GithubPipeline
             {

@@ -15,12 +15,12 @@ namespace ADotNet.Tests.Unit.Clients.Builders
 {
     public partial class GitHubPipelineBuilderTests
     {
-        private readonly Mock<ADotNetClient> aDotNetClientMock;
+        private readonly Mock<IADotNetClient> aDotNetClientMock;
         private readonly GitHubPipelineBuilder gitHubPipelineBuilder;
 
         public GitHubPipelineBuilderTests()
         {
-            this.aDotNetClientMock = new Mock<ADotNetClient>();
+            this.aDotNetClientMock = new Mock<IADotNetClient>();
 
             this.gitHubPipelineBuilder = new GitHubPipelineBuilder(
                 aDotNetClient: aDotNetClientMock.Object);
