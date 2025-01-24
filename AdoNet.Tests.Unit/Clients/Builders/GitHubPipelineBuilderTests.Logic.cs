@@ -36,7 +36,8 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             var actualPipeline = GetPipeline(pipelineBuilder);
 
             // then
-            Assert.Equal(expectedName, actualPipeline.Name);
+            actualPipeline.Should().NotBeNull();
+            actualPipeline.Name.Should().BeEquivalentTo(expectedName);
         }
     }
 }
