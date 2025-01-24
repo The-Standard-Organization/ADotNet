@@ -21,5 +21,22 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // then
             builder.Should().NotBeNull();
         }
+
+        [Fact]
+        public void ShouldSetPipelineName()
+        {
+            // given
+            string inputName = "My GitHub Pipeline";
+            string expectedName = inputName;
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilder.CreateNewPipeline()
+                .SetName(inputName);
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            Assert.Equal(expectedName, actualPipeline.Name);
+        }
     }
 }
