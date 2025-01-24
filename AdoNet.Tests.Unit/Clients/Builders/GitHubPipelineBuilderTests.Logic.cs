@@ -5,6 +5,8 @@
 // ---------------------------------------------------------------------------
 
 using ADotNet.Clients.Builders;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -73,6 +75,34 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // then
             actualPipeline.OnEvents.PullRequest.Should().NotBeNull();
             actualPipeline.OnEvents.PullRequest.Branches.Should().BeEquivalentTo(inputBranches);
+        }
+
+        [Fact]
+        public void ShouldAddJobToPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            string inputRunsOn = BuildMachines.WindowsLatest;
+            string inputTaskName = "Restore";
+
+            string expectedRunsOn = inputRunsOn;
+            string expectedTaskName = inputTaskName;
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilder.CreateNewPipeline()
+                .AddJob(inputJobName, job =>
+                    job.RunsOn(inputRunsOn)
+                       .AddRestoreStep(inputTaskName));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Should().NotBeNull();
+            actualJob.RunsOn.Should().Be(expectedRunsOn);
+            actualJob.Steps.Should().HaveCount(1);
+            actualJob.Steps[0].Should().BeOfType<RestoreTask>()
+                .Which.Name.Should().Be(expectedTaskName);
         }
     }
 }
