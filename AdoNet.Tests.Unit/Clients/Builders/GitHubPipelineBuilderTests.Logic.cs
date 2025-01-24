@@ -39,5 +39,23 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualPipeline.Should().NotBeNull();
             actualPipeline.Name.Should().BeEquivalentTo(expectedName);
         }
+
+        [Fact]
+        public void ShouldAddPushTrigger()
+        {
+            // given
+            string[] inputBranches = { "main", "dev" };
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilder.CreateNewPipeline()
+                .OnPush(inputBranches);
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            actualPipeline.OnEvents.Push.Should().NotBeNull();
+            actualPipeline.OnEvents.Push.Branches.Should().BeEquivalentTo(inputBranches);
+        }
+
     }
 }
