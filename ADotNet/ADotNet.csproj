@@ -86,4 +86,8 @@
 		</None>
 	</ItemGroup>
 
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="ADotNet.Tests.Unit" />
+	</ItemGroup>
 </Project>

@@ -13,18 +13,23 @@ namespace ADotNet.Clients.Builders
     public class GitHubPipelineBuilder
     {
         private readonly GithubPipeline githubPipeline;
+        private readonly ADotNetClient aDotNetClient;
 
-        private GitHubPipelineBuilder()
+        internal GitHubPipelineBuilder(ADotNetClient aDotNetClient)
         {
             this.githubPipeline = new GithubPipeline
             {
                 OnEvents = new Events(),
                 Jobs = new Dictionary<string, Job>()
             };
+            this.aDotNetClient = aDotNetClient;
         }
 
-        public static GitHubPipelineBuilder CreateNewPipeline() =>
-            new GitHubPipelineBuilder();
+        public static GitHubPipelineBuilder CreateNewPipeline()
+        {
+            var aDotNetClient = new ADotNetClient();
+            return new GitHubPipelineBuilder(aDotNetClient);
+        }
 
         public GitHubPipelineBuilder SetName(string name)
         {
@@ -60,8 +65,7 @@ namespace ADotNet.Clients.Builders
 
         public void SaveToFile(string path)
         {
-            var aDotNetClient = new ADotNetClient();
-            aDotNetClient.SerializeAndWriteToFile(
+            this.aDotNetClient.SerializeAndWriteToFile(
                 this.githubPipeline,
                 path);
         }

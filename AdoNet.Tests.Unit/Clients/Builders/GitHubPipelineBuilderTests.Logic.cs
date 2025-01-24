@@ -8,6 +8,7 @@ using ADotNet.Clients.Builders;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace ADotNet.Tests.Unit.Clients.Builders
@@ -104,5 +105,41 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Steps[0].Should().BeOfType<RestoreTask>()
                 .Which.Name.Should().Be(expectedTaskName);
         }
+
+        [Fact]
+        public void ShouldSavePipelineToFile()
+        {
+            // given
+            string randomFileName = GetRandomFileName();
+            string randomPipelineName = GetRandomString();
+            GithubPipeline randomPipeline =
+                CreateRandomGithubPipeline(randomPipelineName);
+
+            GithubPipeline inputPipeline = randomPipeline;
+
+            string inputPath = randomFileName;
+            string inputPipelineName = randomPipelineName;
+
+            this.aDotNetClientMock.Setup(client =>
+                client.SerializeAndWriteToFile(
+                    inputPipeline,
+                    inputPath))
+                .Verifiable();
+
+            this.gitHubPipelineBuilder.SetName(inputPipelineName);
+
+            // when
+            this.gitHubPipelineBuilder.SaveToFile(inputPath);
+
+            // then
+            this.aDotNetClientMock.Verify(client =>
+               client.SerializeAndWriteToFile(
+                   It.IsAny<GithubPipeline>(),
+                   It.IsAny<string>()),
+               Times.Once);
+
+            this.aDotNetClientMock.VerifyNoOtherCalls();
+        }
+
     }
 }
