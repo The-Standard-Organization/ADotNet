@@ -3,27 +3,27 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
 		<LangVersion>11.0</LangVersion>
-		<Copyright>Copyright (c) Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Copyright>
+		<Copyright>Copyright (c) The Standard Community</Copyright>
 		<Description>
 			ADotNet is a dot net library to help engineers develop their build and release pipelines 
 			in C# without having to use YAML or any other technology.
 		</Description>
-		<Authors>Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Authors>
+		<Authors>Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit &amp; Mabrouk Mahdhi</Authors>
 		<PackageIcon>ADotNet.png</PackageIcon>
-		<RepositoryUrl>https://github.com/hassanhabib/ADotNet</RepositoryUrl>
+		<RepositoryUrl>https://github.dev/The-Standard-Organization/ADotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>ADO YAML AzureDevOps</PackageTags>
+		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
-			This release has two new components: CheckoutTaskV4 and RequireIssueOrTaskJob.
+			This release has the implementation of a fluent GitHub Actions pipeline builder.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<FileVersion>4.0.0</FileVersion>
-		<Version>4.0.0</Version>
+		<AssemblyVersion>4.1.0</AssemblyVersion>
+		<FileVersion>4.1.0</FileVersion>
+		<Version>4.1.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
+		<PackageProjectUrl>https://github.dev/The-Standard-Organization/ADotNet</PackageProjectUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
