@@ -22,18 +22,21 @@ namespace ADotNet.Clients.Builders
                 OnEvents = new Events(),
                 Jobs = new Dictionary<string, Job>()
             };
+
             this.aDotNetClient = aDotNetClient;
         }
 
         public static GitHubPipelineBuilder CreateNewPipeline()
         {
             var aDotNetClient = new ADotNetClient();
+
             return new GitHubPipelineBuilder(aDotNetClient);
         }
 
         public GitHubPipelineBuilder SetName(string name)
         {
             this.githubPipeline.Name = name;
+
             return this;
         }
 
@@ -43,6 +46,7 @@ namespace ADotNet.Clients.Builders
             {
                 Branches = branches
             };
+
             return this;
         }
 
@@ -52,22 +56,22 @@ namespace ADotNet.Clients.Builders
             {
                 Branches = branches
             };
+
             return this;
         }
 
         public GitHubPipelineBuilder AddJob(string jobIdentifier, Action<JobBuilder> configureJob)
         {
             var jobBuilder = new JobBuilder();
+
             configureJob(jobBuilder);
+
             this.githubPipeline.Jobs[jobIdentifier] = jobBuilder.Build();
+
             return this;
         }
 
-        public void SaveToFile(string path)
-        {
-            this.aDotNetClient.SerializeAndWriteToFile(
-                this.githubPipeline,
-                path);
-        }
+        public void SaveToFile(string path) =>
+            this.aDotNetClient.SerializeAndWriteToFile(this.githubPipeline, path);
     }
 }

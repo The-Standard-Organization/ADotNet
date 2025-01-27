@@ -38,8 +38,7 @@ namespace ADotNet.Clients.Builders
 
         public JobBuilder AddEnvironmentVariable(string key, string value)
         {
-            this.job.EnvironmentVariables ??=
-                new Dictionary<string, string>();
+            this.job.EnvironmentVariables ??= new Dictionary<string, string>();
 
             this.job.EnvironmentVariables[key] = value;
             return this;
@@ -47,19 +46,20 @@ namespace ADotNet.Clients.Builders
 
         public JobBuilder AddEnvironmentVariables(Dictionary<string, string> variables)
         {
-            this.job.EnvironmentVariables ??=
-                new Dictionary<string, string>();
+            this.job.EnvironmentVariables ??= new Dictionary<string, string>();
 
             foreach (var variable in variables)
             {
                 this.job.EnvironmentVariables[variable.Key] = variable.Value;
             }
+
             return this;
         }
 
         public JobBuilder AddCheckoutStep(string name = "Check out")
         {
             this.job.Steps.Add(new CheckoutTaskV2 { Name = name });
+
             return this;
         }
 
@@ -77,18 +77,21 @@ namespace ADotNet.Clients.Builders
                     IncludePrerelease = includePrerelease
                 }
             });
+
             return this;
         }
 
         public JobBuilder AddRestoreStep(string name = "Restore")
         {
             this.job.Steps.Add(new RestoreTask { Name = name });
+
             return this;
         }
 
         public JobBuilder AddBuildStep(string name = "Build")
         {
             this.job.Steps.Add(new DotNetBuildTask { Name = name });
+
             return this;
         }
 
@@ -99,6 +102,7 @@ namespace ADotNet.Clients.Builders
                 Name = name,
                 Run = command ?? "dotnet test --no-build --verbosity normal"
             });
+
             return this;
         }
 
@@ -109,6 +113,7 @@ namespace ADotNet.Clients.Builders
                 Name = name,
                 Run = runCommand
             });
+
             return this;
         }
 

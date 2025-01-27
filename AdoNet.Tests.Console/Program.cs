@@ -195,18 +195,13 @@ namespace ADotNet.Tests.Console
                     .WithName("Build")
                     .RunsOn(BuildMachines.WindowsLatest)
                     .AddEnvironmentVariable("AzureClientId", "${{ secrets.AZURECLIENTID }}")
-                    .AddEnvironmentVariable("AzureTenantId", "${{ secrets.AZURETENANTID }}")
-                    .AddEnvironmentVariable("AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}")
-                    .AddEnvironmentVariable("AzureAdminName", "${{ secrets.AZUREADMINNAME }}")
-                    .AddEnvironmentVariable("AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}")
-                    //.AddEnvironmentVariables(new Dictionary<string, string>
-                    //{
-                    //    { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
-                    //    { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
-                    //    { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
-                    //    { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
-                    //    { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
-                    //})
+                    .AddEnvironmentVariables(new Dictionary<string, string>
+                    {
+                        { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
+                        { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
+                        { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
+                        { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
+                    })
                     .AddCheckoutStep("Check Out")
                     .AddSetupDotNetStep(
                         version: "6.0.101",
