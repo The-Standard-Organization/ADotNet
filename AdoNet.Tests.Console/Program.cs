@@ -187,7 +187,6 @@ namespace ADotNet.Tests.Console
 
             adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
 
-
             GitHubPipelineBuilder.CreateNewPipeline()
                 .SetName("Github")
                 .OnPush("master")

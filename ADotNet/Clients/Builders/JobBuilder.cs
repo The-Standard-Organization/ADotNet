@@ -148,7 +148,8 @@ namespace ADotNet.Clients.Builders
         /// Adds a test step to the job.
         /// </summary>
         /// <param name="name">The name of the test step (default: "Test").</param>
-        /// <param name="command">The command to execute the test (default: "dotnet test --no-build --verbosity normal").</param>
+        /// <param name="command">The command to execute the test 
+        /// (default: "dotnet test --no-build --verbosity normal").</param>
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
         public JobBuilder AddTestStep(string name = "Test", string command = null)
         {

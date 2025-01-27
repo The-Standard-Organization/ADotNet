@@ -30,7 +30,8 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="GitHubPipelineBuilder"/> class with a default <see cref="ADotNetClient"/>.
+        /// Creates a new instance of the <see cref="GitHubPipelineBuilder"/> class 
+        /// with a default <see cref="ADotNetClient"/>.
         /// </summary>
         /// <returns>A new instance of <see cref="GitHubPipelineBuilder"/>.</returns>
         public static GitHubPipelineBuilder CreateNewPipeline()
@@ -91,9 +92,7 @@ namespace ADotNet.Clients.Builders
         public GitHubPipelineBuilder AddJob(string jobIdentifier, Action<JobBuilder> configureJob)
         {
             var jobBuilder = new JobBuilder();
-
             configureJob(jobBuilder);
-
             this.githubPipeline.Jobs[jobIdentifier] = jobBuilder.Build();
 
             return this;
