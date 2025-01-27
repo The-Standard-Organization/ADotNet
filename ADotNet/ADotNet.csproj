@@ -14,13 +14,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps</PackageTags>
 		<PackageReleaseNotes>
-			This release has two new components: CheckoutTaskV4 and RequireIssueOrTaskJob.
+			This release has the implementation of a fluent GitHub Actions pipeline builder.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<FileVersion>4.0.0</FileVersion>
-		<Version>4.0.0</Version>
+		<AssemblyVersion>4.1.0</AssemblyVersion>
+		<FileVersion>4.1.0</FileVersion>
+		<Version>4.1.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
