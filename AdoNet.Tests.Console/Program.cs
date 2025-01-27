@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using ADotNet.Clients;
+using ADotNet.Clients.Builders;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
@@ -185,6 +186,42 @@ namespace ADotNet.Tests.Console
             };
 
             adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
+
+            string projectName = "OtripleS.Api.Infrastructure.Provision";
+
+            GitHubPipelineBuilder.CreateNewPipeline()
+                .SetName("Github")
+                .OnPush("master")
+                .OnPullRequest("master")
+
+                .AddJob("build", job => job
+                    .WithName("Build")
+                    .RunsOn(BuildMachines.WindowsLatest)
+                    .AddEnvironmentVariable("AzureClientId", "${{ secrets.AZURECLIENTID }}")
+
+                    .AddEnvironmentVariables(new Dictionary<string, string>
+                    {
+                        { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
+                        { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
+                        { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
+                        { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
+                    })
+
+                    .AddCheckoutStep("Check Out")
+
+                    .AddSetupDotNetStep(
+                        version: "6.0.101",
+                        includePrerelease: true)
+
+                    .AddRestoreStep()
+                    .AddBuildStep()
+
+                    .AddGenericStep(
+                        name: "Provision",
+                        runCommand:
+                            "dotnet run --project .\\{projectName}\\{projectName}.csproj"))
+
+                .SaveToFile("github-pipelines-fluent.yaml");
         }
     }
 }
