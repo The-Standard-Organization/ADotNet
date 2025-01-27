@@ -10,7 +10,7 @@
 		</Description>
 		<Authors>Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit &amp; Mabrouk Mahdhi</Authors>
 		<PackageIcon>ADotNet.png</PackageIcon>
-		<RepositoryUrl>https://github.com/hassanhabib/ADotNet</RepositoryUrl>
+		<RepositoryUrl>https://github.dev/The-Standard-Organization/ADotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
@@ -23,7 +23,7 @@
 		<Version>4.1.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://github.com/hassanhabib/ADotNet</PackageProjectUrl>
+		<PackageProjectUrl>https://github.dev/The-Standard-Organization/ADotNet</PackageProjectUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
