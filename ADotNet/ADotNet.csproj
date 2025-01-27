@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
 		<LangVersion>11.0</LangVersion>
-		<Copyright>Copyright (c) Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Copyright>
+		<Copyright>Copyright (c) The Standard Community</Copyright>
 		<Description>
 			ADotNet is a dot net library to help engineers develop their build and release pipelines 
 			in C# without having to use YAML or any other technology.
@@ -12,7 +12,7 @@
 		<PackageIcon>ADotNet.png</PackageIcon>
 		<RepositoryUrl>https://github.com/hassanhabib/ADotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>ADO YAML AzureDevOps</PackageTags>
+		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
 			This release has the implementation of a fluent GitHub Actions pipeline builder.
 		</PackageReleaseNotes>
