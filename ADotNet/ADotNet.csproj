@@ -8,7 +8,7 @@
 			ADotNet is a dot net library to help engineers develop their build and release pipelines 
 			in C# without having to use YAML or any other technology.
 		</Description>
-		<Authors>Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Authors>
+		<Authors>Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit &amp; Mabrouk Mahdhi</Authors>
 		<PackageIcon>ADotNet.png</PackageIcon>
 		<RepositoryUrl>https://github.com/hassanhabib/ADotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
