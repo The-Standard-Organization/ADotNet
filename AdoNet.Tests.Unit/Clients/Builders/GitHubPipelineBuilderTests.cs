@@ -29,7 +29,10 @@ namespace ADotNet.Tests.Unit.Clients.Builders
         private static GithubPipeline GetPipeline(GitHubPipelineBuilder builder)
         {
             var privateField = typeof(GitHubPipelineBuilder)
-                .GetField("githubPipeline", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                .GetField(
+                    name: "githubPipeline",
+                    bindingAttr: System.Reflection.BindingFlags.NonPublic
+                        | System.Reflection.BindingFlags.Instance);
 
             return (GithubPipeline)privateField.GetValue(builder);
         }

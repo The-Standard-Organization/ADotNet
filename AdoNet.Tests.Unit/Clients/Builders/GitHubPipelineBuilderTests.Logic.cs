@@ -60,7 +60,6 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualPipeline.OnEvents.Push.Branches.Should().BeEquivalentTo(inputBranches);
         }
 
-
         [Fact]
         public void ShouldAddPullRequestTrigger()
         {
@@ -102,6 +101,7 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Should().NotBeNull();
             actualJob.RunsOn.Should().Be(expectedRunsOn);
             actualJob.Steps.Should().HaveCount(1);
+
             actualJob.Steps[0].Should().BeOfType<RestoreTask>()
                 .Which.Name.Should().Be(expectedTaskName);
         }
@@ -112,11 +112,11 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // given
             string randomFileName = GetRandomFileName();
             string randomPipelineName = GetRandomString();
+
             GithubPipeline randomPipeline =
                 CreateRandomGithubPipeline(randomPipelineName);
 
             GithubPipeline inputPipeline = randomPipeline;
-
             string inputPath = randomFileName;
             string inputPipelineName = randomPipelineName;
 
