@@ -374,7 +374,7 @@ GitHubPipelineBuilder.CreateNewPipeline()
         .AddBuildStep()
         .AddGenericStep(
             name: "Provision",
-            runCommand: "dotnet run --project .\\OtripleS.Api.Infrastructure.Provision\\OtripleS.Web.Api.Infrastructure.Provision.csproj"))
+            runCommand: "dotnet run --project .\\<PROJECT_DIRECTORY>\\<PROJECT_NAME>.csproj"))
     .SaveToFile("github-pipelines-2.yaml");
 ```
 ### Environment Variables Support:
