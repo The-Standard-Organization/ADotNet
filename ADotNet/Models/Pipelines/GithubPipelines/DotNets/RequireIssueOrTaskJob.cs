@@ -63,20 +63,20 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         If = "${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}",
                         Id = "check_for_issues_or_tasks",
                         Shell = "bash",
+                        EnvironmentVariables = new Dictionary<string, string>
+                        {
+                            { "PR_BODY", "${{ steps.get_pr_info.outputs.description }}" }
+                        },
                         Run =
                             """
-                                PR_BODY="${{ steps.get_pr_info.outputs.description }}"
-                                echo "::notice::Raw PR Body: $PR_BODY"
-
-                                if [[ -z "$PR_BODY" ]]; then
+                                if [[ -z "${PR_BODY:-}" ]]; then
                                   echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
                                   exit 1
                                 fi
 
-                                PR_BODY=$(echo "$PR_BODY" | tr -s '\r\n' ' ' | tr '\n' ' ' | xargs)
-                                echo "::notice::Normalized PR Body: $PR_BODY"
+                                NORMALIZED_PR_BODY=$(printf '%s' "$PR_BODY" | tr '\r\n' '  ' | tr -s ' ')
 
-                                if echo "$PR_BODY" | grep -Piq "((close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[#\d+\]|\#\d+)|(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[AB#\d+\]|AB#\d+))"; then
+                                if printf '%s' "$NORMALIZED_PR_BODY" | grep -Piq "(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[#[0-9]+\]|#[0-9]+|\[AB#[0-9]+\]|AB#[0-9]+)"; then
                                   echo "Valid PR description."
                                 else
                                   echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
