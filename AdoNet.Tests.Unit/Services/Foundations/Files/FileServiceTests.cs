@@ -26,7 +26,7 @@ namespace ADotNet.Tests.Unit.Services.Foundations.Files
                 filesBroker: this.filesBrokerMock.Object);
         }
 
-        public static TheoryData FileDependencyValidationExceptions()
+        public static TheoryData<Exception> FileDependencyValidationExceptions()
         {
             return new TheoryData<Exception>()
             {

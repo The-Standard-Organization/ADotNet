@@ -42,7 +42,7 @@ namespace ADotNet.Tests.Unit.Services.Builds
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
 
-        public static TheoryData FileValidationExceptions()
+        public static TheoryData<Exception> FileValidationExceptions()
         {
             return new TheoryData<Exception>
             {
@@ -53,7 +53,7 @@ namespace ADotNet.Tests.Unit.Services.Builds
             };
         }
 
-        public static TheoryData FileDependencyExceptions()
+        public static TheoryData<Exception> FileDependencyExceptions()
         {
             return new TheoryData<Exception>
             {
