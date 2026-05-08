@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net9.0;net10.0</TargetFrameworks>
 		<LangVersion>11.0</LangVersion>
 		<Copyright>Copyright (c) Hassan Habib &amp; Shri Humrudha &amp; Christo du Toit</Copyright>
 		<Description>
@@ -40,26 +40,18 @@
 			<PackagePath></PackagePath>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	
-	<ItemGroup>
-		<None Include="License.txt" Pack="true" PackagePath="" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="Resources\ADotNet.png" Pack="true" PackagePath="" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="License.txt">
+		<None Include="License.txt" Pack="true" PackagePath="">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
+		</None>
+		<None Include="Resources\ADotNet.png" Pack="true" PackagePath="">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Xeption" Version="2.5.0" />
-		<PackageReference Include="YamlDotNet" Version="13.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Xeption" Version="2.8.0" />
+		<PackageReference Include="YamlDotNet" Version="17.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -75,15 +67,6 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="ADotNet.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Resources\ADotNet.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 </Project>
