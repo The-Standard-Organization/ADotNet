@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/build.yml" />
+  </Folder>
+  <Project Path="AdoNet.Tests.Console/ADotNet.Tests.Console.csproj" />
+  <Project Path="AdoNet.Tests.Unit/ADotNet.Tests.Unit.csproj" />
+  <Project Path="ADotNet.Infrastructure.Build/ADotNet.Infrastructure.Build.csproj" />
+  <Project Path="ADotNet/ADotNet.csproj" />
+</Solution>
