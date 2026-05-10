@@ -59,7 +59,7 @@ namespace ADotNet.Infrastructure.Build.Services
 
                                     With = new TargetDotNetVersionV3
                                     {
-                                        DotNetVersion = "9.0.100"
+                                        DotNetVersion = dotNetVersion
                                     }
                                 },
 
