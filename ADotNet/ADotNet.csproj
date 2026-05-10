@@ -18,9 +18,9 @@
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>4.1.0</AssemblyVersion>
-		<FileVersion>4.1.0</FileVersion>
-		<Version>4.1.0</Version>
+		<AssemblyVersion>4.2.0</AssemblyVersion>
+		<FileVersion>4.2.0</FileVersion>
+		<Version>4.2.0</Version>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.dev/The-Standard-Organization/ADotNet</PackageProjectUrl>
@@ -58,7 +58,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="Xeption" Version="2.8.0" />
+		<PackageReference Include="Xeption" Version="2.9.0" />
 		<PackageReference Include="YamlDotNet" Version="17.1.0" />
 	</ItemGroup>
 

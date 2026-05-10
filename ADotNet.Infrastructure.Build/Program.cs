@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using ISL.ReIdentification.Infrastructure.Services;
+using ADotNet.Infrastructure.Build.Services;
 
 namespace ADotNet.Infrastructure.Build
 {
