@@ -131,3 +131,41 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+  setAuthorAsPrAssignee:
+    name: Set Author As PR Assignee
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set Author As PR Assignee
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: >
+          const pr = context.payload.pull_request;
+
+          if (!pr) {
+            console.log('No pull request context available.');
+            return;
+          }
+
+
+          const author = pr.user.login;
+
+          if (author.endsWith('[bot]')) {
+            console.log(`Skipping bot author: ${author}`);
+            return;
+          }
+
+
+          console.log(`Assigning PR to author: ${author}`);
+
+
+          await github.rest.issues.addAssignees({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: pr.number,
+            assignees: [author]
+          });
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write

@@ -19,9 +19,9 @@ jobs:
     - name: Check out
       uses: actions/checkout@v3
     - name: Setup .Net
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.100
+        dotnet-version: 10.x
     - name: Restore
       run: dotnet restore
     - name: Build
@@ -120,7 +120,7 @@ jobs:
     - name: Check out
       uses: actions/checkout@v3
     - name: Setup .Net
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.x
     - name: Restore

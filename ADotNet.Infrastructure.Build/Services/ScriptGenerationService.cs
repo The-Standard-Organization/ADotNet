@@ -9,7 +9,7 @@ using System.IO;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV4s;
 
 namespace ADotNet.Infrastructure.Build.Services
 {
@@ -53,11 +53,11 @@ namespace ADotNet.Infrastructure.Build.Services
                                     Name = "Check out"
                                 },
 
-                                new SetupDotNetTaskV3
+                                new SetupDotNetTaskV4
                                 {
                                     Name = "Setup .Net",
 
-                                    With = new TargetDotNetVersionV3
+                                    With = new TargetDotNetVersionV4
                                     {
                                         DotNetVersion = dotNetVersion
                                     }
@@ -82,7 +82,7 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "add_tag",
-                        new TagJob(
+                        new TagJobV1(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "build",
                             projectRelativePath: "ADotNet/ADotNet.csproj",
@@ -94,7 +94,7 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "publish",
-                        new PublishJobV2(
+                        new PublishJobV3(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "add_tag",
                             dotNetVersion: dotNetVersion,
@@ -150,6 +150,13 @@ namespace ADotNet.Infrastructure.Build.Services
                             Name = "Require Issue Or Task Association",
                         }
                     },
+                    {
+                        "setAuthorAsPrAssignee",
+                        new SetAuthorAsPrAssigneeJob(runsOn: BuildMachines.UbuntuLatest)
+                        {
+                            Name = "Set Author As PR Assignee",
+                        }
+                    }
                 }
             };
 
