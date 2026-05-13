@@ -150,6 +150,13 @@ namespace ADotNet.Infrastructure.Build.Services
                             Name = "Require Issue Or Task Association",
                         }
                     },
+                    {
+                        "setAuthorAsPrAssignee",
+                        new SetAuthorAsPrAssigneeJob(runsOn: BuildMachines.UbuntuLatest)
+                        {
+                            Name = "Set Author As PR Assignee",
+                        }
+                    }
                 }
             };
 
