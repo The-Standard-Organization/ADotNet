@@ -14,13 +14,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
-			This release has the implementation of a fluent GitHub Actions pipeline builder.
+			Updated components: SetupDotNetTaskV4, TargetDotNetVersionV4, TagJobV1, SetAuthorAsPrAssigneeJob
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>4.2.0</AssemblyVersion>
-		<FileVersion>4.2.0</FileVersion>
 		<Version>4.2.0</Version>
+		<AssemblyVersion>4.2.0.0</AssemblyVersion>
+		<FileVersion>4.2.0.0</FileVersion>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.dev/The-Standard-Organization/ADotNet</PackageProjectUrl>
