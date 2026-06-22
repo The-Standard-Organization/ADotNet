@@ -13,9 +13,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public sealed class RequireIssueOrTaskJobV2 : Job
     {
-        // excludedAuthors is a CSV of PR author logins (e.g. "dependabot[bot]" or
-        // "app,dependabot[bot]"). The require-issue check is skipped - and the job
-        // still succeeds - when the PR author matches one of them.
         public RequireIssueOrTaskJobV2(string excludedAuthors)
         {
             RunsOn = "ubuntu-latest";
@@ -35,7 +32,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
             Steps = new List<GithubTask>
                 {
-                    new CheckoutTaskV3
+                    new CheckoutTaskV5
                     {
                         Name = "Check out"
                     },
@@ -44,7 +41,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     {
                         Name = "Get PR Information",
                         Id = "get_pr_info",
-                        Uses = "actions/github-script@v6",
+                        Uses = "actions/github-script@v8",
                         With = new Dictionary<string, string>
                         {
                             {

@@ -53,5 +53,24 @@ namespace ADotNet.Tests.Unit.Models.Pipelines.GithubPipelines.DotNets
 
             checkStep.If.Should().Be(expectedCondition);
         }
+
+        [Fact]
+        public void ShouldUseNodeTwentyFourActionVersions()
+        {
+            // given
+            string excludedAuthors = "dependabot[bot]";
+
+            // when
+            var requireIssueOrTaskJobV2 = new RequireIssueOrTaskJobV2(excludedAuthors);
+
+            // then
+            requireIssueOrTaskJobV2.Steps
+                .Single(step => step.Name == "Check out")
+                    .Should().BeOfType<CheckoutTaskV5>();
+
+            requireIssueOrTaskJobV2.Steps
+                .Single(step => step.Id == "get_pr_info")
+                    .Uses.Should().Be("actions/github-script@v8");
+        }
     }
 }
