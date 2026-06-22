@@ -13,7 +13,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Order = 0, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string[] Tags { get; set; }
 
-        [YamlMember(Order = 1)]
+        [YamlMember(Order = 1, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string[] Branches { get; set; }
     }
 }
