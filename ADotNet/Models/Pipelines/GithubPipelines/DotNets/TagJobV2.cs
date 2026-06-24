@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class TagJob : Job
+    public sealed class TagJobV2 : Job
     {
-        public TagJob(
+        public TagJobV2(
             string runsOn,
             string dependsOn,
             string projectRelativePath,
@@ -34,7 +32,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
             Steps = new List<GithubTask>
                 {
-                    new CheckoutTaskV3
+                    new CheckoutTaskV5
                     {
                         Name = "Checkout code",
                         With = new Dictionary<string, string>
@@ -85,14 +83,17 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Name = "Create GitHub Tag",
                     },
 
-                    new CreateGitHubReleaseTask(
-                        releaseName: "Release - v${{ steps.extract_version.outputs.version_number }}",
-                        tagName: "v${{ steps.extract_version.outputs.version_number }}",
-                        releaseNotes: "${{ steps.extract_package_release_notes.outputs.package_release_notes }}",
-                        githubToken)
+                    new GithubTask()
                     {
                         Name = "Create GitHub Release",
-                        Uses = "actions/create-release@v1",
+                        EnvironmentVariables = new Dictionary<string, string>
+                        {
+                            { "GH_TOKEN", githubToken }
+                        },
+                        Run =
+                            "gh release create \"v${{ steps.extract_version.outputs.version_number }}\" "
+                            + "--title \"Release - v${{ steps.extract_version.outputs.version_number }}\" "
+                            + "--notes \"${{ steps.extract_package_release_notes.outputs.package_release_notes }}\"",
                     },
                 };
         }

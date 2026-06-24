@@ -13,9 +13,10 @@ jobs:
   label:
     name: Label
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
     - name: Apply Label
-      uses: actions/github-script@v6
+      uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: >-
@@ -84,16 +85,17 @@ jobs:
           }
     permissions:
       contents: read
+      issues: write
       pull-requests: write
   requireIssueOrTask:
     name: Require Issue Or Task Association
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
     - name: Get PR Information
       id: get_pr_info
-      uses: actions/github-script@v6
+      uses: actions/github-script@v8
       with:
         script: >2-
               const pr = await github.rest.pulls.get({
@@ -110,7 +112,7 @@ jobs:
               console.log(`PR Body: ${prBody}`);
     - name: Check For Associated Issues Or Tasks
       id: check_for_issues_or_tasks
-      if: ${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}
+      if: ${{ !contains(',dependabot[bot],', format(',{0},', steps.get_pr_info.outputs.prOwner)) }}
       env:
         PR_BODY: ${{ steps.get_pr_info.outputs.description }}
       run: >2-
@@ -134,9 +136,10 @@ jobs:
   setAuthorAsPrAssignee:
     name: Set Author As PR Assignee
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
     - name: Set Author As PR Assignee
-      uses: actions/github-script@v6
+      uses: actions/github-script@v8
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: >

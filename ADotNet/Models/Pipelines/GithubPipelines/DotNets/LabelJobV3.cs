@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,16 +11,17 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class LabelJobV2 : Job
+    public sealed class LabelJobV3 : Job
     {
-        public LabelJobV2(string runsOn)
+        public LabelJobV3(string runsOn)
         {
             RunsOn = runsOn;
+            If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";
 
             Permissions = new Dictionary<string, string>
             {
                 { "contents", "read" },
+                { "issues", "write" },
                 { "pull-requests", "write" }
             };
 
@@ -30,7 +30,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     new GithubTask()
                     {
                         Name = "Apply Label",
-                        Uses = "actions/github-script@v6",
+                        Uses = "actions/github-script@v8",
                         With = new Dictionary<string, string>
                         {
                             { "github-token", "${{ secrets.GITHUB_TOKEN }}" },

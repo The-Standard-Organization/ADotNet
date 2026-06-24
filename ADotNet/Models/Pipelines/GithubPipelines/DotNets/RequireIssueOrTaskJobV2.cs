@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class RequireIssueOrTaskJob : Job
+    public sealed class RequireIssueOrTaskJobV2 : Job
     {
-        public RequireIssueOrTaskJob()
+        public RequireIssueOrTaskJobV2(string excludedAuthors)
         {
             RunsOn = "ubuntu-latest";
 
@@ -25,9 +23,16 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                 { "pull-requests", "read" }
             };
 
+            var commaWrappedExcludedAuthors =
+                "," + (excludedAuthors ?? string.Empty).Replace(" ", string.Empty) + ",";
+
+            var runForNonExcludedAuthorsCondition =
+                "${{ !contains('" + commaWrappedExcludedAuthors
+                    + "', format(',{0},', steps.get_pr_info.outputs.prOwner)) }}";
+
             Steps = new List<GithubTask>
                 {
-                    new CheckoutTaskV3
+                    new CheckoutTaskV5
                     {
                         Name = "Check out"
                     },
@@ -36,7 +41,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     {
                         Name = "Get PR Information",
                         Id = "get_pr_info",
-                        Uses = "actions/github-script@v6",
+                        Uses = "actions/github-script@v8",
                         With = new Dictionary<string, string>
                         {
                             {
@@ -62,7 +67,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     new GithubTask()
                     {
                         Name = "Check For Associated Issues Or Tasks",
-                        If = "${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}",
+                        If = runForNonExcludedAuthorsCondition,
                         Id = "check_for_issues_or_tasks",
                         Shell = "bash",
                         EnvironmentVariables = new Dictionary<string, string>

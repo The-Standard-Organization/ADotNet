@@ -1,22 +1,20 @@
-﻿// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Copyright (c) Hassan Habib & Shri Humrudha Jagathisun All rights reserved.
 // Licensed under the MIT License.
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public class PublishJobV2 : Job
+    public class PublishJobV4 : Job
     {
-        public PublishJobV2(
+        public PublishJobV4(
             string runsOn,
             string dependsOn,
             string dotNetVersion,
@@ -28,16 +26,16 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             If = $"needs.{dependsOn}.result == 'success'";
 
             Steps = new List<GithubTask> {
-                new CheckoutTaskV3
+                new CheckoutTaskV5
                 {
                     Name = "Check out"
                 },
 
-                new SetupDotNetTaskV3
+                new SetupDotNetTaskV5
                 {
                     Name = "Setup .Net",
 
-                    With = new TargetDotNetVersionV3
+                    With = new TargetDotNetVersionV5
                     {
                         DotNetVersion = dotNetVersion
                     }
@@ -101,4 +99,3 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public new Dictionary<string, string> Outputs { get; set; }
     }
 }
-

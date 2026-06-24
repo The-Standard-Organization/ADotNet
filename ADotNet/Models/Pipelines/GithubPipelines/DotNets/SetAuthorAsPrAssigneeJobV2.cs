@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,12 +11,12 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class SetAuthorAsPrAssigneeJob : Job
+    public sealed class SetAuthorAsPrAssigneeJobV2 : Job
     {
-        public SetAuthorAsPrAssigneeJob(string runsOn)
+        public SetAuthorAsPrAssigneeJobV2(string runsOn)
         {
             RunsOn = runsOn;
+            If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";
 
             Permissions = new Dictionary<string, string>
             {
@@ -31,7 +30,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     new GithubTask()
                     {
                         Name = "Set Author As PR Assignee",
-                        Uses = "actions/github-script@v6",
+                        Uses = "actions/github-script@v8",
                         With = new Dictionary<string, string>
                         {
                             { "github-token", "${{ secrets.GITHUB_TOKEN }}" },
