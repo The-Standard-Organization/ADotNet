@@ -97,9 +97,19 @@ jobs:
 
         git push origin --tags
     - name: Create GitHub Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: v${{ steps.extract_version.outputs.version_number }}
+        release_name: Release - v${{ steps.extract_version.outputs.version_number }}
+        body: >-
+          ## Release - v${{ steps.extract_version.outputs.version_number }}
+
+
+          ### Release Notes
+
+          ${{ steps.extract_package_release_notes.outputs.package_release_notes }}
       env:
-        GH_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
-      run: gh release create "v${{ steps.extract_version.outputs.version_number }}" --title "Release - v${{ steps.extract_version.outputs.version_number }}" --notes "${{ steps.extract_package_release_notes.outputs.package_release_notes }}"
+        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
   publish:
     name: Publish to NuGet
     runs-on: ubuntu-latest
