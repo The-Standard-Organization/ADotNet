@@ -33,8 +33,8 @@ namespace ADotNet.Tests.Unit.Models.Pipelines.GithubPipelines.DotNets
             GithubTask releaseStep =
                 tagJobV2.Steps.Single(step => step.Name == "Create GitHub Release");
 
-            releaseStep.Run.Should().Contain("gh release create");
-            releaseStep.Uses.Should().BeNull();
+            releaseStep.Run.Should().BeNull();
+            releaseStep.Uses.Should().Be("actions/create-release@v1");
         }
     }
 }
