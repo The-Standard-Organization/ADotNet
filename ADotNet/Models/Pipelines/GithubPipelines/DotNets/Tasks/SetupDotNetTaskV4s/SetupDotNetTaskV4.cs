@@ -4,12 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV4s
 {
     public class SetupDotNetTaskV4 : GithubTask
     {
+        [Obsolete("Use latest version instead.")]
         public SetupDotNetTaskV4()
         {
             this.Uses = "actions/setup-dotnet@v4";

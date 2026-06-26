@@ -4,10 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s
 {
+    [Obsolete("Use latest version instead.")]
     public class TargetDotNetVersion
     {
         [YamlMember(Alias = "dotnet-version")]

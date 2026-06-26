@@ -19,12 +19,21 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             string projectRelativePath,
             string githubToken,
             string branchName)
+            : this(runsOn, new string[] { dependsOn }, projectRelativePath, githubToken, branchName)
+        { }
+
+        public TagJobV2(
+            string runsOn,
+            string[] dependsOn,
+            string projectRelativePath,
+            string githubToken,
+            string branchName)
         {
             RunsOn = runsOn;
-            Needs = new string[] { dependsOn };
+            Needs = dependsOn;
 
             If =
-                $"needs.{dependsOn}.result == 'success' && {System.Environment.NewLine}"
+                $"needs.{string.Join(",", dependsOn)}.result == 'success' && {System.Environment.NewLine}"
                 + $"github.event.pull_request.merged && {System.Environment.NewLine}"
                 + $"github.event.pull_request.base.ref == '{branchName}' && {System.Environment.NewLine}"
                 + $"startsWith(github.event.pull_request.title, 'RELEASES:') && {System.Environment.NewLine}"
@@ -83,17 +92,14 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Name = "Create GitHub Tag",
                     },
 
-                    new GithubTask()
+                    new CreateGitHubReleaseTask(
+                        releaseName: "Release - v${{ steps.extract_version.outputs.version_number }}",
+                        tagName: "v${{ steps.extract_version.outputs.version_number }}",
+                        releaseNotes: "${{ steps.extract_package_release_notes.outputs.package_release_notes }}",
+                        githubToken)
                     {
                         Name = "Create GitHub Release",
-                        EnvironmentVariables = new Dictionary<string, string>
-                        {
-                            { "GH_TOKEN", githubToken }
-                        },
-                        Run =
-                            "gh release create \"v${{ steps.extract_version.outputs.version_number }}\" "
-                            + "--title \"Release - v${{ steps.extract_version.outputs.version_number }}\" "
-                            + "--notes \"${{ steps.extract_package_release_notes.outputs.package_release_notes }}\"",
+                        Uses = "actions/create-release@v1",
                     },
                 };
         }

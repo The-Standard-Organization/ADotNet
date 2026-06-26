@@ -13,6 +13,7 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
+    [Obsolete("Use latest version instead.")]
     public class PublishJob : Job
     {
         [Obsolete("This job is now obsolete. Please migrate to PublishJobV2.")]

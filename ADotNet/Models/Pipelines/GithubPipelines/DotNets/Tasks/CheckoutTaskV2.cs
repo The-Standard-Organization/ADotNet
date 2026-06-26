@@ -4,8 +4,11 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
+
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
+    [Obsolete("Use latest version instead.")]
     public class CheckoutTaskV2 : GithubTask
     {
         /// <summary>

@@ -13,7 +13,7 @@ using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTa
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
 
 namespace ADotNet.Tests.Console
 {
@@ -148,19 +148,18 @@ namespace ADotNet.Tests.Console
 
                         Steps = new List<GithubTask>
                         {
-                            new CheckoutTaskV2
+                            new CheckoutTaskV5
                             {
                                 Name = "Check Out"
                             },
 
-                            new SetupDotNetTaskV1
+                            new SetupDotNetTaskV5
                             {
                                 Name = "Setup Dot Net Version",
 
-                                TargetDotNetVersion = new TargetDotNetVersion
+                                With = new TargetDotNetVersionV5
                                 {
-                                    DotNetVersion = "6.0.101",
-                                    IncludePrerelease = true
+                                    DotNetVersion = "10.x",
                                 }
                             },
 
@@ -186,8 +185,6 @@ namespace ADotNet.Tests.Console
             };
 
             adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
-
-            string projectName = "OtripleS.Api.Infrastructure.Provision";
 
             GitHubPipelineBuilder.CreateNewPipeline()
                 .SetName("Github")

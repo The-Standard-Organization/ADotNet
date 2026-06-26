@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
 
 namespace ADotNet.Clients.Builders
 {
@@ -90,7 +90,7 @@ namespace ADotNet.Clients.Builders
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
         public JobBuilder AddCheckoutStep(string name = "Check out")
         {
-            this.job.Steps.Add(new CheckoutTaskV2 { Name = name });
+            this.job.Steps.Add(new CheckoutTaskV5 { Name = name });
 
             return this;
         }
@@ -107,13 +107,12 @@ namespace ADotNet.Clients.Builders
             string stepName = "Setup Dot Net Version",
             bool includePrerelease = false)
         {
-            this.job.Steps.Add(new SetupDotNetTaskV1
+            this.job.Steps.Add(new SetupDotNetTaskV5
             {
                 Name = stepName,
-                TargetDotNetVersion = new TargetDotNetVersion
+                With = new TargetDotNetVersionV5
                 {
                     DotNetVersion = version,
-                    IncludePrerelease = includePrerelease
                 }
             });
 
