@@ -14,13 +14,13 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
-			Updated components: SetupDotNetTaskV4, TargetDotNetVersionV4, TagJobV1, SetAuthorAsPrAssigneeJob
+			New components: CheckoutTaskV5, SetupDotNetTaskV5, TargetDotNetVersionV5, LabelJobV3, RequireIssueOrTaskJobV2, SetAuthorAsPrAssigneeJobV2, TagJobV2, PublishJobV4
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>4.3.0</Version>
-		<AssemblyVersion>4.3.0.0</AssemblyVersion>
-		<FileVersion>4.3.0.0</FileVersion>
+		<Version>5.0.0</Version>
+		<AssemblyVersion>5.0.0.0</AssemblyVersion>
+		<FileVersion>5.0.0.0</FileVersion>
 		<PackageLicenseFile>License.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.dev/The-Standard-Organization/ADotNet</PackageProjectUrl>
