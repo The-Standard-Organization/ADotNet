@@ -21,5 +21,22 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // then
             actualService.Image.Should().Be(expectedImage);
         }
+
+        [Fact]
+        public void ShouldAddEnvironmentVariable()
+        {
+            // given
+            string key = GetRandomString();
+            string value = GetRandomString();
+
+            // when
+            Service actualService = serviceBuilder
+                .AddEnvironmentVariable(key, value)
+                .Build();
+
+            // then
+            actualService.Environment.Should().ContainKey(key);
+            actualService.Environment[key].Should().Be(value);
+        }
     }
 }

@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 
 namespace ADotNet.Clients.Builders
 {
@@ -33,6 +34,24 @@ namespace ADotNet.Clients.Builders
         public ServiceBuilder WithImage(string image)
         {
             this.service.Image = image;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the environment variables for the service.
+        /// </summary>
+        /// <param name="key">The key for the environment variable.</param>
+        /// <param name="value">The value for the environment variable.</param>
+        /// <returns>The current instance of <see cref="ServiceBuilder"/>.</returns>
+        public ServiceBuilder AddEnvironmentVariable(
+            string key,
+            string value)
+        {
+            this.service.Environment ??=
+                new Dictionary<string, string>();
+
+            this.service.Environment[key] = value;
+
             return this;
         }
 
