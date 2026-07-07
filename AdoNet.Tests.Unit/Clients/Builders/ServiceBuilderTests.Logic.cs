@@ -69,5 +69,33 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // then
             actualService.Options.Should().Be(expectedOptions);
         }
+
+        [Fact]
+        public void ShouldBuildServiceWithMultipleConfigurations()
+        {
+            // given
+            string image = GetRandomString();
+            string options = GetRandomString();
+            int hostPort = GetRandomNumber();
+            int containerPort = GetRandomNumber();
+
+            // when
+            Service actualService = serviceBuilder
+                .WithImage(image)
+                .AddEnvironmentVariable("POSTGRES_USER", "postgres")
+                .AddEnvironmentVariable("POSTGRES_PASSWORD", "postgres")
+                .AddPort(hostPort,containerPort)
+                .WithOptions(options)
+                .Build();
+
+            // then
+            actualService.Image.Should().Be(image);
+            actualService.Options.Should().Be(options);
+            actualService.Ports.Should().ContainSingle()
+                .Which.Should().Be($"{hostPort}:{containerPort}");
+
+            actualService.Environment.Should().ContainKey("POSTGRES_USER");
+            actualService.Environment.Should().ContainKey("POSTGRES_PASSWORD");
+        }
     }
 }
