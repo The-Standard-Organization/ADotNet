@@ -38,5 +38,21 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualService.Environment.Should().ContainKey(key);
             actualService.Environment[key].Should().Be(value);
         }
+
+        [Fact]
+        public void ShouldAddPort()
+        {
+            // given
+            int hostPort = GetRandomNumber();
+            int containerPort = GetRandomNumber();
+
+            // when
+            Service actualService = serviceBuilder
+                .AddPort(hostPort, containerPort)
+                .Build();
+
+            // then
+            actualService.Ports.Should().Contain($"{hostPort}:{containerPort}");
+        }
     }
 }

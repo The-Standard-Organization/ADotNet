@@ -56,6 +56,23 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
+        /// Sets the ports for the service.
+        /// </summary>
+        /// <param name="hostPort">The host port to add.</param>
+        /// <param name="containerPort">The container port to add.</param>
+        /// <returns>The current instance of <see cref="ServiceBuilder"/>.</returns>
+        public ServiceBuilder AddPort(
+            int hostPort,
+            int containerPort)
+        {
+            this.service.Ports ??= new();
+
+            this.service.Ports.Add($"{hostPort}:{containerPort}");
+
+            return this;
+        }
+
+        /// <summary>
         /// Builds and returns the configured service.
         /// </summary>
         /// <returns>The configured <see cref="Service"/> instance.</returns>
