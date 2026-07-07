@@ -39,19 +39,22 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public virtual int TimeoutInMinutes { get; set; }
 
         [YamlMember(Order = 8, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public virtual Strategy Strategy { get; set; }
+        public virtual Strategy Strategy { get; set; } 
 
-        [YamlMember(Order = 9, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 9, Alias = "services", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual Dictionary<string, Service> Services { get; set; }
+
+        [YamlMember(Order = 10, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> EnvironmentVariables { get; set; }
 
-        [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 11, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> Outputs { get; set; }
 
         [DefaultValue(false)]
-        [YamlMember(Order = 11, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 12, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual bool ContinueOnError { get; set; }
 
-        [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        [YamlMember(Order = 13, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> Permissions { get; set; }
     }
 }
