@@ -73,6 +73,18 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
+        /// Builds and returns the configured service.  
+        /// </summary>
+        /// <param name="options">The options for the service.</param>
+        /// <returns>The current instance of <see cref="ServiceBuilder"/>.</returns>
+        public ServiceBuilder WithOptions(string options)
+        {
+            this.service.Options = options;
+
+            return this;
+        }
+
+        /// <summary>
         /// Builds and returns the configured service.
         /// </summary>
         /// <returns>The configured <see cref="Service"/> instance.</returns>

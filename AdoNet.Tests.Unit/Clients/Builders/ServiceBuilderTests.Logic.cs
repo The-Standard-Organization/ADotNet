@@ -54,5 +54,20 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             // then
             actualService.Ports.Should().Contain($"{hostPort}:{containerPort}");
         }
+
+        [Fact]
+        public void ShouldSetOptions()
+        {
+            // given
+            string expectedOptions = GetRandomString();
+
+            // when
+            Service actualService = serviceBuilder
+                .WithOptions(expectedOptions)
+                .Build();
+
+            // then
+            actualService.Options.Should().Be(expectedOptions);
+        }
     }
 }
