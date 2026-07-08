@@ -13,7 +13,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public sealed class RequireIssueOrTaskJobV2 : Job
     {
-        public RequireIssueOrTaskJobV2(string excludedAuthors)
+        public RequireIssueOrTaskJobV2(string excludedAuthors = "")
         {
             RunsOn = "ubuntu-latest";
 
