@@ -53,5 +53,9 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> Permissions { get; set; }
+
+        [YamlMember(Order = 13, Alias = "services", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual Dictionary<string, Service> Services { get; set; }
+
     }
 }
