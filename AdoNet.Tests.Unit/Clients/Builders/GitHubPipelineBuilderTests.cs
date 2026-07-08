@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.IO;
 using ADotNet.Clients;
 using ADotNet.Clients.Builders;
@@ -52,7 +53,19 @@ namespace ADotNet.Tests.Unit.Clients.Builders
         private static GithubPipeline CreateRandomGithubPipeline() =>
             CreateGithubPipelineFiller(name: GetRandomString()).Create();
 
-        private static Filler<GithubPipeline> CreateGithubPipelineFiller(string name) =>
-            new Filler<GithubPipeline>();
+        private static Filler<GithubPipeline> CreateGithubPipelineFiller(string name)
+        {
+            var filler = new Filler<GithubPipeline>();
+
+            filler.Setup()
+                .OnProperty(p => p.EnvironmentVariables)
+                .Use(() => new Dictionary<string, string>
+                {
+                    { GetRandomString(), GetRandomString() },
+                    { GetRandomString(), GetRandomString() }
+                });
+
+            return filler;
+        }
     }
 }
