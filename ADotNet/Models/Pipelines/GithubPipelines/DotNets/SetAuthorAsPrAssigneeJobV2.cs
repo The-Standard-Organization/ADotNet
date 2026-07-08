@@ -46,12 +46,16 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                                 "  return;\n" +
                                 "}\n\n" +
                                 "console.log(`Assigning PR to author: ${author}`);\n\n" +
-                                "await github.rest.issues.addAssignees({\n" +
-                                "  owner: context.repo.owner,\n" +
-                                "  repo: context.repo.repo,\n" +
-                                "  issue_number: pr.number,\n" +
-                                "  assignees: [author]\n" +
-                                "});\n"
+                                "try {\n" +
+                                "  await github.rest.issues.addAssignees({\n" +
+                                "    owner: context.repo.owner,\n" +
+                                "    repo: context.repo.repo,\n" +
+                                "    issue_number: pr.number,\n" +
+                                "    assignees: [author]\n" +
+                                "  });\n" +
+                                "} catch (error) {\n" +
+                                "  console.log(`Unable to assign ${author} as PR assignee: ${error.message}`);\n" +
+                                "}\n"
                             }
                         }
                     },

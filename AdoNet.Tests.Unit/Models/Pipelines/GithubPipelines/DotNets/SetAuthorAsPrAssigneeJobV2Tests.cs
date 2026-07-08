@@ -43,5 +43,21 @@ namespace ADotNet.Tests.Unit.Models.Pipelines.GithubPipelines.DotNets
             // then
             setAuthorAsPrAssigneeJobV2.If.Should().Be(expectedIf);
         }
+
+        [Fact]
+        public void ShouldNotFailWhenAssigneeCannotBeAdded()
+        {
+            // given
+            var setAuthorAsPrAssigneeJobV2 = new SetAuthorAsPrAssigneeJobV2(runsOn: "ubuntu-latest");
+
+            GithubTask assignStep =
+                setAuthorAsPrAssigneeJobV2.Steps.Single(step => step.Name == "Set Author As PR Assignee");
+
+            string script = assignStep.With["script"];
+
+            // when then
+            script.Should().Contain("try {");
+            script.Should().Contain("} catch (error) {");
+        }
     }
 }

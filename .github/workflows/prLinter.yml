@@ -22,27 +22,84 @@ jobs:
         script: >-
           const prefixes = [
             'INFRA:',
+            'MINOR INFRA:',
+            'MEDIUM INFRA:',
+            'MAJOR INFRA:',
             'PROVISIONS:',
             'RELEASES:',
             'DATA:',
+            'MINOR DATA:',
+            'MEDIUM DATA:',
+            'MAJOR DATA:',
             'BROKERS:',
+            'MINOR BROKERS:',
+            'MEDIUM BROKERS:',
+            'MAJOR BROKERS:',
             'FOUNDATIONS:',
+            'MINOR FOUNDATIONS:',
+            'MEDIUM FOUNDATIONS:',
+            'MAJOR FOUNDATIONS:',
             'PROCESSINGS:',
+            'MINOR PROCESSINGS:',
+            'MEDIUM PROCESSINGS:',
+            'MAJOR PROCESSINGS:',
             'ORCHESTRATIONS:',
+            'MINOR ORCHESTRATIONS:',
+            'MEDIUM ORCHESTRATIONS:',
+            'MAJOR ORCHESTRATIONS:',
             'COORDINATIONS:',
+            'MINOR COORDINATIONS:',
+            'MEDIUM COORDINATIONS:',
+            'MAJOR COORDINATIONS:',
             'MANAGEMENTS:',
+            'MINOR MANAGEMENTS:',
+            'MEDIUM MANAGEMENTS:',
+            'MAJOR MANAGEMENTS:',
             'AGGREGATIONS:',
+            'MINOR AGGREGATIONS:',
+            'MEDIUM AGGREGATIONS:',
+            'MAJOR AGGREGATIONS:',
             'CONTROLLERS:',
+            'MINOR CONTROLLERS:',
+            'MEDIUM CONTROLLERS:',
+            'MAJOR CONTROLLERS:',
             'CLIENTS:',
+            'MINOR CLIENTS:',
+            'MEDIUM CLIENTS:',
+            'MAJOR CLIENTS:',
             'EXPOSERS:',
+            'MINOR EXPOSERS:',
+            'MEDIUM EXPOSERS:',
+            'MAJOR EXPOSERS:',
             'PROVIDERS:',
             'BASE:',
+            'MINOR BASE:',
+            'MEDIUM BASE:',
+            'MAJOR BASE:',
             'COMPONENTS:',
+            'MINOR COMPONENTS:',
+            'MEDIUM COMPONENTS:',
+            'MAJOR COMPONENTS:',
             'VIEWS:',
+            'MINOR VIEWS:',
+            'MEDIUM VIEWS:',
+            'MAJOR VIEWS:',
             'PAGES:',
+            'MINOR PAGES:',
+            'MEDIUM PAGES:',
+            'MAJOR PAGES:',
             'ACCEPTANCE:',
+            'MINOR ACCEPTANCE:',
+            'MEDIUM ACCEPTANCE:',
+            'MAJOR ACCEPTANCE:',
             'INTEGRATIONS:',
+            'MINOR INTEGRATIONS:',
+            'MEDIUM INTEGRATIONS:',
+            'MAJOR INTEGRATIONS:',
             'CODE RUB:',
+            'MINOR CODE RUB:',
+            'MEDIUM CODE RUB:',
+            'MAJOR CODE RUB:',
             'MINOR FIX:',
             'MEDIUM FIX:',
             'MAJOR FIX:',
@@ -50,7 +107,23 @@ jobs:
             'CONFIG:',
             'STANDARD:',
             'DESIGN:',
-            'BUSINESS:'
+            'MINOR DESIGN:',
+            'MEDIUM DESIGN:',
+            'MAJOR DESIGN:',
+            'BUSINESS:',
+            'MIGRATIONS:',
+            'PLANNING:',
+            'MINOR PLANNING:',
+            'MAJOR PLANNING:',
+            'MENTORSHIP:',
+            'MINOR MENTORSHIP:',
+            'MAJOR MENTORSHIP:',
+            'DISCUSSION:',
+            'MINOR DISCUSSION:',
+            'MAJOR DISCUSSION:',
+            'IMPORTS:',
+            'REVIEWS:',
+            'STATUS:'
           ];
 
 
@@ -162,12 +235,16 @@ jobs:
           console.log(`Assigning PR to author: ${author}`);
 
 
-          await github.rest.issues.addAssignees({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: pr.number,
-            assignees: [author]
-          });
+          try {
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              assignees: [author]
+            });
+          } catch (error) {
+            console.log(`Unable to assign ${author} as PR assignee: ${error.message}`);
+          }
     permissions:
       contents: read
       issues: write
