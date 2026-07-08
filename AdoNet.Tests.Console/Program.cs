@@ -219,6 +219,174 @@ namespace ADotNet.Tests.Console
                             "dotnet run --project .\\{projectName}\\{projectName}.csproj"))
 
                 .SaveToFile("github-pipelines-fluent.yaml");
+
+            GitHubPipelineBuilder.CreateNewPipeline()
+                   .SetName("Build")
+                   .OnPush("main")
+                   .OnPullRequest("main")
+
+                   .AddJob("build-windows", job => job
+                       .WithName("Build (Windows)")
+                       .RunsOn(BuildMachines.WindowsLatest)
+                       .AddCheckoutStep("Check out")
+                       .AddSetupDotNetStep(version: "10.0.100")
+                       .AddRestoreStep()
+                       .AddBuildStep()
+                       .AddTestStep())
+
+                   .AddJob("build-integration", job =>
+                   {
+                       const string databaseName = "EventHighwayDb";
+                       const string sqlServerPassword = "Your_password123!";
+
+                       job
+                           .WithName("Build & Test (DB matrix)")
+                           .RunsOn(BuildMachines.UbuntuLatest)
+                           .WithFailFast(false)
+                           .AddMatrixInclude(new()
+                           {
+                               ["provider"] = "sqlserver",
+                               ["connection_string"] =
+                                   $"Server=localhost;Database={databaseName};User Id=sa;Password={sqlServerPassword};"
+                           })
+                           .AddMatrixInclude(new()
+                           {
+                               ["provider"] = "postgres",
+                               ["connection_string"] =
+                                   $"Host=localhost;Database={databaseName};Username=postgres;Password=postgres"
+                           })
+                           .AddService("sqlserver", new Service
+                           {
+                               Image = "mcr.microsoft.com/mssql/server:2019-latest",
+                               Environment = new()
+                               {
+                                   ["ACCEPT_EULA"] = "Y",
+                                   ["SA_PASSWORD"] = sqlServerPassword
+                               },
+                               Ports = new() { "1433:1433" },
+                               Options =
+                                   "--health-cmd \"/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q 'SELECT 1' || exit 1\" " +
+                                   "--health-interval 10s --health-timeout 5s --health-retries 10"
+                           })
+                           .AddService("postgres", new Service
+                           {
+                               Image = "postgres:17",
+                               Environment = new()
+                               {
+                                   ["POSTGRES_DB"] = databaseName,
+                                   ["POSTGRES_USER"] = "postgres",
+                                   ["POSTGRES_PASSWORD"] = "postgres"
+                               },
+                               Ports = new() { "5432:5432" },
+                               Options = "--health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
+                           })
+                           .AddEnvironmentVariable("PROVIDER", "${{ matrix.provider }}")
+                           .AddEnvironmentVariable("CONNECTION_STRING", "${{ matrix.connection_string }}")
+                           .AddCheckoutStep()
+                           .AddSetupDotNetStep("10.0.100")
+                           .AddRestoreStep()
+                           .AddBuildStep()
+                           .AddGenericStep(
+                               name: "Apply Migrations",
+                               runCommand: "dotnet ef database update")
+                           .AddTestStep();
+                   })
+
+                   .AddJob("tag-release", job => job
+                       .WithName("Tag and Release")
+                       .RunsOn(BuildMachines.UbuntuLatest)
+                       .DependsOn("build-windows", "build-integration")
+                       .WithCondition(
+                           "needs.build-windows.result == 'success' && " +
+                           "needs.build-integration.result == 'success' && " +
+                           "github.event.pull_request.merged && " +
+                           "github.event.pull_request.base.ref == 'main' && " +
+                           "startsWith(github.event.pull_request.title, 'RELEASES:') && " +
+                           "contains(github.event.pull_request.labels.*.name, 'RELEASES')")
+                       .AddActionStep(
+                           name: "Checkout code",
+                           uses: "actions/checkout@v3",
+                           with: new Dictionary<string, string>
+                           {
+                               ["token"] = "${{ secrets.PAT_FOR_TAGGING }}"
+                           })
+                       .AddGenericStep(
+                           name: "Configure Git",
+                           runCommand:
+                               "git config user.name \"GitHub Action\"\n" +
+                               "git config user.email \"action@github.com\"")
+                       .AddGenericStep(
+                           id: "extract_version",
+                           name: "Extract Version",
+                           shell: "bash",
+                           runCommand:
+                               "sudo apt-get install xmlstarlet\n" +
+                               "version_number=$(xmlstarlet sel -t -v \"//Version\" -n EventHighway.Core/EventHighway.Core.csproj)\n" +
+                               "echo \"$version_number\"\n" +
+                               "echo \"version_number<<EOF\" >> $GITHUB_OUTPUT\n" +
+                               "echo \"$version_number\" >> $GITHUB_OUTPUT\n" +
+                               "echo \"EOF\" >> $GITHUB_OUTPUT")
+                       .AddGenericStep(
+                           name: "Display Version",
+                           runCommand: "echo \"Version number: ${{ steps.extract_version.outputs.version_number }}\"")
+                       .AddGenericStep(
+                           id: "extract_package_release_notes",
+                           name: "Extract Package Release Notes",
+                           shell: "bash",
+                           runCommand:
+                               "sudo apt-get install xmlstarlet\n" +
+                               "package_release_notes=$(xmlstarlet sel -t -v \"//PackageReleaseNotes\" -n EventHighway.Core/EventHighway.Core.csproj)\n" +
+                               "echo \"$package_release_notes\"\n" +
+                               "echo \"package_release_notes<<EOF\" >> $GITHUB_OUTPUT\n" +
+                               "echo \"$package_release_notes\" >> $GITHUB_OUTPUT\n" +
+                               "echo \"EOF\" >> $GITHUB_OUTPUT")
+                       .AddGenericStep(
+                           name: "Display Package Release Notes",
+                           runCommand: "echo \"Package Release Notes: ${{ steps.extract_package_release_notes.outputs.package_release_notes }}\"")
+                       .AddGenericStep(
+                           name: "Create GitHub Tag",
+                           runCommand:
+                               "git tag -a \"v${{ steps.extract_version.outputs.version_number }}\" -m \"Release - v${{ steps.extract_version.outputs.version_number }}\"\n" +
+                               "git push origin --tags")
+                       .AddActionStep(
+                           name: "Create GitHub Release",
+                           uses: "actions/create-release@v1",
+                           with: new Dictionary<string, string>
+                           {
+                               ["tag_name"] = "v${{ steps.extract_version.outputs.version_number }}",
+                               ["release_name"] = "Release - v${{ steps.extract_version.outputs.version_number }}",
+                               ["body"] =
+                                   "## Release - v${{ steps.extract_version.outputs.version_number }}\n\n" +
+                                   "### Release Notes\n" +
+                                   "${{ steps.extract_package_release_notes.outputs.package_release_notes }}"
+                           },
+                           environmentVariables: new Dictionary<string, string>
+                           {
+                               ["GITHUB_TOKEN"] = "${{ secrets.PAT_FOR_TAGGING }}"
+                           }))
+
+                   .AddJob("publish", job => job
+                       .WithName("Publish to NuGet")
+                       .RunsOn(BuildMachines.UbuntuLatest)
+                       .DependsOn("tag-release")
+                       .WithCondition("needs.tag-release.result == 'success'")
+                       .AddCheckoutStep("Check out")
+                       .AddSetupDotNetStep(version: "10.0.100")
+                       .AddRestoreStep()
+                       .AddGenericStep(
+                           name: "Build",
+                           runCommand: "dotnet build --no-restore --configuration Release")
+                       .AddGenericStep(
+                           name: "Pack NuGet Package",
+                           runCommand: "dotnet pack --configuration Release --include-symbols")
+                       .AddGenericStep(
+                           name: "Push NuGet Package",
+                           runCommand:
+                               "dotnet nuget push **/bin/Release/**/*.nupkg " +
+                               "--source https://api.nuget.org/v3/index.json " +
+                               "--api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate"))
+
+                   .SaveToFile("github-pipelines-fluent2.yaml");
         }
     }
 }
