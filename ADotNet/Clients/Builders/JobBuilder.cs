@@ -17,6 +17,7 @@ namespace ADotNet.Clients.Builders
     public class JobBuilder
     {
         private readonly Job job;
+        private Service currentService;
 
         internal JobBuilder()
         {
@@ -174,6 +175,173 @@ namespace ADotNet.Clients.Builders
                 Name = name,
                 Run = runCommand
             });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a custom task to the job.
+        /// </summary>
+        /// <param name="jobNames">The names of the jobs that this job depends on.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder DependsOn(params string[] jobNames)
+        {
+            this.job.Needs = jobNames;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a step to the job that runs a script from a specified path.
+        /// </summary>
+        /// <param name="condition">The condition for the step.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder WithCondition(string condition)
+        {
+            this.job.If = condition;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an axis variable (e.g. "provider": ["sqlserver", "postgres"]) to the job's matrix strategy.
+        /// </summary>
+        /// <param name="variable">The name of the matrix axis variable.</param>
+        /// <param name="values">The values for the matrix axis.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddMatrix(
+            string variable,
+            params string[] values)
+        {
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.Matrix ??= new Matrix();
+            this.job.Strategy.Matrix.Variables ??= new Dictionary<string, List<string>>();
+            this.job.Strategy.Matrix.Variables[variable] = new List<string>(values);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a matrix "include" combination, adding a new configuration or extending an existing one.
+        /// </summary>
+        /// <param name="include">The key/value pairs describing the combination to include.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddMatrixInclude(Dictionary<string, string> include)
+        {
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.Matrix ??= new Matrix();
+            this.job.Strategy.Matrix.Include ??= new List<Dictionary<string, string>>();
+            this.job.Strategy.Matrix.Include.Add(include);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a matrix "exclude" combination, removing a matching configuration.
+        /// </summary>
+        /// <param name="exclude">The key/value pairs describing the combination to exclude.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddMatrixExclude(Dictionary<string, string> exclude)
+        {
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.Matrix ??= new Matrix();
+            this.job.Strategy.Matrix.Exclude ??= new List<Dictionary<string, string>>();
+            this.job.Strategy.Matrix.Exclude.Add(exclude);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets whether the job's matrix strategy cancels all in-progress jobs if any matrix job fails.
+        /// GitHub Actions defaults to true; set this explicitly to override.
+        /// </summary>
+        /// <param name="failFast">Whether to fail fast.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder WithFailFast(bool failFast)
+        {
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.FailFast = failFast;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the maximum number of jobs that can run simultaneously from the matrix strategy.
+        /// </summary>
+        /// <param name="maxParallel">The maximum number of parallel jobs.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder WithMaxParallel(int maxParallel)
+        {
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.MaxParallel = maxParallel;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a generic run-based step, optionally with an id so later steps can reference its outputs.
+        /// </summary>
+        /// <param name="name">The name of the step.</param>
+        /// <param name="runCommand">The command to execute for this step.</param>
+        /// <param name="id">The id of the step.</param>
+        /// <param name="shell">The shell to use for the step.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddGenericStep(
+            string name,
+            string runCommand,
+            string id = null,
+            string shell = null)
+        {
+            this.job.Steps.Add(new GithubTask
+            {
+                Id = id,
+                Name = name,
+                Run = runCommand,
+                Shell = shell
+            });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a step to the job that uses a specific action (e.g. "actions/checkout@v3"), 
+        /// optionally with an id, input parameters, and environment variables.
+        /// </summary>
+        /// <param name="name">The name of the step.</param>
+        /// <param name="uses">The GitHub Action to use.</param>
+        /// <param name="id">The id of the step.</param>
+        /// <param name="with">The input parameters for the action.</param>
+        /// <param name="environmentVariables">The environment variables for the step.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddActionStep(
+            string name,
+            string uses,
+            string id = null,
+            Dictionary<string, string> with = null,
+            Dictionary<string, string> environmentVariables = null)
+        {
+            this.job.Steps.Add(new GithubTask
+            {
+                Id = id,
+                Name = name,
+                Uses = uses,
+                With = with,
+                EnvironmentVariables = environmentVariables
+            });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Attaches a service container to the job.
+        /// </summary>
+        /// <param name="id">The service id, used as the key under the job's "services" map.</param>
+        /// <param name="service">The service container definition.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddService(string id, Service service)
+        {
+            this.job.Services ??= new Dictionary<string, Service>();
+            this.job.Services[id] = service;
 
             return this;
         }
