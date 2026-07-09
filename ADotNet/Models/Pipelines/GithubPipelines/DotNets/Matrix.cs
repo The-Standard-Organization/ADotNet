@@ -13,6 +13,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     public class Matrix
     {
+
+        [YamlMember(Alias = "variables", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public Dictionary<string, List<string>> Variables { get; set; }
 
         [YamlMember(Alias = "include", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
