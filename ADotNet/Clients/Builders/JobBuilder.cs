@@ -17,7 +17,6 @@ namespace ADotNet.Clients.Builders
     public class JobBuilder
     {
         private readonly Job job;
-        private Service currentService;
 
         internal JobBuilder()
         {
@@ -163,24 +162,7 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
-        /// Adds a generic step to the job with a custom command.
-        /// </summary>
-        /// <param name="name">The name of the step.</param>
-        /// <param name="runCommand">The command to execute for this step.</param>
-        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
-        public JobBuilder AddGenericStep(string name, string runCommand)
-        {
-            this.job.Steps.Add(new GithubTask
-            {
-                Name = name,
-                Run = runCommand
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a custom task to the job.
+        /// Specifies the jobs that this job depends on.
         /// </summary>
         /// <param name="jobNames">The names of the jobs that this job depends on.</param>
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
@@ -192,7 +174,7 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
-        /// Adds a step to the job that runs a script from a specified path.
+        /// Sets a conditional expression that determines whether the job runs
         /// </summary>
         /// <param name="condition">The condition for the step.</param>
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>

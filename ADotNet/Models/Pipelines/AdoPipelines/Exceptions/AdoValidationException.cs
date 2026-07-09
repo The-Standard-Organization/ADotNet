@@ -10,7 +10,7 @@ namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
 {
     public class AdoValidationException : Exception
     {
-        public AdoValidationException(string message,Exception innerException)
+        public AdoValidationException(string message, Exception innerException)
             : base(message, innerException)
         { }
     }

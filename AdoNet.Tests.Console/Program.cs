@@ -186,6 +186,24 @@ namespace ADotNet.Tests.Console
 
             adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
 
+
+            Job matrixJob = new JobBuilder()
+                .WithName("Build & Test (DB matrix)")
+                .RunsOn("ubuntu-latest")
+                .AddCheckoutStep()
+                .AddSetupDotNetStep("10.0.100")
+                .AddRestoreStep()
+                .AddBuildStep()
+                .AddTestStep()
+                .AddMatrixV2("provider", "sqlserver", "postgres")
+                .AddMatrixInclude(new Dictionary<string, string>
+                {
+                    ["provider"] = "sqlserver",
+                    ["connection_string"] = "Server=localhost,1433;..."
+                })
+                .AddService("sqlserver", new Service { Image = "mcr.microsoft.com/mssql/server:2019-latest" })
+                .Build();
+
             GitHubPipelineBuilder.CreateNewPipeline()
                 .SetName("Github")
                 .OnPush("master")
@@ -386,7 +404,7 @@ namespace ADotNet.Tests.Console
                                "--source https://api.nuget.org/v3/index.json " +
                                "--api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate"))
 
-                   .SaveToFile("github-pipelines-fluent2.yaml");
+                   .SaveToFile("C:\\Users\\slima\\Desktop\\New folder\\github-pipelines-fluent2.yaml");
         }
     }
 }

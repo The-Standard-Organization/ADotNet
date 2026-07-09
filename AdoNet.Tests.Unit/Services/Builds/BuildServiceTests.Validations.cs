@@ -41,7 +41,7 @@ namespace ADotNet.Tests.Unit.Services.Builds
 
             actualAdoValidationException.Should().BeEquivalentTo(
                 expectedAdoValidationException);
-            
+
             this.yamlBrokerMock.Verify(broker =>
                 broker.SerializeToYaml(It.IsAny<object>()),
                     Times.Never);
