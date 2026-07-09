@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,21 +11,29 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class TagJob : Job
+    public sealed class TagJobV2 : Job
     {
-        public TagJob(
+        public TagJobV2(
             string runsOn,
             string dependsOn,
             string projectRelativePath,
             string githubToken,
             string branchName)
+            : this(runsOn, new string[] { dependsOn }, projectRelativePath, githubToken, branchName)
+        { }
+
+        public TagJobV2(
+            string runsOn,
+            string[] dependsOn,
+            string projectRelativePath,
+            string githubToken,
+            string branchName)
         {
             RunsOn = runsOn;
-            Needs = new string[] { dependsOn };
+            Needs = dependsOn;
 
             If =
-                $"needs.{dependsOn}.result == 'success' && {System.Environment.NewLine}"
+                $"needs.{string.Join(",", dependsOn)}.result == 'success' && {System.Environment.NewLine}"
                 + $"github.event.pull_request.merged && {System.Environment.NewLine}"
                 + $"github.event.pull_request.base.ref == '{branchName}' && {System.Environment.NewLine}"
                 + $"startsWith(github.event.pull_request.title, 'RELEASES:') && {System.Environment.NewLine}"
@@ -34,7 +41,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
             Steps = new List<GithubTask>
                 {
-                    new CheckoutTaskV3
+                    new CheckoutTaskV5
                     {
                         Name = "Checkout code",
                         With = new Dictionary<string, string>

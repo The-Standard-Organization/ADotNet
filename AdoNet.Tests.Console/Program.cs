@@ -6,13 +6,14 @@
 
 using System.Collections.Generic;
 using ADotNet.Clients;
+using ADotNet.Clients.Builders;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.DotNetExecutionTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.PublishBuildArtifactTasks;
 using ADotNet.Models.Pipelines.AdoPipelines.AspNets.Tasks.UseDotNetTasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
 
 namespace ADotNet.Tests.Console
 {
@@ -147,19 +148,18 @@ namespace ADotNet.Tests.Console
 
                         Steps = new List<GithubTask>
                         {
-                            new CheckoutTaskV2
+                            new CheckoutTaskV5
                             {
                                 Name = "Check Out"
                             },
 
-                            new SetupDotNetTaskV1
+                            new SetupDotNetTaskV5
                             {
                                 Name = "Setup Dot Net Version",
 
-                                TargetDotNetVersion = new TargetDotNetVersion
+                                With = new TargetDotNetVersionV5
                                 {
-                                    DotNetVersion = "6.0.101",
-                                    IncludePrerelease = true
+                                    DotNetVersion = "10.x",
                                 }
                             },
 
@@ -185,6 +185,40 @@ namespace ADotNet.Tests.Console
             };
 
             adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines.yaml");
+
+            GitHubPipelineBuilder.CreateNewPipeline()
+                .SetName("Github")
+                .OnPush("master")
+                .OnPullRequest("master")
+
+                .AddJob("build", job => job
+                    .WithName("Build")
+                    .RunsOn(BuildMachines.WindowsLatest)
+                    .AddEnvironmentVariable("AzureClientId", "${{ secrets.AZURECLIENTID }}")
+
+                    .AddEnvironmentVariables(new Dictionary<string, string>
+                    {
+                        { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
+                        { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
+                        { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
+                        { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
+                    })
+
+                    .AddCheckoutStep("Check Out")
+
+                    .AddSetupDotNetStep(
+                        version: "6.0.101",
+                        includePrerelease: true)
+
+                    .AddRestoreStep()
+                    .AddBuildStep()
+
+                    .AddGenericStep(
+                        name: "Provision",
+                        runCommand:
+                            "dotnet run --project .\\{projectName}\\{projectName}.csproj"))
+
+                .SaveToFile("github-pipelines-fluent.yaml");
         }
     }
 }

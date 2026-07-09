@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
     - name: Setup .Net
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9.0.100
+        dotnet-version: 10.x
     - name: Restore
       run: dotnet restore
     - name: Build
@@ -45,7 +45,7 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'RELEASES')
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       with:
         token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Configure Git
@@ -118,11 +118,11 @@ jobs:
     if: needs.add_tag.result == 'success'
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
     - name: Setup .Net
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9.0.100
+        dotnet-version: 10.x
     - name: Restore
       run: dotnet restore
     - name: Build

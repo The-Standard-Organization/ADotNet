@@ -4,12 +4,15 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
+
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
 {
     /// <summary>
     /// A task that that checks out your source code repository into the runner environment 
     /// where your GitHub Actions workflows are executed.
     /// </summary>
+    [Obsolete("Use latest version instead.")]
     public class CheckoutTaskV4 : GithubTask
     {
         /// <summary>

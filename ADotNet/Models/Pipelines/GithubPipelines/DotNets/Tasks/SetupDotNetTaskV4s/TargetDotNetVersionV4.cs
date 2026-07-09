@@ -5,16 +5,14 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using YamlDotNet.Serialization;
 
-namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
+namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV4s
 {
     [Obsolete("Use latest version instead.")]
-    public class CheckoutTaskV2 : GithubTask
+    public class TargetDotNetVersionV4
     {
-        /// <summary>
-        /// Represents the usage of an external action or a specific version of an action in a GitHub Actions job step.
-        /// Default value: actions/checkout@v3
-        /// </summary>
-        public override string Uses { get; set; } = "actions/checkout@v2";
+        [YamlMember(Alias = "dotnet-version")]
+        public string DotNetVersion { get; set; }
     }
 }

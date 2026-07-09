@@ -10,7 +10,7 @@ using ADotNet.Services.Builds;
 
 namespace ADotNet.Clients
 {
-    public class ADotNetClient
+    public class ADotNetClient : IADotNetClient
     {
         private readonly IBuildService buildService;
 

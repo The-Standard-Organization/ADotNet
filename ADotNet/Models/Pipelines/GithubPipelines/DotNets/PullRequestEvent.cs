@@ -14,7 +14,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Order = 0, ScalarStyle = ScalarStyle.Folded, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string[] Types { get; set; }
 
-        [YamlMember(Order = 1, ScalarStyle = ScalarStyle.Folded)]
+        [YamlMember(Order = 1, ScalarStyle = ScalarStyle.Folded, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public string[] Branches { get; set; }
     }
 }
