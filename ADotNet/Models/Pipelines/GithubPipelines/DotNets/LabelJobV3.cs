@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,16 +11,17 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class LabelJobV2 : Job
+    public sealed class LabelJobV3 : Job
     {
-        public LabelJobV2(string runsOn)
+        public LabelJobV3(string runsOn)
         {
             RunsOn = runsOn;
+            If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";
 
             Permissions = new Dictionary<string, string>
             {
                 { "contents", "read" },
+                { "issues", "write" },
                 { "pull-requests", "write" }
             };
 
@@ -30,34 +30,91 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     new GithubTask()
                     {
                         Name = "Apply Label",
-                        Uses = "actions/github-script@v6",
+                        Uses = "actions/github-script@v8",
                         With = new Dictionary<string, string>
                         {
                             { "github-token", "${{ secrets.GITHUB_TOKEN }}" },
                             { "script", """
                                 const prefixes = [
                                   'INFRA:',
+                                  'MINOR INFRA:',
+                                  'MEDIUM INFRA:',
+                                  'MAJOR INFRA:',
                                   'PROVISIONS:',
                                   'RELEASES:',
                                   'DATA:',
+                                  'MINOR DATA:',
+                                  'MEDIUM DATA:',
+                                  'MAJOR DATA:',
                                   'BROKERS:',
+                                  'MINOR BROKERS:',
+                                  'MEDIUM BROKERS:',
+                                  'MAJOR BROKERS:',
                                   'FOUNDATIONS:',
+                                  'MINOR FOUNDATIONS:',
+                                  'MEDIUM FOUNDATIONS:',
+                                  'MAJOR FOUNDATIONS:',
                                   'PROCESSINGS:',
+                                  'MINOR PROCESSINGS:',
+                                  'MEDIUM PROCESSINGS:',
+                                  'MAJOR PROCESSINGS:',
                                   'ORCHESTRATIONS:',
+                                  'MINOR ORCHESTRATIONS:',
+                                  'MEDIUM ORCHESTRATIONS:',
+                                  'MAJOR ORCHESTRATIONS:',
                                   'COORDINATIONS:',
+                                  'MINOR COORDINATIONS:',
+                                  'MEDIUM COORDINATIONS:',
+                                  'MAJOR COORDINATIONS:',
                                   'MANAGEMENTS:',
+                                  'MINOR MANAGEMENTS:',
+                                  'MEDIUM MANAGEMENTS:',
+                                  'MAJOR MANAGEMENTS:',
                                   'AGGREGATIONS:',
+                                  'MINOR AGGREGATIONS:',
+                                  'MEDIUM AGGREGATIONS:',
+                                  'MAJOR AGGREGATIONS:',
                                   'CONTROLLERS:',
+                                  'MINOR CONTROLLERS:',
+                                  'MEDIUM CONTROLLERS:',
+                                  'MAJOR CONTROLLERS:',
                                   'CLIENTS:',
+                                  'MINOR CLIENTS:',
+                                  'MEDIUM CLIENTS:',
+                                  'MAJOR CLIENTS:',
                                   'EXPOSERS:',
+                                  'MINOR EXPOSERS:',
+                                  'MEDIUM EXPOSERS:',
+                                  'MAJOR EXPOSERS:',
                                   'PROVIDERS:',
                                   'BASE:',
+                                  'MINOR BASE:',
+                                  'MEDIUM BASE:',
+                                  'MAJOR BASE:',
                                   'COMPONENTS:',
+                                  'MINOR COMPONENTS:',
+                                  'MEDIUM COMPONENTS:',
+                                  'MAJOR COMPONENTS:',
                                   'VIEWS:',
+                                  'MINOR VIEWS:',
+                                  'MEDIUM VIEWS:',
+                                  'MAJOR VIEWS:',
                                   'PAGES:',
+                                  'MINOR PAGES:',
+                                  'MEDIUM PAGES:',
+                                  'MAJOR PAGES:',
                                   'ACCEPTANCE:',
+                                  'MINOR ACCEPTANCE:',
+                                  'MEDIUM ACCEPTANCE:',
+                                  'MAJOR ACCEPTANCE:',
                                   'INTEGRATIONS:',
+                                  'MINOR INTEGRATIONS:',
+                                  'MEDIUM INTEGRATIONS:',
+                                  'MAJOR INTEGRATIONS:',
                                   'CODE RUB:',
+                                  'MINOR CODE RUB:',
+                                  'MEDIUM CODE RUB:',
+                                  'MAJOR CODE RUB:',
                                   'MINOR FIX:',
                                   'MEDIUM FIX:',
                                   'MAJOR FIX:',
@@ -65,7 +122,23 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                                   'CONFIG:',
                                   'STANDARD:',
                                   'DESIGN:',
-                                  'BUSINESS:'
+                                  'MINOR DESIGN:',
+                                  'MEDIUM DESIGN:',
+                                  'MAJOR DESIGN:',
+                                  'BUSINESS:',
+                                  'MIGRATIONS:',
+                                  'PLANNING:',
+                                  'MINOR PLANNING:',
+                                  'MAJOR PLANNING:',
+                                  'MENTORSHIP:',
+                                  'MINOR MENTORSHIP:',
+                                  'MAJOR MENTORSHIP:',
+                                  'DISCUSSION:',
+                                  'MINOR DISCUSSION:',
+                                  'MAJOR DISCUSSION:',
+                                  'IMPORTS:',
+                                  'REVIEWS:',
+                                  'STATUS:'
                                 ];
 
                                 const pullRequest = context.payload.pull_request;

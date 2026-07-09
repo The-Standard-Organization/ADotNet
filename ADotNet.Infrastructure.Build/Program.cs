@@ -4,7 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using ISL.ReIdentification.Infrastructure.Services;
+using ADotNet.Infrastructure.Build.Services;
 
 namespace ADotNet.Infrastructure.Build
 {
@@ -17,7 +17,7 @@ namespace ADotNet.Infrastructure.Build
             scriptGenerationService.GenerateBuildScript(
                 branchName: "main",
                 projectName: "ADotNet",
-                dotNetVersion: "9.0.100");
+                dotNetVersion: "10.x");
 
             scriptGenerationService.GeneratePrLintScript(branchName: "main");
         }

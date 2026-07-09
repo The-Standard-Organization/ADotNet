@@ -13,78 +13,48 @@ using YamlDotNet.Serialization;
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     [Obsolete("Use latest version instead.")]
-    public sealed class RequireIssueOrTaskJob : Job
+    public sealed class SetAuthorAsPrAssigneeJob : Job
     {
-        public RequireIssueOrTaskJob()
+        public SetAuthorAsPrAssigneeJob(string runsOn)
         {
-            RunsOn = "ubuntu-latest";
+            RunsOn = runsOn;
 
             Permissions = new Dictionary<string, string>
             {
                 { "contents", "read" },
-                { "pull-requests", "read" }
+                { "issues", "write" },
+                { "pull-requests", "write" }
             };
 
             Steps = new List<GithubTask>
                 {
-                    new CheckoutTaskV3
-                    {
-                        Name = "Check out"
-                    },
-
                     new GithubTask()
                     {
-                        Name = "Get PR Information",
-                        Id = "get_pr_info",
+                        Name = "Set Author As PR Assignee",
                         Uses = "actions/github-script@v6",
                         With = new Dictionary<string, string>
                         {
-                            {
-                                "script",
-                                """
-                                    const pr = await github.rest.pulls.get({
-                                      owner: context.repo.owner,
-                                      repo: context.repo.repo,
-                                      pull_number: context.payload.pull_request.number
-                                    });
-
-                                    const prOwner = pr.data.user.login || "";
-                                    const prBody = pr.data.body || "";
-                                    core.setOutput("prOwner", prOwner);
-                                    core.setOutput("description", prBody);
-                                    console.log(`PR Owner: ${prOwner}`);
-                                    console.log(`PR Body: ${prBody}`);
-                                """
+                            { "github-token", "${{ secrets.GITHUB_TOKEN }}" },
+                            { "script",
+                                "const pr = context.payload.pull_request;\n" +
+                                "if (!pr) {\n" +
+                                "  console.log('No pull request context available.');\n" +
+                                "  return;\n" +
+                                "}\n\n" +
+                                "const author = pr.user.login;\n" +
+                                "if (author.endsWith('[bot]')) {\n" +
+                                "  console.log(`Skipping bot author: ${author}`);\n" +
+                                "  return;\n" +
+                                "}\n\n" +
+                                "console.log(`Assigning PR to author: ${author}`);\n\n" +
+                                "await github.rest.issues.addAssignees({\n" +
+                                "  owner: context.repo.owner,\n" +
+                                "  repo: context.repo.repo,\n" +
+                                "  issue_number: pr.number,\n" +
+                                "  assignees: [author]\n" +
+                                "});\n"
                             }
                         }
-                    },
-
-                    new GithubTask()
-                    {
-                        Name = "Check For Associated Issues Or Tasks",
-                        If = "${{ steps.get_pr_info.outputs.prOwner != 'dependabot[bot]' }}",
-                        Id = "check_for_issues_or_tasks",
-                        Shell = "bash",
-                        EnvironmentVariables = new Dictionary<string, string>
-                        {
-                            { "PR_BODY", "${{ steps.get_pr_info.outputs.description }}" }
-                        },
-                        Run =
-                            """
-                                if [[ -z "${PR_BODY:-}" ]]; then
-                                  echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
-                                  exit 1
-                                fi
-
-                                NORMALIZED_PR_BODY=$(printf '%s' "$PR_BODY" | tr '\r\n' '  ' | tr -s ' ')
-
-                                if printf '%s' "$NORMALIZED_PR_BODY" | grep -Piq "(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s*(\[#[0-9]+\]|#[0-9]+|\[AB#[0-9]+\]|AB#[0-9]+)"; then
-                                  echo "Valid PR description."
-                                else
-                                  echo "Error: PR description does not contain any links to issue(s)/task(s) (e.g., 'closes #123' / 'closes AB#123' / 'fixes #123' / 'fixes AB#123')."
-                                  exit 1
-                                fi
-                            """,
                     },
             };
         }

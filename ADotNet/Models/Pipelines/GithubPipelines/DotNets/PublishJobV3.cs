@@ -8,18 +8,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
-using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV3s;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV4s;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
     [Obsolete("Use latest version instead.")]
-    public class PublishJob : Job
+    public class PublishJobV3 : Job
     {
-        [Obsolete("This job is now obsolete. Please migrate to PublishJobV2.")]
-        public PublishJob(
+        public PublishJobV3(
             string runsOn,
             string dependsOn,
+            string dotNetVersion,
             string nugetApiKey)
         {
             RunsOn = runsOn;
@@ -33,13 +33,13 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     Name = "Check out"
                 },
 
-                new SetupDotNetTaskV3
+                new SetupDotNetTaskV4
                 {
                     Name = "Setup .Net",
 
-                    With = new TargetDotNetVersionV3
+                    With = new TargetDotNetVersionV4
                     {
-                        DotNetVersion = "7.0.201"
+                        DotNetVersion = dotNetVersion
                     }
                 },
 

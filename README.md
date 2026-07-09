@@ -344,6 +344,57 @@ And finally, here's the result:
 
 ![image](https://user-images.githubusercontent.com/89320816/137255979-8e15772e-f3f7-48e3-bc57-8b6cf32c7a09.png)
 
+## Fluent API Implementation
+The ADotNet library provides a fluent API (Currently only for GitHub Actions) to simplify the creation of pipelines in a declarative, strongly-typed manner. The fluent API makes it intuitive and convenient to define complex pipeline configurations without the need for YAML.
+
+### Example for GitHub Actions
+Here's an example of how to create a GitHub Actions pipeline using the fluent API:
+
+```csharp
+GitHubPipelineBuilder.CreateNewPipeline()
+    .SetName("Github")
+    .OnPush("main")
+    .OnPullRequest("main")
+    .AddJob("build", job => job
+        .WithName("Build")
+        .RunsOn(BuildMachines.WindowsLatest)
+        .AddEnvironmentVariables(new Dictionary<string, string>
+        {
+            { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
+            { "AzureTenantId", "${{ secrets.AZURETENANTID }}" },
+            { "AzureClientSecret", "${{ secrets.AZURECLIENTSECRET }}" },
+            { "AzureAdminName", "${{ secrets.AZUREADMINNAME }}" },
+            { "AzureAdminAccess", "${{ secrets.AZUREADMINACCESS }}" }
+        })
+        .AddCheckoutStep("Check Out")
+        .AddSetupDotNetStep(
+            version: "6.0.101",
+            includePrerelease: true)
+        .AddRestoreStep()
+        .AddBuildStep()
+        .AddGenericStep(
+            name: "Provision",
+            runCommand: "dotnet run --project .\\<PROJECT_DIRECTORY>\\<PROJECT_NAME>.csproj"))
+    .SaveToFile("github-pipelines-2.yaml");
+```
+### Environment Variables Support:
+   - Added methods to configure environment variables for jobs:
+     ```csharp
+     job.AddEnvironmentVariable("AzureClientId", "${{ secrets.AZURECLIENTID }}")
+        .AddEnvironmentVariables(new Dictionary<string, string>
+        {
+            { "AzureClientId", "${{ secrets.AZURECLIENTID }}" },
+            { "AzureTenantId", "${{ secrets.AZURETENANTID }}" }
+        });
+     ```
+
+### Generic Task Builder:
+   - Added support for custom tasks using `AddGenericStep`:
+     ```csharp
+     job.AddGenericStep(
+         name: "Provision",
+         runCommand: "dotnet run --project ./Project.csproj");
+     ```
 ## Some Odd Decisions
 I have intentionally limited some of the capabilities in this library to ensure any contributions go to this repository so everyone can benefit from the updates. For instance, I could've easily made selecting a virtual machine as a string input to allow for anyone to pass in whatever vm they need. But the problem with that is for those who will need the same thing and have to do the same research to find the right VM for their build.
 
