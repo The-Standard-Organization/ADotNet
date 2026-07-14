@@ -1,0 +1,375 @@
+﻿// ---------------------------------------------------------------------------
+// Copyright (c) Hassan Habib & Shri Humrudha Jagathisun All rights reserved.
+// Licensed under the MIT License.
+// See License.txt in the project root for license information.
+// ---------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using ADotNet.Clients.Builders;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using FluentAssertions;
+using Moq;
+using Xunit;
+
+namespace ADotNet.Tests.Unit.Clients.Builders
+{
+    public partial class GitHubPipelineBuilderV2Tests
+    {
+        [Fact]
+        public void ShouldCreateNewPipeline()
+        {
+            // given..when
+            var builder = GitHubPipelineBuilderV2.CreateNewPipeline();
+
+            // then
+            builder.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void ShouldSetPipelineName()
+        {
+            // given
+            string inputName = "My GitHub Pipeline";
+            string expectedName = inputName;
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilderV2.CreateNewPipeline()
+                .SetName(inputName);
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            actualPipeline.Should().NotBeNull();
+            actualPipeline.Name.Should().BeEquivalentTo(expectedName);
+        }
+
+        [Fact]
+        public void ShouldAddPushTrigger()
+        {
+            // given
+            string[] inputBranches = { "main", "dev" };
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilderV2.CreateNewPipeline()
+                .OnPush(inputBranches);
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            actualPipeline.OnEvents.Push.Should().NotBeNull();
+            actualPipeline.OnEvents.Push.Branches.Should().BeEquivalentTo(inputBranches);
+        }
+
+        [Fact]
+        public void ShouldAddPullRequestTrigger()
+        {
+            // given
+            string[] inputBranches = { "main", "feature/*" };
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilderV2.CreateNewPipeline()
+                .OnPullRequest(inputBranches);
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            actualPipeline.OnEvents.PullRequest.Should().NotBeNull();
+            actualPipeline.OnEvents.PullRequest.Branches.Should().BeEquivalentTo(inputBranches);
+        }
+
+        [Fact]
+        public void ShouldAddJobToPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            string inputRunsOn = BuildMachines.WindowsLatest;
+            string inputTaskName = "Restore";
+
+            string expectedRunsOn = inputRunsOn;
+            string expectedTaskName = inputTaskName;
+
+            // when
+            var pipelineBuilder = GitHubPipelineBuilderV2.CreateNewPipeline()
+                .AddJob(inputJobName, job =>
+                    job.RunsOn(inputRunsOn)
+                       .AddRestoreStep(inputTaskName));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Should().NotBeNull();
+            actualJob.RunsOn.Should().Be(expectedRunsOn);
+            actualJob.Steps.Should().HaveCount(1);
+
+            actualJob.Steps[0].Should().BeOfType<RestoreTask>()
+                .Which.Name.Should().Be(expectedTaskName);
+        }
+
+        [Fact]
+        public void ShouldSavePipelineToFile()
+        {
+            // given
+            string randomFileName = GetRandomFileName();
+            string randomPipelineName = GetRandomString();
+
+            GithubPipelineV2 randomPipeline =
+                CreateRandomGithubPipelineV2(randomPipelineName);
+
+            GithubPipelineV2 inputPipeline = randomPipeline;
+            string inputPath = randomFileName;
+            string inputPipelineName = randomPipelineName;
+
+            this.aDotNetClientMock.Setup(client =>
+                client.SerializeAndWriteToFile(
+                    inputPipeline,
+                    inputPath))
+                .Verifiable();
+
+            this.gitHubPipelineBuilderV2.SetName(inputPipelineName);
+
+            // when
+            this.gitHubPipelineBuilderV2.SaveToFile(inputPath);
+
+            // then
+            this.aDotNetClientMock.Verify(client =>
+               client.SerializeAndWriteToFile(
+                   It.IsAny<GithubPipelineV2>(),
+                   It.IsAny<string>()),
+               Times.Once);
+
+            this.aDotNetClientMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldBuildMatrixWithMultipleAxesThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddMatrix("provider", "sqlserver", "postgres")
+                    .AddMatrix("dotnet-version", "8.0.x", "10.0.100"));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.Matrix.Should().ContainKey("provider");
+            actualJob.Strategy.Matrix.Should().ContainKey("dotnet-version");
+
+            actualJob.Strategy.Matrix["provider"]
+                .Should().BeEquivalentTo(new List<string> { "sqlserver", "postgres" });
+
+            actualJob.Strategy.Matrix["dotnet-version"]
+                .Should().BeEquivalentTo(new List<string> { "8.0.x", "10.0.100" });
+        }
+
+        [Fact]
+        public void ShouldAppendMultipleMatrixIncludeEntriesThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            var firstInclude = new Dictionary<string, string>
+            {
+                ["provider"] = "sqlserver",
+                ["connection_string"] = GetRandomString()
+            };
+
+            var secondInclude = new Dictionary<string, string>
+            {
+                ["provider"] = "postgres",
+                ["dotnet-version"] = "9.0.x",
+                ["connection_string"] = GetRandomString()
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddMatrixInclude(firstInclude)
+                    .AddMatrixInclude(secondInclude));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualIncludeList =
+                actualJob.Strategy.Include as List<Dictionary<string, string>>;
+
+            actualIncludeList.Should().NotBeNull();
+            actualIncludeList.Should().HaveCount(2);
+            actualIncludeList.Should().ContainEquivalentOf(firstInclude);
+            actualIncludeList.Should().ContainEquivalentOf(secondInclude);
+        }
+
+        [Fact]
+        public void ShouldAppendMatrixExcludeEntryThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            var excludeEntry = new Dictionary<string, string>
+            {
+                ["provider"] = "sqlserver",
+                ["dotnet-version"] = "8.0.x"
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddMatrix("provider", "sqlserver", "postgres")
+                    .AddMatrix("dotnet-version", "8.0.x", "10.0.100")
+                    .AddMatrixExclude(excludeEntry));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualExcludeList =
+                actualJob.Strategy.Exclude as List<Dictionary<string, string>>;
+
+            actualExcludeList.Should().NotBeNull();
+            actualExcludeList.Should().ContainSingle();
+            actualExcludeList.Should().ContainEquivalentOf(excludeEntry);
+
+            actualJob.Strategy.Matrix["provider"]
+                .Should().BeEquivalentTo(new List<string> { "sqlserver", "postgres" });
+        }
+
+        [Fact]
+        public void ShouldKeepIncludeAndExcludeIndependentThroughPipeline()
+        {
+            string inputJobName = "build";
+            var includeEntry = new Dictionary<string, string> { ["provider"] = "postgres" };
+            var excludeEntry = new Dictionary<string, string> { ["provider"] = "sqlserver" };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddMatrixInclude(includeEntry)
+                    .AddMatrixExclude(excludeEntry));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualInclude =
+                actualJob.Strategy.Include;
+
+            var actualExclude =
+                actualJob.Strategy.Exclude;
+
+            actualInclude.Should().ContainSingle().Which.Should().BeEquivalentTo(includeEntry);
+            actualExclude.Should().ContainSingle().Which.Should().BeEquivalentTo(excludeEntry);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShouldSetFailFastThroughPipeline(bool inputFailFast)
+        {
+            // given
+            string inputJobName = "build";
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .WithFailFast(inputFailFast));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.FailFast.Should().Be(inputFailFast);
+        }
+
+        [Fact]
+        public void ShouldSetMaxParallelThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            int inputMaxParallel = GetRandomNumber();
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .WithMaxParallel(inputMaxParallel));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.MaxParallel.Should().Be(inputMaxParallel);
+        }
+
+        [Fact]
+        public void ShouldAddServiceWithFullKeySetThroughPipeline()
+        {
+            string inputJobName = "build";
+
+            var inputService = new Service
+            {
+                Image = GetRandomString(),
+
+                Credentials = new Credentials
+                {
+                    Username = GetRandomString(),
+                    Password = GetRandomString()
+                },
+
+                Environment = new Dictionary<string, string>
+                {
+                    [GetRandomString()] = GetRandomString()
+                },
+
+                Ports = new List<string> { "5432:5432" },
+                Volumes = new List<string> { "pgdata:/var/lib/postgresql/data" },
+                Options = GetRandomString()
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddService("postgres", inputService));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Services.Should().ContainKey("postgres");
+            actualJob.Services["postgres"].Should().BeEquivalentTo(inputService);
+        }
+
+        [Fact]
+        public void ShouldOverwriteServiceWhenSameIdAddedTwiceThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            var firstService = new Service { Image = GetRandomString() };
+            var secondService = new Service { Image = GetRandomString() };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilderV2
+                .AddJob(inputJobName, job => job
+                    .AddService("postgres", firstService)
+                    .AddService("postgres", secondService));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Services.Should().ContainSingle();
+            actualJob.Services["postgres"].Should().BeEquivalentTo(secondService);
+        }
+    }
+}
