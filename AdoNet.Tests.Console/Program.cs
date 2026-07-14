@@ -219,6 +219,86 @@ namespace ADotNet.Tests.Console
                             "dotnet run --project .\\{projectName}\\{projectName}.csproj"))
 
                 .SaveToFile("github-pipelines-fluent.yaml");
+
+
+                GitHubPipelineBuilder.CreateNewPipeline()
+                    .SetName("test-strategy-services-surface")
+                    .OnPush("main")
+                    .OnPullRequest("main")
+
+                    .AddJob("full_surface", job => job
+                        .WithName("Full Strategy + Services Surface")
+                        .RunsOn(BuildMachines.UbuntuLatest)
+                        .AddMatrix("provider", "sqlserver", "postgres")
+                        .AddMatrix("dotnet-version", "8.0.x", "10.0.100")
+                        .AddMatrixInclude(new ()
+                        {
+                            ["provider"] = "sqlserver",
+                            ["connection_string"] =
+                                "Server=localhost;Database=TestDb;User Id=sa;" +
+                                "Password=Your_password123!;TrustServerCertificate=True;" +
+                                "MultipleActiveResultSets=true;Pooling=false"
+                        })
+                        .AddMatrixInclude(new ()
+                        {
+                            ["provider"] = "postgres",
+                            ["connection_string"] =
+                                "Host=localhost;Database=TestDb;Username=postgres;" +
+                                "Password=postgres;Pooling=false"
+                        })
+                        .AddMatrixInclude(new ()
+                        {
+                            ["provider"] = "postgres",
+                            ["dotnet-version"] = "9.0.x",
+                            ["connection_string"] =
+                                "Host=localhost;Database=TestDb;Username=postgres;" +
+                                "Password=postgres;Pooling=false"
+                        })
+                        .AddMatrixExclude(new ()
+                        {
+                            ["provider"] = "sqlserver",
+                            ["dotnet-version"] = "8.0.x"
+                        })
+                        .WithFailFast(false)
+                        .WithMaxParallel(2)
+                        // NOTE: `Credentials` is populated here purely to exercise the
+                        // services.<id>.credentials key for coverage. It's inert against a public
+                        // image like postgres:17 — don't copy this block into a real pipeline
+                        // without removing it or pointing it at an actual private image.
+                        .AddService("postgres", new Service
+                        {
+                            Image = "postgres:17",
+                            Credentials = new Credentials
+                            {
+                                Username = "${{ secrets.REGISTRY_USERNAME }}",
+                                Password = "${{ secrets.REGISTRY_PASSWORD }}"
+                            },
+                            Environment = new Dictionary<string, string>
+                            {
+                                ["POSTGRES_DB"] = "TestDb",
+                                ["POSTGRES_USER"] = "postgres",
+                                ["POSTGRES_PASSWORD"] = "postgres"
+                            },
+                            Ports = new List<string> { "5432:5432" },
+                            Volumes = new List<string>
+                            {
+                                "pgdata:/var/lib/postgresql/data"
+                            },
+                            Options =
+                                "--health-cmd pg_isready --health-interval 10s " +
+                                "--health-timeout 5s --health-retries 5"
+                        })
+                        .AddCheckoutStep("Check out")
+                        .AddSetupDotNetStep("${{ matrix.dotnet-version }}")
+                        .AddRestoreStep()
+                        .AddBuildStep()
+                        .AddGenericStep(
+                            name: "Test",
+                            runCommand:
+                                "dotnet test Test.Core.Tests.Acceptance " +
+                                "--no-build --verbosity normal"))
+
+                    .SaveToFile("C:\\Users\\slima\\Desktop\\New folder\\github-pipelines-fluent.yaml");
         }
     }
 }
