@@ -285,7 +285,7 @@ namespace ADotNet.Tests.Console
                             "dotnet test Test.Core.Tests.Acceptance " +
                             "--no-build --verbosity normal"))
 
-                .SaveToFile("C:\\Users\\slima\\Desktop\\New folder\\github-pipelines-fluent.yaml");
+                .SaveToFile("github-pipelines-strategy-services.yaml");
         }
     }
 }
