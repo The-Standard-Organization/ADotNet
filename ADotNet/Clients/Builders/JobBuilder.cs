@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
-using FluentAssertions.Common;
 
 namespace ADotNet.Clients.Builders
 {
