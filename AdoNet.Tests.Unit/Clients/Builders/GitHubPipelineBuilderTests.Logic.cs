@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using ADotNet.Clients.Builders;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -139,6 +140,33 @@ namespace ADotNet.Tests.Unit.Clients.Builders
                Times.Once);
 
             this.aDotNetClientMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldBuildMatrixWithMultipleAxesThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddMatrix("provider", "sqlserver", "postgres")
+                    .AddMatrix("dotnet-version", "8.0.x", "10.0.100"));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.MatrixV2.Should().ContainKey("provider");
+            actualJob.Strategy.MatrixV2.Should().ContainKey("dotnet-version");
+
+            actualJob.Strategy.MatrixV2["provider"]
+                .Should().BeEquivalentTo(new List<string> { "sqlserver", "postgres" });
+
+            actualJob.Strategy.MatrixV2["dotnet-version"]
+                .Should().BeEquivalentTo(new List<string> { "8.0.x", "10.0.100" });
         }
     }
 }
