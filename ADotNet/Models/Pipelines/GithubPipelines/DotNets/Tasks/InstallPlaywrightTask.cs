@@ -14,7 +14,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks
         /// <summary>  
         /// Gets or sets the name of task.  
         /// </summary>  
-        public override string Name { get; set; } = "Install Microsoft.Playwright.CLI.";
+        public override string Name { get; set; } = "Install Microsoft.Playwright.CLI.";  
 
         /// <summary>
         /// Gets or sets the command to execute for the task.

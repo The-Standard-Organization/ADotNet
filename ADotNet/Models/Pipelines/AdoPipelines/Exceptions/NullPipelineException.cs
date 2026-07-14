@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace ADotNet.Models.Pipelines.AdoPipelines.Exceptions
