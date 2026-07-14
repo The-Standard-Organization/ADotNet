@@ -207,5 +207,40 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualIncludeList.Should().ContainEquivalentOf(firstInclude);
             actualIncludeList.Should().ContainEquivalentOf(secondInclude);
         }
+
+        [Fact]
+        public void ShouldAppendMatrixExcludeEntryThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            var excludeEntry = new Dictionary<string, string>
+            {
+                ["provider"] = "sqlserver",
+                ["dotnet-version"] = "8.0.x"
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddMatrix("provider", "sqlserver", "postgres")
+                    .AddMatrix("dotnet-version", "8.0.x", "10.0.100")
+                    .AddMatrixExclude(excludeEntry));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualExcludeList =
+                actualJob.Strategy.Exclude as List<Dictionary<string, string>>;
+
+            actualExcludeList.Should().NotBeNull();
+            actualExcludeList.Should().ContainSingle();
+            actualExcludeList.Should().ContainEquivalentOf(excludeEntry);
+
+            actualJob.Strategy.MatrixV2["provider"]
+                .Should().BeEquivalentTo(new List<string> { "sqlserver", "postgres" });
+        }
     }
 }
