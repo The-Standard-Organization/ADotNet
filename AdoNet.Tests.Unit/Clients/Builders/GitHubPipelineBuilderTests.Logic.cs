@@ -168,5 +168,44 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Strategy.MatrixV2["dotnet-version"]
                 .Should().BeEquivalentTo(new List<string> { "8.0.x", "10.0.100" });
         }
+
+        [Fact]
+        public void ShouldAppendMultipleMatrixIncludeEntriesThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+
+            var firstInclude = new Dictionary<string, string>
+            {
+                ["provider"] = "sqlserver",
+                ["connection_string"] = GetRandomString()
+            };
+
+            var secondInclude = new Dictionary<string, string>
+            {
+                ["provider"] = "postgres",
+                ["dotnet-version"] = "9.0.x",
+                ["connection_string"] = GetRandomString()
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddMatrixInclude(firstInclude)
+                    .AddMatrixInclude(secondInclude));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualIncludeList =
+                actualJob.Strategy.Include as List<Dictionary<string, string>>;
+
+            actualIncludeList.Should().NotBeNull();
+            actualIncludeList.Should().HaveCount(2);
+            actualIncludeList.Should().ContainEquivalentOf(firstInclude);
+            actualIncludeList.Should().ContainEquivalentOf(secondInclude);
+        }
     }
 }
