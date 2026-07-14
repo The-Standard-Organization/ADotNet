@@ -221,7 +221,7 @@ namespace ADotNet.Tests.Console
                 .SaveToFile("github-pipelines-fluent.yaml");
 
 
-            GitHubPipelineBuilder.CreateNewPipeline()
+            GitHubPipelineBuilderV2.CreateNewPipeline()
                 .SetName("test-strategy-services-surface")
                 .OnPush("main")
                 .OnPullRequest("main")
