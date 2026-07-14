@@ -162,6 +162,23 @@ namespace ADotNet.Clients.Builders
         }
 
         /// <summary>
+        /// Adds a generic step to the job with a custom command.
+        /// </summary>
+        /// <param name="name">The name of the step.</param>
+        /// <param name="runCommand">The command to execute for this step.</param>
+        /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
+        public JobBuilder AddGenericStep(string name, string runCommand)
+        {
+            this.job.Steps.Add(new GithubTask
+            {
+                Name = name,
+                Run = runCommand
+            });
+
+            return this;
+        }
+
+        /// <summary>
         /// Specifies the jobs that this job depends on.
         /// </summary>
         /// <param name="jobNames">The names of the jobs that this job depends on.</param>
@@ -196,8 +213,8 @@ namespace ADotNet.Clients.Builders
             params string[] values)
         {
             this.job.Strategy ??= new Strategy();
-            this.job.Strategy.Matrix ??= new Dictionary<string, object>();
-            this.job.Strategy.Matrix[variable] = new List<string>(values);
+            this.job.Strategy.MatrixV2 ??= new Dictionary<string, object>();
+            this.job.Strategy.MatrixV2[variable] = new List<string>(values);
 
             return this;
         }
@@ -209,7 +226,9 @@ namespace ADotNet.Clients.Builders
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
         public JobBuilder AddMatrixInclude(Dictionary<string, string> include)
         {
-            GetOrAddMatrixList("include").Add(include);
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.Include ??= new List<Dictionary<string, string>>();
+            this.job.Strategy.Include.Add(include);
 
             return this;
         }
@@ -221,7 +240,9 @@ namespace ADotNet.Clients.Builders
         /// <returns>The current instance of <see cref="JobBuilder"/>.</returns>
         public JobBuilder AddMatrixExclude(Dictionary<string, string> exclude)
         {
-            GetOrAddMatrixList("exclude").Add(exclude);
+            this.job.Strategy ??= new Strategy();
+            this.job.Strategy.Exclude ??= new List<Dictionary<string, string>>();
+            this.job.Strategy.Exclude.Add(exclude);
 
             return this;
         }
@@ -326,18 +347,5 @@ namespace ADotNet.Clients.Builders
         /// </summary>
         /// <returns>The configured <see cref="Job"/> instance.</returns>
         public Job Build() => this.job;
-
-        private List<Dictionary<string, string>> GetOrAddMatrixList(string key)
-        {
-            this.job.Strategy ??= new Strategy();
-            this.job.Strategy.Matrix ??= new Dictionary<string, object>();
-
-            if (!this.job.Strategy.Matrix.ContainsKey(key))
-            {
-                this.job.Strategy.Matrix[key] = new List<Dictionary<string, string>>();
-            }
-
-            return (List<Dictionary<string, string>>)this.job.Strategy.Matrix[key];
-        }
     }
 }
