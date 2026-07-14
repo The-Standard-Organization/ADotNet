@@ -291,5 +291,25 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Strategy.Should().NotBeNull();
             actualJob.Strategy.FailFast.Should().Be(inputFailFast);
         }
+
+        [Fact]
+        public void ShouldSetMaxParallelThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            int inputMaxParallel = GetRandomNumber();
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .WithMaxParallel(inputMaxParallel));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.MaxParallel.Should().Be(inputMaxParallel);
+        }
     }
 }
