@@ -242,5 +242,33 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Strategy.MatrixV2["provider"]
                 .Should().BeEquivalentTo(new List<string> { "sqlserver", "postgres" });
         }
+
+        [Fact]
+        public void ShouldKeepIncludeAndExcludeIndependentThroughPipeline()
+        {
+            string inputJobName = "build";
+            var includeEntry = new Dictionary<string, string> { ["provider"] = "postgres" };
+            var excludeEntry = new Dictionary<string, string> { ["provider"] = "sqlserver" };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddMatrixInclude(includeEntry)
+                    .AddMatrixExclude(excludeEntry));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+
+            var actualInclude =
+                actualJob.Strategy.Include;
+
+            var actualExclude =
+                actualJob.Strategy.Exclude;
+
+            actualInclude.Should().ContainSingle().Which.Should().BeEquivalentTo(includeEntry);
+            actualExclude.Should().ContainSingle().Which.Should().BeEquivalentTo(excludeEntry);
+        }
     }
 }
