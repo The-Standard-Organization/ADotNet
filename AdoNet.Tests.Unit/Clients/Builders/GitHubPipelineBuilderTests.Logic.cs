@@ -349,5 +349,27 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Services.Should().ContainKey("postgres");
             actualJob.Services["postgres"].Should().BeEquivalentTo(inputService);
         }
+
+        [Fact]
+        public void ShouldOverwriteServiceWhenSameIdAddedTwiceThroughPipeline()
+        {
+            // given
+            string inputJobName = "build";
+            var firstService = new Service { Image = GetRandomString() };
+            var secondService = new Service { Image = GetRandomString() };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddService("postgres", firstService)
+                    .AddService("postgres", secondService));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Services.Should().ContainSingle();
+            actualJob.Services["postgres"].Should().BeEquivalentTo(secondService);
+        }
     }
 }
