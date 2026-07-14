@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
@@ -17,7 +18,17 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         [YamlMember(Order = 1, Alias = "max-parallel", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public int? MaxParallel { get; set; }
 
+        [Obsolete("This property is now obsolete. Please migrate to MatrixV2.")]
         [YamlMember(Order = 2, Alias = "matrix", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public Dictionary<string, object> Matrix { get; set; }
+        public Dictionary<string, string> Matrix { get; set; }
+
+        [YamlMember(Order = 3, Alias = "matrix", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public Dictionary<string, object> MatrixV2 { get; set; }
+
+        [YamlMember(Order = 4, Alias = "include", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public List<Dictionary<string, string>> Include { get; set; }
+
+        [YamlMember(Order = 5, Alias = "exclude", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public List<Dictionary<string, string>> Exclude { get; set; }
     }
 }
