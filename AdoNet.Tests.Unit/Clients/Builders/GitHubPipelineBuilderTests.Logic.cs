@@ -270,5 +270,26 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualInclude.Should().ContainSingle().Which.Should().BeEquivalentTo(includeEntry);
             actualExclude.Should().ContainSingle().Which.Should().BeEquivalentTo(excludeEntry);
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ShouldSetFailFastThroughPipeline(bool inputFailFast)
+        {
+            // given
+            string inputJobName = "build";
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .WithFailFast(inputFailFast));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Strategy.Should().NotBeNull();
+            actualJob.Strategy.FailFast.Should().Be(inputFailFast);
+        }
     }
 }
