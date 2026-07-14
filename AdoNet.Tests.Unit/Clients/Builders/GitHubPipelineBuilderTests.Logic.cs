@@ -311,5 +311,43 @@ namespace ADotNet.Tests.Unit.Clients.Builders
             actualJob.Strategy.Should().NotBeNull();
             actualJob.Strategy.MaxParallel.Should().Be(inputMaxParallel);
         }
+
+        [Fact]
+        public void ShouldAddServiceWithFullKeySetThroughPipeline()
+        {
+            string inputJobName = "build";
+
+            var inputService = new Service
+            {
+                Image = GetRandomString(),
+
+                Credentials = new Credentials
+                {
+                    Username = GetRandomString(),
+                    Password = GetRandomString()
+                },
+
+                Environment = new Dictionary<string, string>
+                {
+                    [GetRandomString()] = GetRandomString()
+                },
+
+                Ports = new List<string> { "5432:5432" },
+                Volumes = new List<string> { "pgdata:/var/lib/postgresql/data" },
+                Options = GetRandomString()
+            };
+
+            // when
+            var pipelineBuilder = this.gitHubPipelineBuilder
+                .AddJob(inputJobName, job => job
+                    .AddService("postgres", inputService));
+
+            var actualPipeline = GetPipeline(pipelineBuilder);
+
+            // then
+            var actualJob = actualPipeline.Jobs[inputJobName];
+            actualJob.Services.Should().ContainKey("postgres");
+            actualJob.Services["postgres"].Should().BeEquivalentTo(inputService);
+        }
     }
 }
