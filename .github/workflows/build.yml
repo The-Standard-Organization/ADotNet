@@ -31,6 +31,8 @@ jobs:
   add_tag:
     name: Add Tag and Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs:
     - build
     if: >-
@@ -46,8 +48,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      with:
-        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Configure Git
       run: >-
         git config user.name "GitHub Action"
@@ -109,10 +109,13 @@ jobs:
 
           ${{ steps.extract_package_release_notes.outputs.package_release_notes }}
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish:
     name: Publish to NuGet
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     needs:
     - add_tag
     if: needs.add_tag.result == 'success'
@@ -129,5 +132,10 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release --include-symbols
+    - name: NuGet Login
+      id: login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ github.repository_owner }}
     - name: Push NuGet Package
-      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate

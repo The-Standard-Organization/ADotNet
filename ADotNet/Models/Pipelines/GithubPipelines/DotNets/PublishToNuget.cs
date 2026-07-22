@@ -16,11 +16,16 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
     {
         private const string NugetApiKey = "${{ steps.login.outputs.NUGET_API_KEY }}";
 
+        // Derives the NuGet account from the GitHub repository owner: the organization
+        // account for organization repositories, or the user account for user repositories.
+        // Consumers can override this by passing an explicit nugetUser.
+        private const string DefaultNugetUser = "${{ github.repository_owner }}";
+
         public PublishToNuget(
             string runsOn,
             string dependsOn,
             string dotNetVersion,
-            string nugetUser)
+            string nugetUser = DefaultNugetUser)
         {
             RunsOn = runsOn;
             Needs = new string[] { dependsOn };

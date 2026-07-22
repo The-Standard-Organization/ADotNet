@@ -57,5 +57,23 @@ namespace ADotNet.Tests.Unit.Models.Pipelines.GithubPipelines.DotNets
             pushStep.Run.Should().Contain("${{ steps.login.outputs.NUGET_API_KEY }}");
             pushStep.Run.Should().NotContain("secrets.");
         }
+
+        [Fact]
+        public void ShouldDeriveNugetUserFromRepositoryOwnerByDefault()
+        {
+            // given / when
+            var publishToNuget = new PublishToNuget(
+                runsOn: "ubuntu-latest",
+                dependsOn: "add_tag",
+                dotNetVersion: "10.0.100");
+
+            // then
+            NuGetLoginTask loginStep =
+                publishToNuget.Steps
+                    .Single(step => step.Name == "NuGet Login")
+                        .Should().BeOfType<NuGetLoginTask>().Subject;
+
+            loginStep.With.Should().Contain("user", "${{ github.repository_owner }}");
+        }
     }
 }
