@@ -13,43 +13,42 @@ namespace ADotNet.Clients.Builders
     /// <summary>
     /// Builder for creating a GitHub pipeline.
     /// </summary>
-    [Obsolete("No longer in use. Please migrate to GitHubPipelineBuilderV2.")]
-    public class GitHubPipelineBuilder
+    public class GitHubPipelineBuilderV2
     {
-        private readonly GithubPipeline githubPipeline;
+        private readonly GithubPipelineV2 githubPipelineV2;
         private readonly IADotNetClient aDotNetClient;
 
-        internal GitHubPipelineBuilder(IADotNetClient aDotNetClient)
+        internal GitHubPipelineBuilderV2(IADotNetClient aDotNetClient)
         {
-            this.githubPipeline = new GithubPipeline
+            this.githubPipelineV2 = new GithubPipelineV2
             {
                 OnEvents = new Events(),
-                Jobs = new Dictionary<string, Job>()
+                Jobs = new Dictionary<string, JobV2>()
             };
 
             this.aDotNetClient = aDotNetClient;
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="GitHubPipelineBuilder"/> class 
+        /// Creates a new instance of the <see cref="GitHubPipelineBuilderV2"/> class 
         /// with a default <see cref="ADotNetClient"/>.
         /// </summary>
-        /// <returns>A new instance of <see cref="GitHubPipelineBuilder"/>.</returns>
-        public static GitHubPipelineBuilder CreateNewPipeline()
+        /// <returns>A new instance of <see cref="GitHubPipelineBuilderV2"/>.</returns>
+        public static GitHubPipelineBuilderV2 CreateNewPipeline()
         {
             var aDotNetClient = new ADotNetClient();
 
-            return new GitHubPipelineBuilder(aDotNetClient);
+            return new GitHubPipelineBuilderV2(aDotNetClient);
         }
 
         /// <summary>
         /// Sets the name of the GitHub pipeline.
         /// </summary>
         /// <param name="name">The name of the pipeline.</param>
-        /// <returns>The current instance of <see cref="GitHubPipelineBuilder"/>.</returns>
-        public GitHubPipelineBuilder SetName(string name)
+        /// <returns>The current instance of <see cref="GitHubPipelineBuilderV2"/>.</returns>
+        public GitHubPipelineBuilderV2 SetName(string name)
         {
-            this.githubPipeline.Name = name;
+            this.githubPipelineV2.Name = name;
 
             return this;
         }
@@ -58,10 +57,10 @@ namespace ADotNet.Clients.Builders
         /// Configures the pipeline to trigger on push events for specified branches.
         /// </summary>
         /// <param name="branches">The branches to trigger on push events.</param>
-        /// <returns>The current instance of <see cref="GitHubPipelineBuilder"/>.</returns>
-        public GitHubPipelineBuilder OnPush(params string[] branches)
+        /// <returns>The current instance of <see cref="GitHubPipelineBuilderV2"/>.</returns>
+        public GitHubPipelineBuilderV2 OnPush(params string[] branches)
         {
-            this.githubPipeline.OnEvents.Push = new PushEvent
+            this.githubPipelineV2.OnEvents.Push = new PushEvent
             {
                 Branches = branches
             };
@@ -73,10 +72,10 @@ namespace ADotNet.Clients.Builders
         /// Configures the pipeline to trigger on pull request events for specified branches.
         /// </summary>
         /// <param name="branches">The branches to trigger on pull request events.</param>
-        /// <returns>The current instance of <see cref="GitHubPipelineBuilder"/>.</returns>
-        public GitHubPipelineBuilder OnPullRequest(params string[] branches)
+        /// <returns>The current instance of <see cref="GitHubPipelineBuilderV2"/>.</returns>
+        public GitHubPipelineBuilderV2 OnPullRequest(params string[] branches)
         {
-            this.githubPipeline.OnEvents.PullRequest = new PullRequestEvent
+            this.githubPipelineV2.OnEvents.PullRequest = new PullRequestEvent
             {
                 Branches = branches
             };
@@ -89,12 +88,12 @@ namespace ADotNet.Clients.Builders
         /// </summary>
         /// <param name="jobIdentifier">The unique identifier for the job.</param>
         /// <param name="configureJob">The action to configure the job.</param>
-        /// <returns>The current instance of <see cref="GitHubPipelineBuilder"/>.</returns>
-        public GitHubPipelineBuilder AddJob(string jobIdentifier, Action<JobBuilder> configureJob)
+        /// <returns>The current instance of <see cref="GitHubPipelineBuilderV2"/>.</returns>
+        public GitHubPipelineBuilderV2 AddJob(string jobIdentifier, Action<JobBuilderV2> configureJob)
         {
-            var jobBuilder = new JobBuilder();
+            var jobBuilder = new JobBuilderV2();
             configureJob(jobBuilder);
-            this.githubPipeline.Jobs[jobIdentifier] = jobBuilder.Build();
+            this.githubPipelineV2.Jobs[jobIdentifier] = jobBuilder.Build();
 
             return this;
         }
@@ -104,6 +103,6 @@ namespace ADotNet.Clients.Builders
         /// </summary>
         /// <param name="path">The file path where the pipeline will be saved.</param>
         public void SaveToFile(string path) =>
-            this.aDotNetClient.SerializeAndWriteToFile(this.githubPipeline, path);
+            this.aDotNetClient.SerializeAndWriteToFile(this.githubPipelineV2, path);
     }
 }

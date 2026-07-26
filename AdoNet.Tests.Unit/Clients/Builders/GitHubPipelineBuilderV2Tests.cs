@@ -14,28 +14,28 @@ using Tynamix.ObjectFiller;
 
 namespace ADotNet.Tests.Unit.Clients.Builders
 {
-    public partial class GitHubPipelineBuilderTests
+    public partial class GitHubPipelineBuilderV2Tests
     {
         private readonly Mock<IADotNetClient> aDotNetClientMock;
-        private readonly GitHubPipelineBuilder gitHubPipelineBuilder;
+        private readonly GitHubPipelineBuilderV2 gitHubPipelineBuilderV2;
 
-        public GitHubPipelineBuilderTests()
+        public GitHubPipelineBuilderV2Tests()
         {
             this.aDotNetClientMock = new Mock<IADotNetClient>();
 
-            this.gitHubPipelineBuilder = new GitHubPipelineBuilder(
+            this.gitHubPipelineBuilderV2 = new GitHubPipelineBuilderV2(
                 aDotNetClient: aDotNetClientMock.Object);
         }
 
-        private static GithubPipeline GetPipeline(GitHubPipelineBuilder builder)
+        private static GithubPipelineV2 GetPipeline(GitHubPipelineBuilderV2 builder)
         {
-            var privateField = typeof(GitHubPipelineBuilder)
+            var privateField = typeof(GitHubPipelineBuilderV2)
                 .GetField(
-                    name: "githubPipeline",
+                    name: "githubPipelineV2",
                     bindingAttr: System.Reflection.BindingFlags.NonPublic
                         | System.Reflection.BindingFlags.Instance);
 
-            return (GithubPipeline)privateField.GetValue(builder);
+            return (GithubPipelineV2)privateField.GetValue(builder);
         }
 
         private static string GetRandomString() =>
@@ -47,15 +47,15 @@ namespace ADotNet.Tests.Unit.Clients.Builders
         private static string GetRandomFileName() =>
            Path.GetRandomFileName();
 
-        private static GithubPipeline CreateRandomGithubPipeline(string name) =>
-            CreateGithubPipelineFiller(name).Create();
+        private static GithubPipelineV2 CreateRandomGithubPipelineV2(string name) =>
+            CreateGithubPipelineV2Filler(name).Create();
 
-        private static GithubPipeline CreateRandomGithubPipeline() =>
-            CreateGithubPipelineFiller(name: GetRandomString()).Create();
+        private static GithubPipelineV2 CreateRandomGithubPipelineV2() =>
+            CreateGithubPipelineV2Filler(name: GetRandomString()).Create();
 
-        private static Filler<GithubPipeline> CreateGithubPipelineFiller(string name)
+        private static Filler<GithubPipelineV2> CreateGithubPipelineV2Filler(string name)
         {
-            var filler = new Filler<GithubPipeline>();
+            var filler = new Filler<GithubPipelineV2>();
 
             filler.Setup()
                 .OnProperty(p => p.EnvironmentVariables)

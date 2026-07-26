@@ -4,17 +4,22 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to StrategyV2.")]
-    public class Strategy
+    public class GithubPipelineV2
     {
-        [Obsolete("This property is now obsolete. Please migrate to MatrixV2.")]
-        [YamlMember(Order = 0, Alias = "matrix", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public Dictionary<string, string> Matrix { get; set; }
+        public string Name { get; set; }
+
+        [YamlMember(Alias = "on")]
+        public Events OnEvents { get; set; }
+
+        [YamlMember(Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public Dictionary<string, string> EnvironmentVariables { get; set; }
+
+        [YamlMember(Alias = "jobs")]
+        public Dictionary<string, JobV2> Jobs { get; set; }
     }
 }
