@@ -221,71 +221,155 @@ namespace ADotNet.Tests.Console
                 .SaveToFile("github-pipelines-fluent.yaml");
 
 
-            GitHubPipelineBuilderV2.CreateNewPipeline()
-                .SetName("test-strategy-services-surface")
-                .OnPush("main")
-                .OnPullRequest("main")
+            var githubPipelineV2 = new GithubPipelineV2
+            {
+                Name = "test-strategy-services-surface",
 
-                .AddJob("full_surface", job => job
-                    .WithName("Full Strategy + Services Surface")
-                    .RunsOn(BuildMachines.UbuntuLatest)
-                    .AddMatrix("provider", "sqlserver", "postgres")
-                    .AddMatrix("dotnet-version", "8.0.x", "10.0.100")
-                    .AddMatrixInclude(new()
+                OnEvents = new Events
+                {
+                    Push = new PushEvent
                     {
-                        ["provider"] = "sqlserver",
-                        ["connection_string"] =
-                            "Server=localhost;Database=TestDb;User Id=sa;" +
-                            "Password=Your_password123!;TrustServerCertificate=True;" +
-                            "MultipleActiveResultSets=true;Pooling=false"
-                    })
-                    .AddMatrixInclude(new()
+                        Branches = new[] { "main" }
+                    },
+
+                    PullRequest = new PullRequestEvent
                     {
-                        ["provider"] = "postgres",
-                        ["connection_string"] =
-                            "Host=localhost;Database=TestDb;Username=postgres;" +
-                            "Password=postgres;Pooling=false"
-                    })
-                    .AddMatrixInclude(new()
+                        Branches = new[] { "main" }
+                    }
+                },
+
+                Jobs = new Dictionary<string, JobV2>
+                {
+                    ["full_surface"] = new JobV2
                     {
-                        ["provider"] = "postgres",
-                        ["dotnet-version"] = "9.0.x",
-                        ["connection_string"] =
-                            "Host=localhost;Database=TestDb;Username=postgres;" +
-                            "Password=postgres;Pooling=false"
-                    })
-                    .AddMatrixExclude(new()
-                    {
-                        ["provider"] = "sqlserver",
-                        ["dotnet-version"] = "8.0.x"
-                    })
-                    .WithFailFast(false)
-                    .WithMaxParallel(2)
-                    .AddService("postgres", new Service
-                    {
-                        Image = "postgres:17",
-                        Environment = new Dictionary<string, string>
+                        Name = "Full Strategy + Services Surface",
+                        RunsOn = BuildMachines.UbuntuLatest,
+
+                        Strategy = new StrategyV2
                         {
-                            ["POSTGRES_DB"] = "TestDb",
-                            ["POSTGRES_USER"] = "postgres",
-                            ["POSTGRES_PASSWORD"] = "postgres"
-                        },
-                        Ports = new List<string> { "5432:5432" },
-                        Options =
-                            "--health-cmd pg_isready --health-interval 10s " +
-                            "--health-timeout 5s --health-retries 5"
-                    })
-                    .AddCheckoutStep("Check out")
-                    .AddSetupDotNetStep("${{ matrix.dotnet-version }}")
-                    .AddRestoreStep()
-                    .AddBuildStep()
-                    .AddGenericStep(
-                        name: "Test",
-                        runCommand:
-                            "dotnet test Test.Core.Tests.Acceptance " +
-                            "--no-build --verbosity normal"))
+                            FailFast = false,
+                            MaxParallel = 2,
 
-                .SaveToFile("github-pipelines-strategy-services.yaml");
+                            Matrix = new Dictionary<string, object>
+                            {
+                                ["provider"] = new List<string>
+                                    {
+                                        "sqlserver",
+                                        "postgres"
+                                    },
+
+                                ["dotnet-version"] = new List<string>
+                                    {
+                                        "8.0.x",
+                                        "10.0.100"
+                                    }
+                            },
+
+                            Include = new List<Dictionary<string, string>>
+                                {
+                                    new()
+                                    {
+                                        ["provider"] = "sqlserver",
+                                        ["connection_string"] =
+                                            "Server=localhost;Database=TestDb;User Id=sa;" +
+                                            "Password=Your_password123!;TrustServerCertificate=True;" +
+                                            "MultipleActiveResultSets=true;Pooling=false"
+                                    },
+
+                                    new()
+                                    {
+                                        ["provider"] = "postgres",
+                                        ["connection_string"] =
+                                            "Host=localhost;Database=TestDb;" +
+                                            "Username=postgres;Password=postgres;Pooling=false"
+                                    },
+
+                                    new()
+                                    {
+                                        ["provider"] = "postgres",
+                                        ["dotnet-version"] = "9.0.x",
+                                        ["connection_string"] =
+                                            "Host=localhost;Database=TestDb;" +
+                                            "Username=postgres;Password=postgres;Pooling=false"
+                                    }
+                                },
+
+                            Exclude = new List<Dictionary<string, string>>
+                            {
+                                new()
+                                {
+                                    ["provider"] = "sqlserver",
+                                    ["dotnet-version"] = "8.0.x"
+                                }
+                            }
+                        },
+
+                        Services = new Dictionary<string, Service>
+                        {
+                            ["postgres"] = new Service
+                            {
+                                Image = "postgres:17",
+
+                                Environment = new Dictionary<string, string>
+                                {
+                                    ["POSTGRES_DB"] = "TestDb",
+                                    ["POSTGRES_USER"] = "postgres",
+                                    ["POSTGRES_PASSWORD"] = "postgres"
+                                },
+
+                                Ports = new List<string>
+                                {
+                                    "5432:5432"
+                                },
+
+                                Options =
+                                    "--health-cmd pg_isready " +
+                                    "--health-interval 10s " +
+                                    "--health-timeout 5s " +
+                                    "--health-retries 5"
+                            }
+                        },
+
+                        Steps = new List<GithubTask>
+                        {
+                            new CheckoutTaskV5
+                            {
+                                Name = "Check out"
+                            },
+
+                            new SetupDotNetTaskV5
+                            {
+                                Name = "Setup .NET",
+
+                                With = new TargetDotNetVersionV5
+                                {
+                                    DotNetVersion = "${{ matrix.dotnet-version }}"
+                                }
+                            },
+
+                            new RestoreTask
+                            {
+                                Name = "Restore"
+                            },
+
+                            new DotNetBuildTask
+                            {
+                                Name = "Build"
+                            },
+
+                            new GithubTask
+                            {
+                                Name = "Test",
+                                Run =
+                                    "dotnet test Test.Core.Tests.Acceptance " +
+                                    "--no-build --verbosity normal"
+                            }
+                        }
+                    }
+                }
+            };
+
+            adoClient.SerializeAndWriteToFile(githubPipeline, "github-pipelines-strategy-services.yaml");
         }
     }
 }
