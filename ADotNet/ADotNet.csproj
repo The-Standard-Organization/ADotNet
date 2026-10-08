@@ -14,7 +14,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>ADO YAML AzureDevOps GitHub-Actions Fluent</PackageTags>
 		<PackageReleaseNotes>
-			New Components: ExtractProjectPropertyTaskV2, TagJobV3, NugetTrustedPublishingJob
+			New Components: ExtractProjectPropertyTaskV2, TagJobV3, NugetTrustedPublishingJob.
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
