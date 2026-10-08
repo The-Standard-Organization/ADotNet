@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to TagJobV4.")]
-    public sealed class TagJobV3 : Job
+    public sealed class TagJobV4 : JobV2
     {
-        public TagJobV3(
+        public TagJobV4(
             string runsOn,
             string dependsOn,
             string projectRelativePath,
@@ -23,7 +21,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
             : this(runsOn, new string[] { dependsOn }, projectRelativePath, branchName)
         { }
 
-        public TagJobV3(
+        public TagJobV4(
             string runsOn,
             string[] dependsOn,
             string projectRelativePath,

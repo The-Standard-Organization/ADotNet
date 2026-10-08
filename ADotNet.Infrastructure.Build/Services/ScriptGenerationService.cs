@@ -22,7 +22,7 @@ namespace ADotNet.Infrastructure.Build.Services
 
         public void GenerateBuildScript(string branchName, string projectName, string dotNetVersion)
         {
-            var githubPipeline = new GithubPipeline
+            var githubPipeline = new GithubPipelineV2
             {
                 Name = "Build",
 
@@ -37,11 +37,11 @@ namespace ADotNet.Infrastructure.Build.Services
                     }
                 },
 
-                Jobs = new Dictionary<string, Job>
+                Jobs = new Dictionary<string, JobV2>
                 {
                     {
                         "build",
-                        new Job
+                        new JobV2
                         {
                             Name = "Build",
                             RunsOn = BuildMachines.UbuntuLatest,
@@ -82,7 +82,7 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "add_tag",
-                        new TagJobV3(
+                        new TagJobV4(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "build",
                             projectRelativePath: "ADotNet/ADotNet.csproj",
@@ -93,7 +93,7 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "publish",
-                        new NugetTrustedPublishingJob(
+                        new NugetTrustedPublishingJobV1(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "add_tag",
                             dotNetVersion: dotNetVersion,
@@ -104,6 +104,8 @@ namespace ADotNet.Infrastructure.Build.Services
                     }
                 }
             };
+
+
 
             string buildScriptPath = "../../../../.github/workflows/build.yml";
             string directoryPath = Path.GetDirectoryName(buildScriptPath);
@@ -120,7 +122,7 @@ namespace ADotNet.Infrastructure.Build.Services
 
         public void GeneratePrLintScript(string branchName)
         {
-            var githubPipeline = new GithubPipeline
+            var githubPipeline = new GithubPipelineV2
             {
                 Name = "PR Linter",
 
@@ -133,25 +135,25 @@ namespace ADotNet.Infrastructure.Build.Services
                     }
                 },
 
-                Jobs = new Dictionary<string, Job>
+                Jobs = new Dictionary<string, JobV2>
                 {
                     {
                         "label",
-                        new LabelJobV3(runsOn: BuildMachines.UbuntuLatest)
+                        new LabelJobV4(runsOn: BuildMachines.UbuntuLatest)
                         {
                             Name = "Label",
                         }
                     },
                     {
                         "requireIssueOrTask",
-                        new RequireIssueOrTaskJobV2(excludedAuthors: "dependabot[bot]")
+                        new RequireIssueOrTaskJobV3(excludedAuthors: "dependabot[bot]")
                         {
                             Name = "Require Issue Or Task Association",
                         }
                     },
                     {
                         "setAuthorAsPrAssignee",
-                        new SetAuthorAsPrAssigneeJobV2(runsOn: BuildMachines.UbuntuLatest)
+                        new SetAuthorAsPrAssigneeJobV3(runsOn: BuildMachines.UbuntuLatest)
                         {
                             Name = "Set Author As PR Assignee",
                         }

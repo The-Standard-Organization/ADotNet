@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,8 +11,7 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to JobV2.")]
-    public class Job
+    public class JobV2
     {
         [YamlMember(Order = 0, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual string Name { get; set; }
@@ -41,7 +39,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public virtual int TimeoutInMinutes { get; set; }
 
         [YamlMember(Order = 8, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public virtual Strategy Strategy { get; set; }
+        public virtual StrategyV2 Strategy { get; set; }
 
         [YamlMember(Order = 9, Alias = "env", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> EnvironmentVariables { get; set; }
@@ -55,5 +53,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public virtual Dictionary<string, string> Permissions { get; set; }
+
+        [YamlMember(Order = 13, Alias = "services", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public virtual Dictionary<string, Service> Services { get; set; }
     }
 }

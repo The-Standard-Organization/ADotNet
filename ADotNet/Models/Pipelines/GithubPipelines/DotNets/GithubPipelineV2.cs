@@ -4,14 +4,12 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public class GithubPipeline
+    public class GithubPipelineV2
     {
         public string Name { get; set; }
 
@@ -22,6 +20,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
         public Dictionary<string, string> EnvironmentVariables { get; set; }
 
         [YamlMember(Alias = "jobs")]
-        public Dictionary<string, Job> Jobs { get; set; }
+        public Dictionary<string, JobV2> Jobs { get; set; }
     }
 }
