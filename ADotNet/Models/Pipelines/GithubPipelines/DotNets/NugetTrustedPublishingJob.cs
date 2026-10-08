@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -13,19 +12,24 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("This job is now obsolete. Please migrate to NugetTrustedPublishingJob.")]
-    public class PublishJobV4 : Job
+    public class NugetTrustedPublishingJob : Job
     {
-        public PublishJobV4(
+        public NugetTrustedPublishingJob(
             string runsOn,
             string dependsOn,
             string dotNetVersion,
-            string nugetApiKey)
+            string nugetUser)
         {
             RunsOn = runsOn;
             Needs = new string[] { dependsOn };
 
             If = $"needs.{dependsOn}.result == 'success'";
+
+            Permissions = new Dictionary<string, string>
+            {
+                { "id-token", "write" },
+                { "contents", "read" }
+            };
 
             Steps = new List<GithubTask> {
                 new CheckoutTaskV5
@@ -58,7 +62,18 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                     Name = "Pack NuGet Package",
                 },
 
-                new NugetPushTask(nugetApiKey)
+                new GithubTask
+                {
+                    Name = "NuGet Login",
+                    Id = "nuget_login",
+                    Uses = "NuGet/login@v1",
+                    With = new Dictionary<string, string>
+                    {
+                        { "user", nugetUser }
+                    }
+                },
+
+                new NugetPushTask("${{ steps.nuget_login.outputs.NUGET_API_KEY }}")
                 {
                     Name = "Push NuGet Package",
                 }
@@ -99,5 +114,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public new Dictionary<string, string> Outputs { get; set; }
+
+        [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new Dictionary<string, string> Permissions { get; set; }
     }
 }
