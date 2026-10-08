@@ -82,11 +82,10 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "add_tag",
-                        new TagJobV2(
+                        new TagJobV3(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "build",
                             projectRelativePath: "ADotNet/ADotNet.csproj",
-                            githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
                             branchName: branchName)
                         {
                             Name = "Add Tag and Create Release"
