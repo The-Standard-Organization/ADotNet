@@ -93,11 +93,11 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "publish",
-                        new PublishJobV4(
+                        new NugetTrustedPublishingJob(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "add_tag",
                             dotNetVersion: dotNetVersion,
-                            nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
+                            nugetUser: "${{ secrets.NUGET_USER }}")
                         {
                             Name = "Publish to NuGet"
                         }
