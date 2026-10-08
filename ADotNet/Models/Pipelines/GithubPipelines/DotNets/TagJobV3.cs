@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,23 +11,20 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("Use latest version instead.")]
-    public sealed class TagJobV2 : Job
+    public sealed class TagJobV3 : Job
     {
-        public TagJobV2(
+        public TagJobV3(
             string runsOn,
             string dependsOn,
             string projectRelativePath,
-            string githubToken,
             string branchName)
-            : this(runsOn, new string[] { dependsOn }, projectRelativePath, githubToken, branchName)
+            : this(runsOn, new string[] { dependsOn }, projectRelativePath, branchName)
         { }
 
-        public TagJobV2(
+        public TagJobV3(
             string runsOn,
             string[] dependsOn,
             string projectRelativePath,
-            string githubToken,
             string branchName)
         {
             RunsOn = runsOn;
@@ -41,15 +37,16 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                 + $"startsWith(github.event.pull_request.title, 'RELEASES:') && {System.Environment.NewLine}"
                 + "contains(github.event.pull_request.labels.*.name, 'RELEASES')";
 
+            Permissions = new Dictionary<string, string>
+            {
+                { "contents", "write" }
+            };
+
             Steps = new List<GithubTask>
                 {
                     new CheckoutTaskV5
                     {
-                        Name = "Checkout code",
-                        With = new Dictionary<string, string>
-                        {
-                            { "token", githubToken }
-                        }
+                        Name = "Checkout code"
                     },
 
                     new ConfigureGitTask()
@@ -57,7 +54,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Name = "Configure Git",
                     },
 
-                    new ExtractProjectPropertyTask(
+                    new ExtractProjectPropertyTaskV2(
                         name: "Extract Version",
                         id: "extract_version",
                         projectRelativePath,
@@ -71,7 +68,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         Run = "echo \"Version number: ${{ steps.extract_version.outputs.version_number }}\""
                     },
 
-                    new ExtractProjectPropertyTask(
+                    new ExtractProjectPropertyTaskV2(
                         name: $"Extract Package Release Notes",
                         id: "extract_package_release_notes",
                         projectRelativePath,
@@ -98,7 +95,7 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
                         releaseName: "Release - v${{ steps.extract_version.outputs.version_number }}",
                         tagName: "v${{ steps.extract_version.outputs.version_number }}",
                         releaseNotes: "${{ steps.extract_package_release_notes.outputs.package_release_notes }}",
-                        githubToken)
+                        githubToken: "${{ secrets.GITHUB_TOKEN }}")
                     {
                         Name = "Create GitHub Release",
                         Uses = "actions/create-release@v1",
@@ -139,5 +136,8 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public new Dictionary<string, string> Outputs { get; set; }
+
+        [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
+        public new Dictionary<string, string> Permissions { get; set; }
     }
 }
