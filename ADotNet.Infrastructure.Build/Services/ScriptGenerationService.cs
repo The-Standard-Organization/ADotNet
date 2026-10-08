@@ -82,11 +82,10 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "add_tag",
-                        new TagJobV2(
+                        new TagJobV3(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "build",
                             projectRelativePath: "ADotNet/ADotNet.csproj",
-                            githubToken: "${{ secrets.PAT_FOR_TAGGING }}",
                             branchName: branchName)
                         {
                             Name = "Add Tag and Create Release"
@@ -94,11 +93,11 @@ namespace ADotNet.Infrastructure.Build.Services
                     },
                     {
                         "publish",
-                        new PublishJobV4(
+                        new NugetTrustedPublishingJob(
                             runsOn: BuildMachines.UbuntuLatest,
                             dependsOn: "add_tag",
                             dotNetVersion: dotNetVersion,
-                            nugetApiKey: "${{ secrets.NUGET_ACCESS }}")
+                            nugetUser: "${{ secrets.NUGET_USER }}")
                         {
                             Name = "Publish to NuGet"
                         }

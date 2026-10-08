@@ -46,8 +46,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      with:
-        token: ${{ secrets.PAT_FOR_TAGGING }}
     - name: Configure Git
       run: >-
         git config user.name "GitHub Action"
@@ -109,7 +107,9 @@ jobs:
 
           ${{ steps.extract_package_release_notes.outputs.package_release_notes }}
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT_FOR_TAGGING }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
   publish:
     name: Publish to NuGet
     runs-on: ubuntu-latest
@@ -129,5 +129,13 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     - name: Pack NuGet Package
       run: dotnet pack --configuration Release --include-symbols
+    - name: NuGet Login
+      id: nuget_login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
     - name: Push NuGet Package
-      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ACCESS }} --skip-duplicate
+      run: dotnet nuget push **/bin/Release/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ steps.nuget_login.outputs.NUGET_API_KEY }} --skip-duplicate
+    permissions:
+      id-token: write
+      contents: read
