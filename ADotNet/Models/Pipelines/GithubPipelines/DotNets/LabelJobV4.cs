@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to LabelJobV4.")]
-    public sealed class LabelJobV3 : Job
+    public sealed class LabelJobV4 : JobV2
     {
-        public LabelJobV3(string runsOn)
+        public LabelJobV4(string runsOn)
         {
             RunsOn = runsOn;
             If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";

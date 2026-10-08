@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to RequireIssueOrTaskJobV3.")]
-    public sealed class RequireIssueOrTaskJobV2 : Job
+    public sealed class RequireIssueOrTaskJobV3 : JobV2
     {
-        public RequireIssueOrTaskJobV2(string excludedAuthors = "")
+        public RequireIssueOrTaskJobV3(string excludedAuthors = "")
         {
             RunsOn = "ubuntu-latest";
 

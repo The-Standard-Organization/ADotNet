@@ -4,64 +4,81 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
+using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV5s;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to SetAuthorAsPrAssigneeJobV3.")]
-    public sealed class SetAuthorAsPrAssigneeJobV2 : Job
+    public class NugetTrustedPublishingJobV1 : JobV2
     {
-        public SetAuthorAsPrAssigneeJobV2(string runsOn)
+        public NugetTrustedPublishingJobV1(
+            string runsOn,
+            string dependsOn,
+            string dotNetVersion,
+            string nugetUser)
         {
             RunsOn = runsOn;
-            If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";
+            Needs = new string[] { dependsOn };
+
+            If = $"needs.{dependsOn}.result == 'success'";
 
             Permissions = new Dictionary<string, string>
             {
-                { "contents", "read" },
-                { "issues", "write" },
-                { "pull-requests", "write" }
+                { "id-token", "write" },
+                { "contents", "read" }
             };
 
-            Steps = new List<GithubTask>
+            Steps = new List<GithubTask> {
+                new CheckoutTaskV5
                 {
-                    new GithubTask()
+                    Name = "Check out"
+                },
+
+                new SetupDotNetTaskV5
+                {
+                    Name = "Setup .Net",
+
+                    With = new TargetDotNetVersionV5
                     {
-                        Name = "Set Author As PR Assignee",
-                        Uses = "actions/github-script@v8",
-                        With = new Dictionary<string, string>
-                        {
-                            { "github-token", "${{ secrets.GITHUB_TOKEN }}" },
-                            { "script",
-                                "const pr = context.payload.pull_request;\n" +
-                                "if (!pr) {\n" +
-                                "  console.log('No pull request context available.');\n" +
-                                "  return;\n" +
-                                "}\n\n" +
-                                "const author = pr.user.login;\n" +
-                                "if (author.endsWith('[bot]')) {\n" +
-                                "  console.log(`Skipping bot author: ${author}`);\n" +
-                                "  return;\n" +
-                                "}\n\n" +
-                                "console.log(`Assigning PR to author: ${author}`);\n\n" +
-                                "try {\n" +
-                                "  await github.rest.issues.addAssignees({\n" +
-                                "    owner: context.repo.owner,\n" +
-                                "    repo: context.repo.repo,\n" +
-                                "    issue_number: pr.number,\n" +
-                                "    assignees: [author]\n" +
-                                "  });\n" +
-                                "} catch (error) {\n" +
-                                "  console.log(`Unable to assign ${author} as PR assignee: ${error.message}`);\n" +
-                                "}\n"
-                            }
-                        }
-                    },
+                        DotNetVersion = dotNetVersion
+                    }
+                },
+
+                new RestoreTask
+                {
+                    Name = "Restore"
+                },
+
+                new DotNetBuildReleaseTask
+                {
+                    Name = "Build",
+                },
+
+                new PackNugetTaskWithSymbols
+                {
+                    Name = "Pack NuGet Package",
+                },
+
+                new GithubTask
+                {
+                    Name = "NuGet Login",
+                    Id = "nuget_login",
+                    Uses = "NuGet/login@v1",
+                    With = new Dictionary<string, string>
+                    {
+                        { "user", nugetUser }
+                    }
+                },
+
+                new NugetPushTask("${{ steps.nuget_login.outputs.NUGET_API_KEY }}")
+                {
+                    Name = "Push NuGet Package",
+                }
             };
+
         }
 
         [YamlMember(Order = 0, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
@@ -97,10 +114,6 @@ namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 
         [YamlMember(Order = 10, DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public new Dictionary<string, string> Outputs { get; set; }
-
-        [DefaultValue(false)]
-        [YamlMember(Order = 11, Alias = "continue-on-error", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
-        public new bool ContinueOnError { get; set; }
 
         [YamlMember(Order = 12, Alias = "permissions", DefaultValuesHandling = DefaultValuesHandling.OmitDefaults)]
         public new Dictionary<string, string> Permissions { get; set; }

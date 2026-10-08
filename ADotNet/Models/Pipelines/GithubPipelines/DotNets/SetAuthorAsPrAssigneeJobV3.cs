@@ -4,7 +4,6 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
@@ -12,10 +11,9 @@ using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
-    [Obsolete("No longer in use. Please migrate to SetAuthorAsPrAssigneeJobV3.")]
-    public sealed class SetAuthorAsPrAssigneeJobV2 : Job
+    public sealed class SetAuthorAsPrAssigneeJobV3 : JobV2
     {
-        public SetAuthorAsPrAssigneeJobV2(string runsOn)
+        public SetAuthorAsPrAssigneeJobV3(string runsOn)
         {
             RunsOn = runsOn;
             If = "${{ github.event.pull_request.head.repo.full_name == github.repository }}";

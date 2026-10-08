@@ -4,11 +4,13 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
 namespace ADotNet.Models.Pipelines.GithubPipelines.DotNets
 {
+    [Obsolete("Use latest version instead.")]
     public class GithubPipeline
     {
         public string Name { get; set; }
